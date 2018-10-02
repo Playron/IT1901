@@ -48,11 +48,13 @@ public class Home {
 		rightScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		rightScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		root.getChildren().add(rightScroll);
-		contentPane.setPrefHeight(20 + (50 * Posts.getLabels().size()));
+		contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
+		int i = 0;
 		for (Label label : Posts.getLabels()) {
 			contentPane.getChildren().add(label);
-			label.setLayoutX(50);
-			label.setLayoutY(20);
+			label.setLayoutX(80);
+			label.setLayoutY(40 + (200 * i));
+			i++;
 		}
 		
 		Button backButton = new Button("<");
@@ -78,7 +80,15 @@ public class Home {
 		refreshButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ae) {
-				// TODO: add functionality to this button if there's time; otherwise, remove button entirely
+				contentPane.getChildren().clear();
+				contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
+				int i = 0;
+				for (Label label : Posts.getLabels()) {
+					contentPane.getChildren().add(label);
+					label.setLayoutX(80);
+					label.setLayoutY(40 + (200 * i));
+					i++;
+				}
 			}
 		});
 		

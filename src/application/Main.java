@@ -21,7 +21,7 @@ public class Main extends Application {
 		
 //		FIXME: The next line of code is used for testing functionality until we have a working log-in system
 //		
-//		CurrentUser.setCurrentUser("testeditor", 'E');
+		CurrentUser.setCurrentUser("testeditor", 'E');
 		
 		launch(args);
 		DB.disconnect();
