@@ -1,0 +1,75 @@
+.button {
+	-fx-background-color: #444444;
+	-fx-background-radius: 0;
+	-fx-background-insets: 0;
+	-fx-text-fill: white;
+}
+
+.button:focused {
+	-fx-background-color: #444444;
+	-fx-background-radius: 0;
+	-fx-background-insets: 0;
+	-fx-text-fill: white;
+}
+
+.button:hover {
+	-fx-background-color: #111111;
+	-fx-background-radius: 0;
+	-fx-background-insets: 0;
+	-fx-text-fill: white;
+}
+
+.button:pressed {
+	-fx-background-color: #444444;
+	-fx-background-radius: 0;
+	-fx-background-insets: 0;
+	-fx-text-fill: white;
+}
+
+.combo-box {
+	-fx-background-color: #444444;
+	-fx-background-radius: 0;
+	-fx-background-insets: 0;
+	-fx-text-fill: white;
+}
+
+.combo-box:focused {
+	-fx-background-color: #444444;
+	-fx-background-radius: 0;
+	-fx-background-insets: 0;
+	-fx-text-fill: white;
+}
+
+.combo-box:hover {
+	-fx-background-color: #111111;
+	-fx-background-radius: 0;
+	-fx-background-insets: 0;
+	-fx-text-fill: white;
+}
+
+.combo-box:pressed {
+	-fx-background-color: #444444;
+	-fx-background-radius: 0;
+	-fx-background-insets: 0;
+	-fx-text-fill: white;
+}
+
+.combo-box .list-cell {
+	-fx-background-color: #444444;
+	-fx-text-fill: white;
+}
+
+.combo-box:focused .list-cell {
+	-fx-background-color: #444444;
+	-fx-text-fill: white;
+}
+
+.combo-box:hover .list-cell {
+	-fx-background-color: #111111;
+	-fx-text-fill: white;
+}
+
+.combo-box:pressed .list-cell {
+	-fx-background-color: #444444;
+	-fx-text-fill: white;
+}
