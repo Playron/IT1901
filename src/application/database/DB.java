@@ -9,9 +9,9 @@ public class DB {
 
 	private static Connection connection = null;
 	
-	public static void connect(String path, String user, String pass) {
+	public static void connect() {
 		try {
-			connection = DriverManager.getConnection(path, user, pass);
+			connection = DriverManager.getConnection("jdbc:mysql://mysql02.it.ntnu.no:3306/niklaso_tdt4140?useSSL=false", "niklaso_tdt4140", "gruppe69");
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -54,6 +54,14 @@ public class DB {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void delete(String query) {
+		alter(query);
+	}
+	
+	public static void insert(String query) {
+		alter(query);
 	}
 	
 }
