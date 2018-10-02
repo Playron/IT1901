@@ -11,8 +11,6 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Stage stage = primaryStage;
-//		stage.setFullScreen(true);
-//		stage.setFullScreenExitHint("");
 		stage.setMaximized(true);
 		
 		Home.showHome(stage);

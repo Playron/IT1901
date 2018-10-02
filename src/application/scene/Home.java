@@ -5,6 +5,7 @@ import java.util.Optional;
 import application.database.Content;
 import application.database.CurrentUser;
 import application.database.DB;
+import application.logic.Posts;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -47,8 +48,14 @@ public class Home {
 		rightScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		rightScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		root.getChildren().add(rightScroll);
+		contentPane.setPrefHeight(20 + (50 * Posts.getLabels().size()));
+		for (Label label : Posts.getLabels()) {
+			contentPane.getChildren().add(label);
+			label.setLayoutX(50);
+			label.setLayoutY(20);
+		}
 		
-		Button backButton = new Button("<=");
+		Button backButton = new Button("<");
 		topPane.getChildren().add(backButton);
 		backButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -57,7 +64,7 @@ public class Home {
 			}
 		});
 		
-		Button forwardButton = new Button("=>");
+		Button forwardButton = new Button(">");
 		topPane.getChildren().add(forwardButton);
 		forwardButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -75,29 +82,9 @@ public class Home {
 			}
 		});
 		
+
 		
-		
-		// Content creation for author-type users
-		Pane contentCreationPane = new Pane();
-		
-		TextField contentHeader = new TextField();
-		contentCreationPane.getChildren().add(contentHeader);
-		contentHeader.setPromptText("<Header>");
-		
-		TextArea content = new TextArea();
-		contentCreationPane.getChildren().add(content);
-		content.setPromptText("<Content>");
-		content.setWrapText(true);
-		
-		Button submitButton = new Button("Submit content");
-		contentCreationPane.getChildren().add(submitButton);
-		submitButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent ae) {
-				if (!(contentHeader.getText() == null || contentHeader.getText().length() == 0 || content.getText() == null || content.getText().length() == 0))
-					Content.addContent(contentHeader.getText(), content.getText());
-			}
-		});
+		// Button available for registered users, such that they can create content
 		
 		Button createContent = new Button("Create");
 		optionsPane.getChildren().add(createContent);
