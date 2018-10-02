@@ -4,8 +4,8 @@ import java.sql.ResultSet;
 
 public class Content {
 
-	public static void addContent(String header, String body) {
-		String query = "INSERT INTO `post` (`poster`, `header`, `text`, `approved`) VALUES (\"" + CurrentUser.getUsername() + "\", \"" + header + "\", \"" + body + "\", false);";
+	public static void addContent(String header, String body, String state) {
+		String query = "INSERT INTO `post` (`poster`, `header`, `text`, `state`) VALUES (\"" + CurrentUser.getUsername() + "\", \"" + header + "\", \"" + body + "\", \"" + state + "\");";
 		DB.insert(query);
 	}
 	

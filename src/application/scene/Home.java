@@ -1,5 +1,6 @@
 package application.scene;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import application.database.Content;
@@ -40,13 +41,13 @@ public class Home {
 		Pane optionsPane = new Pane();
 		ScrollPane leftScroll = new ScrollPane(optionsPane);
 		leftScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-		leftScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		leftScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		root.getChildren().add(leftScroll);
 		
 		Pane contentPane = new Pane();
 		ScrollPane rightScroll = new ScrollPane(contentPane);
 		rightScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-		rightScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		rightScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		root.getChildren().add(rightScroll);
 		contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
 		int i = 0;
@@ -102,44 +103,63 @@ public class Home {
 			@Override
 			public void handle(ActionEvent ae) {
 				if (CurrentUser.isRegistered()) {
-					Dialog<Pair<String, String>> dialog = new Dialog<Pair<String, String>>();
+					Dialog<ArrayList<String>> dialog = new Dialog<ArrayList<String>>();
+					dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
 					dialog.initModality(Modality.APPLICATION_MODAL);
-					dialog.setTitle("Content Creator");
+					dialog.setTitle("Make new post");
 					dialog.setHeaderText(null);
+					ButtonType publishButtonType = new ButtonType("Publish", ButtonData.OK_DONE);
 					ButtonType submitButtonType = new ButtonType("Submit", ButtonData.OK_DONE);
-					dialog.getDialogPane().getButtonTypes().setAll(submitButtonType, ButtonType.CANCEL);
+					dialog.getDialogPane().getButtonTypes().setAll(publishButtonType, submitButtonType, ButtonType.CANCEL);
 					Pane dialogPane = new Pane();
-					dialogPane.setPrefSize(200, 260);
+					dialogPane.setPrefSize(300, 300);
 					Label headerLabel = new Label("Header:");
 					headerLabel.setLayoutX(20);
 					headerLabel.setLayoutY(20);
 					TextField headerField = new TextField();
 					headerField.setLayoutX(20);
 					headerField.setLayoutY(50);
-					headerField.setPrefSize(160, 25);
+					headerField.setPrefSize(260, 25);
 					Label contentLabel = new Label("Content:");
 					contentLabel.setLayoutX(20);
 					contentLabel.setLayoutY(90);
 					TextArea contentArea = new TextArea();
 					contentArea.setLayoutX(20);
 					contentArea.setLayoutY(120);
-					contentArea.setPrefSize(160, 120);
+					contentArea.setPrefSize(260, 160);
+					contentArea.setWrapText(true);
 					dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea);
 					Node submitButton = dialog.getDialogPane().lookupButton(submitButtonType);
 					submitButton.setDisable(true);
 					contentArea.textProperty().addListener((observable, oldValue, newValue) -> {
 						submitButton.setDisable(newValue.trim().isEmpty());
 					});
+					Node publishButton = dialog.getDialogPane().lookupButton(publishButtonType);
+					publishButton.setDisable(true);
+					contentArea.textProperty().addListener((observable, oldValue, newValue) -> {
+						publishButton.setDisable(newValue.trim().isEmpty());
+					});
 					dialog.getDialogPane().setContent(dialogPane);
 					dialog.setResultConverter(dialogButton -> {
 						if (dialogButton == submitButtonType) {
-							return new Pair<>(headerField.getText(), contentArea.getText());
+							ArrayList<String> list = new ArrayList<String>();
+							list.add(headerField.getText());
+							list.add(contentArea.getText());
+							list.add("submitted");
+							return list;
+						}
+						else if (dialogButton == publishButtonType) {
+							ArrayList<String> list = new ArrayList<String>();
+							list.add(headerField.getText());
+							list.add(contentArea.getText());
+							list.add("published");
+							return list;
 						}
 						return null;
 					});
-					Optional<Pair<String, String>> result = dialog.showAndWait();
+					Optional<ArrayList<String>> result = dialog.showAndWait();
 					result.ifPresent(text -> {
-						Content.addContent(text.getKey(), text.getValue());
+						Content.addContent(text.get(0), text.get(1), text.get(2));
 					});
 				}
 			}
@@ -191,11 +211,11 @@ public class Home {
 		
 		leftScroll.setLayoutX(0);
 		leftScroll.setLayoutY(h/12);
-		leftScroll.setPrefSize(w/6, h-(h/12));
+		leftScroll.setPrefSize(w/6, h-(h/12)-38);
 		
 		rightScroll.setLayoutX(w/6);
 		rightScroll.setLayoutY(h/12);
-		rightScroll.setPrefSize(w-(w/6), h-(h/12));
+		rightScroll.setPrefSize(w-(w/6)-17, h-(h/12)-38);
 	}
 	
 }
