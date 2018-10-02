@@ -1,13 +1,28 @@
 package application.scene;
 
+import java.util.Optional;
+
+import application.database.Content;
+import application.database.CurrentUser;
+import application.database.DB;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 public class Home {
 
@@ -21,14 +36,14 @@ public class Home {
 		topPane.getChildren().add(adressField);
 		adressField.setFocusTraversable(false);
 		
-		Pane leftPane = new Pane();
-		ScrollPane leftScroll = new ScrollPane(leftPane);
+		Pane optionsPane = new Pane();
+		ScrollPane leftScroll = new ScrollPane(optionsPane);
 		leftScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		leftScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		root.getChildren().add(leftScroll);
 		
-		Pane rightPane = new Pane();
-		ScrollPane rightScroll = new ScrollPane(rightPane);
+		Pane contentPane = new Pane();
+		ScrollPane rightScroll = new ScrollPane(contentPane);
 		rightScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		rightScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		root.getChildren().add(rightScroll);
@@ -38,7 +53,7 @@ public class Home {
 		backButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ae) {
-				
+				// TODO: add functionality to this button if there's time; otherwise, remove button entirely
 			}
 		});
 		
@@ -47,7 +62,7 @@ public class Home {
 		forwardButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ae) {
-				
+				// TODO: add functionality to this button if there's time; otherwise, remove button entirely
 			}
 		});
 		
@@ -56,7 +71,80 @@ public class Home {
 		refreshButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ae) {
-				
+				// TODO: add functionality to this button if there's time; otherwise, remove button entirely
+			}
+		});
+		
+		
+		
+		// Content creation for author-type users
+		Pane contentCreationPane = new Pane();
+		
+		TextField contentHeader = new TextField();
+		contentCreationPane.getChildren().add(contentHeader);
+		contentHeader.setPromptText("<Header>");
+		
+		TextArea content = new TextArea();
+		contentCreationPane.getChildren().add(content);
+		content.setPromptText("<Content>");
+		content.setWrapText(true);
+		
+		Button submitButton = new Button("Submit content");
+		contentCreationPane.getChildren().add(submitButton);
+		submitButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				if (!(contentHeader.getText() == null || contentHeader.getText().length() == 0 || content.getText() == null || content.getText().length() == 0))
+					Content.addContent(contentHeader.getText(), content.getText());
+			}
+		});
+		
+		Button createContent = new Button("Create");
+		optionsPane.getChildren().add(createContent);
+		createContent.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				if (CurrentUser.isRegistered()) {
+					Dialog<Pair<String, String>> dialog = new Dialog<Pair<String, String>>();
+					dialog.initModality(Modality.APPLICATION_MODAL);
+					dialog.setTitle("Content Creator");
+					dialog.setHeaderText(null);
+					ButtonType submitButtonType = new ButtonType("Submit", ButtonData.OK_DONE);
+					dialog.getDialogPane().getButtonTypes().setAll(submitButtonType, ButtonType.CANCEL);
+					Pane dialogPane = new Pane();
+					dialogPane.setPrefSize(200, 260);
+					Label headerLabel = new Label("Header:");
+					headerLabel.setLayoutX(20);
+					headerLabel.setLayoutY(20);
+					TextField headerField = new TextField();
+					headerField.setLayoutX(20);
+					headerField.setLayoutY(50);
+					headerField.setPrefSize(160, 25);
+					Label contentLabel = new Label("Content:");
+					contentLabel.setLayoutX(20);
+					contentLabel.setLayoutY(90);
+					TextArea contentArea = new TextArea();
+					contentArea.setLayoutX(20);
+					contentArea.setLayoutY(120);
+					contentArea.setPrefSize(160, 120);
+					dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea);
+					Node submitButton = dialog.getDialogPane().lookupButton(submitButtonType);
+					submitButton.setDisable(true);
+					contentArea.textProperty().addListener((observable, oldValue, newValue) -> {
+						submitButton.setDisable(newValue.trim().isEmpty());
+					});
+					dialog.getDialogPane().setContent(dialogPane);
+					dialog.setResultConverter(dialogButton -> {
+						if (dialogButton == submitButtonType) {
+							return new Pair<>(headerField.getText(), contentArea.getText());
+						}
+						return null;
+					});
+					Optional<Pair<String, String>> result = dialog.showAndWait();
+					result.ifPresent(text -> {
+						Content.addContent(text.getKey(), text.getValue());
+					});
+				}
 			}
 		});
 		
@@ -64,6 +152,16 @@ public class Home {
 		
 		Scene scene = new Scene(root, 200, 200);
 		scene.getStylesheets().add("application/library/stylesheets/basic.css");
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent ke) {
+				if (ke.getCode() == KeyCode.ESCAPE) {
+					stage.close();
+					DB.disconnect();
+				}
+			}
+		});
+		
 		stage.setScene(scene);
 		stage.show();
 		
