@@ -24,10 +24,17 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 public class Home {
 
+	/**
+	 * Contains all the buttons and panes you can see on the homescreen,
+	 * and this is where you would see your feed (content).
+	 * 
+	 * @param stage is the primaryStage passed along from Main.java
+	 * 
+	 * @author Niklas Sølvberg
+	 */
 	public static void showHome(Stage stage) {
 		Pane root = new Pane();
 		
@@ -43,6 +50,7 @@ public class Home {
 		leftScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		leftScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		root.getChildren().add(leftScroll);
+		leftScroll.setStyle("-fx-background-color: #444444;");
 		
 		Pane contentPane = new Pane();
 		ScrollPane rightScroll = new ScrollPane(contentPane);
@@ -97,9 +105,9 @@ public class Home {
 		
 		// Button available for registered users, such that they can create content
 		
-		Button createContent = new Button("Create");
-		optionsPane.getChildren().add(createContent);
-		createContent.setOnAction(new EventHandler<ActionEvent>() {
+		Button createButton = new Button("Create");
+		optionsPane.getChildren().add(createButton);
+		createButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ae) {
 				if (CurrentUser.isRegistered()) {
@@ -161,6 +169,15 @@ public class Home {
 					result.ifPresent(text -> {
 						Content.addContent(text.get(0), text.get(1), text.get(2));
 					});
+					contentPane.getChildren().clear();
+					contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
+					int i = 0;
+					for (Label label : Posts.getLabels()) {
+						contentPane.getChildren().add(label);
+						label.setLayoutX(80);
+						label.setLayoutY(40 + (200 * i));
+						i++;
+					}
 				}
 			}
 		});
@@ -212,6 +229,10 @@ public class Home {
 		leftScroll.setLayoutX(0);
 		leftScroll.setLayoutY(h/12);
 		leftScroll.setPrefSize(w/6, h-(h/12)-38);
+		
+		createButton.setLayoutX(0);
+		createButton.setLayoutY(0);
+		createButton.setPrefSize(w/6, 50);
 		
 		rightScroll.setLayoutX(w/6);
 		rightScroll.setLayoutY(h/12);
