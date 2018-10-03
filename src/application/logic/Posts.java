@@ -3,6 +3,7 @@ package application.logic;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import application.database.Content;
 import javafx.scene.control.Label;
@@ -19,6 +20,7 @@ public class Posts {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
+		Collections.reverse(posts);
 		return posts;
 	}
 	
