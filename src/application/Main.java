@@ -6,7 +6,13 @@ import application.scene.Home;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * Main.java should run when you start the program.
+ * 
+ * @author Niklas Sølvberg
+ */
 public class Main extends Application {
+	
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
