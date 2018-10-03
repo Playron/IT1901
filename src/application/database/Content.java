@@ -19,6 +19,11 @@ public class Content {
 		DB.insert(query);
 	}
 	
+	public static void updateContent(int ID, String header, String body, String state, String editor) {
+		String query = "UPDATE `post` SET `header` = \"" + header +"\", `text` = \"" + body + "\", `state` = \"" + state + "\", `editor` = \"" + editor + "\" WHERE `postID` = " + ID + ";";
+		DB.alter(query);
+	}
+	
 	/**
 	 * Retrieves all posts from the database.
 	 * 

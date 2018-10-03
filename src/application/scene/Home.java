@@ -24,14 +24,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Home {
 	
-//	showContent == 0 => show all content
-//	showContent == 1 => show published content
-//	showContent == 2 => show submitted (editable) content
 	/**
 	 * This is a byte-value that decides what content is being viewed.
 	 * <br><br>The different values represents:
@@ -64,13 +63,22 @@ public class Home {
 		Pane topPane = new Pane();
 		root.getChildren().add(topPane);
 		
-		TextField adressField = new TextField("www.contentmanagementsystem.com");
+		TextField adressField = new TextField("www.contentmanagementsystem.com/published_content");
 		topPane.getChildren().add(adressField);
 		adressField.setFocusTraversable(false);
 		
 		Pane optionsPane = new Pane();
 		root.getChildren().add(optionsPane);
 		optionsPane.setStyle("-fx-background-color: #444444;");
+		
+		Label loggedInLabel = new Label();
+		optionsPane.getChildren().add(loggedInLabel);
+		if (CurrentUser.getUsername() == null)
+			loggedInLabel.setText("You are not logged in");
+		else 
+			loggedInLabel.setText("Logged in as:\n\t" + CurrentUser.getUsername());
+		loggedInLabel.setTextFill(Color.web("#ffffff"));
+		loggedInLabel.setFont(Font.font(10));
 		
 		Pane contentPane = new Pane();
 		ScrollPane rightScroll = new ScrollPane(contentPane);
@@ -80,6 +88,7 @@ public class Home {
 		int i = 0;
 		if (showContent == 0) {
 			contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
+			adressField.setText("www.contentmanagementsystem.com/all_content");
 			for (Label label : Posts.getLabels()) {
 				contentPane.getChildren().add(label);
 				label.setLayoutX(80);
@@ -89,6 +98,7 @@ public class Home {
 		}
 		else if (showContent == 1) {
 			contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels().size()));
+			adressField.setText("www.contentmanagementsystem.com/published_content");
 			for (Label label : Posts.getPublishedLabels()) {
 				contentPane.getChildren().add(label);
 				label.setLayoutX(80);
@@ -98,6 +108,7 @@ public class Home {
 		}
 		else if (showContent == 2) {
 			contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels().size()));
+			adressField.setText("www.contentmanagementsystem.com/submitted_content");
 			for (Label label : Posts.getSubmittedLabels()) {
 				contentPane.getChildren().add(label);
 				label.setLayoutX(80);
@@ -133,6 +144,7 @@ public class Home {
 				int i = 0;
 				if (showContent == 0) {
 					contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
+					adressField.setText("www.contentmanagementsystem.com/all_content");
 					for (Label label : Posts.getLabels()) {
 						contentPane.getChildren().add(label);
 						label.setLayoutX(80);
@@ -142,6 +154,7 @@ public class Home {
 				}
 				else if (showContent == 1) {
 					contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels().size()));
+					adressField.setText("www.contentmanagementsystem.com/published_content");
 					for (Label label : Posts.getPublishedLabels()) {
 						contentPane.getChildren().add(label);
 						label.setLayoutX(80);
@@ -151,6 +164,7 @@ public class Home {
 				}
 				else if (showContent == 2) {
 					contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels().size()));
+					adressField.setText("www.contentmanagementsystem.com/submitted_content");
 					for (Label label : Posts.getSubmittedLabels()) {
 						contentPane.getChildren().add(label);
 						label.setLayoutX(80);
@@ -160,9 +174,7 @@ public class Home {
 				}
 			}
 		});
-		
-		// Button available for registered users, such that they can create content
-		
+				
 		Button createButton = new Button("Create content");
 		optionsPane.getChildren().add(createButton);
 		createButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -231,6 +243,7 @@ public class Home {
 					int i = 0;
 					if (showContent == 0) {
 						contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
+						adressField.setText("www.contentmanagementsystem.com/all_content");
 						for (Label label : Posts.getLabels()) {
 							contentPane.getChildren().add(label);
 							label.setLayoutX(80);
@@ -240,6 +253,7 @@ public class Home {
 					}
 					else if (showContent == 1) {
 						contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels().size()));
+						adressField.setText("www.contentmanagementsystem.com/published_content");
 						for (Label label : Posts.getPublishedLabels()) {
 							contentPane.getChildren().add(label);
 							label.setLayoutX(80);
@@ -249,6 +263,7 @@ public class Home {
 					}
 					else if (showContent == 2) {
 						contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels().size()));
+						adressField.setText("www.contentmanagementsystem.com/submitted_content");
 						for (Label label : Posts.getSubmittedLabels()) {
 							contentPane.getChildren().add(label);
 							label.setLayoutX(80);
@@ -260,7 +275,28 @@ public class Home {
 			}
 		});
 		
-		Button showSubmittedButton = new Button("Submitted content");
+		Button showAllButton = new Button("View all content");
+		optionsPane.getChildren().add(showAllButton);
+		if (!CurrentUser.hasEditorRights())
+			showAllButton.setDisable(true);
+		showAllButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				showContent = 0;
+				adressField.setText("www.contentmanagementsystem.com/all_content");
+				contentPane.getChildren().clear();
+				int i = 0;
+				contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
+				for (Label label : Posts.getLabels()) {
+					contentPane.getChildren().add(label);
+					label.setLayoutX(80);
+					label.setLayoutY(40 + (200 * i));
+					i++;
+				}
+			}
+		});
+		
+		Button showSubmittedButton = new Button("View submitted content");
 		optionsPane.getChildren().add(showSubmittedButton);
 		if (!CurrentUser.hasEditorRights())
 			showSubmittedButton.setDisable(true);
@@ -268,6 +304,7 @@ public class Home {
 			@Override
 			public void handle(ActionEvent ae) {
 				showContent = 2;
+				adressField.setText("www.contentmanagementsystem.com/submitted_content");
 				contentPane.getChildren().clear();
 				int i = 0;
 				contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels().size()));
@@ -279,7 +316,7 @@ public class Home {
 					label.setOnMouseClicked(new EventHandler<MouseEvent>() {
 						@Override
 						public void handle(MouseEvent me) {
-							Post post = Posts.getSubmittedPosts().get(postToEdit);
+							Post post = Posts.getSubmittedPosts().get(contentPane.getChildren().indexOf(label));
 							Dialog<ArrayList<String>> dialog = new Dialog<ArrayList<String>>();
 							dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
 							dialog.initModality(Modality.APPLICATION_MODAL);
@@ -323,12 +360,13 @@ public class Home {
 							});
 							Optional<ArrayList<String>> result = dialog.showAndWait();
 							result.ifPresent(text -> {
-								Content.addContent(text.get(0), text.get(1), text.get(2), CurrentUser.getUsername());
+								Content.updateContent(post.getID(), text.get(0), text.get(1), text.get(2), CurrentUser.getUsername());
 							});
 							contentPane.getChildren().clear();
 							int i = 0;
 							if (showContent == 0) {
 								contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
+								adressField.setText("www.contentmanagementsystem.com/all_content");
 								for (Label label : Posts.getLabels()) {
 									contentPane.getChildren().add(label);
 									label.setLayoutX(80);
@@ -338,6 +376,7 @@ public class Home {
 							}
 							else if (showContent == 1) {
 								contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels().size()));
+								adressField.setText("www.contentmanagementsystem.com/published_content");
 								for (Label label : Posts.getPublishedLabels()) {
 									contentPane.getChildren().add(label);
 									label.setLayoutX(80);
@@ -347,6 +386,7 @@ public class Home {
 							}
 							else if (showContent == 2) {
 								contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels().size()));
+								adressField.setText("www.contentmanagementsystem.com/submitted_content");
 								for (Label label : Posts.getSubmittedLabels()) {
 									contentPane.getChildren().add(label);
 									label.setLayoutX(80);
@@ -354,6 +394,8 @@ public class Home {
 									i++;
 								}
 							}
+							showAllButton.fire();
+							showSubmittedButton.fire();
 						}
 					});
 					i++;
@@ -361,36 +403,17 @@ public class Home {
 			}
 		});
 		
-		Button showPublishedButton = new Button("Published content");
+		Button showPublishedButton = new Button("View published content");
 		optionsPane.getChildren().add(showPublishedButton);
 		showPublishedButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ae) {
 				showContent = 1;
+				adressField.setText("www.contentmanagementsystem.com/published_content");
 				contentPane.getChildren().clear();
 				int i = 0;
 				contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels().size()));
 				for (Label label : Posts.getPublishedLabels()) {
-					contentPane.getChildren().add(label);
-					label.setLayoutX(80);
-					label.setLayoutY(40 + (200 * i));
-					i++;
-				}
-			}
-		});
-		
-		Button showAllButton = new Button("All content");
-		optionsPane.getChildren().add(showAllButton);
-		if (!CurrentUser.hasEditorRights())
-			showAllButton.setDisable(true);
-		showAllButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent ae) {
-				showContent = 0;
-				contentPane.getChildren().clear();
-				int i = 0;
-				contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
-				for (Label label : Posts.getLabels()) {
 					contentPane.getChildren().add(label);
 					label.setLayoutX(80);
 					label.setLayoutY(40 + (200 * i));
@@ -445,21 +468,24 @@ public class Home {
 		optionsPane.setLayoutY(h/12);
 		optionsPane.setPrefSize(w/6, h-(h/12)-38);
 		
+		loggedInLabel.setLayoutX(6);
+		loggedInLabel.setLayoutY(6);
+		
+		createButton.setLayoutX(0);
+		createButton.setLayoutY(50);
+		createButton.setPrefSize(w/6, 50);
+		
 		showAllButton.setLayoutX(0);
-		showAllButton.setLayoutY(0);
+		showAllButton.setLayoutY(150);
 		showAllButton.setPrefSize(w/6, 50);
 		
 		showSubmittedButton.setLayoutX(0);
-		showSubmittedButton.setLayoutY(50);
+		showSubmittedButton.setLayoutY(200);
 		showSubmittedButton.setPrefSize(w/6, 50);
 		
 		showPublishedButton.setLayoutX(0);
-		showPublishedButton.setLayoutY(100);
+		showPublishedButton.setLayoutY(250);
 		showPublishedButton.setPrefSize(w/6, 50);
-		
-		createButton.setLayoutX(0);
-		createButton.setLayoutY(0);
-		createButton.setPrefSize(w/6, 50);
 		
 		rightScroll.setLayoutX(w/6);
 		rightScroll.setLayoutY(h/12);
