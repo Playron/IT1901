@@ -71,7 +71,9 @@ public class CurrentUser {
 	 * @author Niklas Sølvberg
 	 */
 	public static boolean hasAdminRights() {
-		return usertype.equals('A');
+		if (isRegistered())
+			return usertype.equals('A');
+		return false;
 	}
 	
 	/**
@@ -89,7 +91,9 @@ public class CurrentUser {
 	 * @author Niklas Sølvberg
 	 */
 	public static boolean hasEditorRights() {
-		return usertype.equals('E');
+		if (isRegistered())
+			return usertype.equals('E');
+		return false;
 	}
 	
 }

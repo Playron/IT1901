@@ -177,6 +177,8 @@ public class Home {
 				
 		Button createButton = new Button("Create content");
 		optionsPane.getChildren().add(createButton);
+		if (!CurrentUser.isRegistered())
+			createButton.setDisable(true);
 		createButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ae) {
@@ -466,7 +468,7 @@ public class Home {
 		
 		optionsPane.setLayoutX(0);
 		optionsPane.setLayoutY(h/12);
-		optionsPane.setPrefSize(w/6, h-(h/12)-38);
+		optionsPane.setPrefSize(w/6, h-(h/12)-22);
 		
 		loggedInLabel.setLayoutX(6);
 		loggedInLabel.setLayoutY(6);
@@ -489,7 +491,7 @@ public class Home {
 		
 		rightScroll.setLayoutX(w/6);
 		rightScroll.setLayoutY(h/12);
-		rightScroll.setPrefSize(w-(w/6)-17, h-(h/12)-38);
+		rightScroll.setPrefSize(w-(w/6), h-(h/12)-22);
 	}
 	
 }
