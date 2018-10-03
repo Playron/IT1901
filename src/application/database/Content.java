@@ -14,9 +14,14 @@ public class Content {
 	 * 
 	 * @author Niklas Sølvberg
 	 */
-	public static void addContent(String header, String body, String state) {
-		String query = "INSERT INTO `post` (`poster`, `header`, `text`, `state`) VALUES (\"" + CurrentUser.getUsername() + "\", \"" + header + "\", \"" + body + "\", \"" + state + "\");";
+	public static void addContent(String header, String body, String state, String editor) {
+		String query = "INSERT INTO `post` (`poster`, `header`, `text`, `state`, `editor`) VALUES (\"" + CurrentUser.getUsername() + "\", \"" + header + "\", \"" + body + "\", \"" + state + "\", \"" + editor + "\");";
 		DB.insert(query);
+	}
+	
+	public static void updateContent(int ID, String header, String body, String state, String editor) {
+		String query = "UPDATE `post` SET `header` = \"" + header +"\", `text` = \"" + body + "\", `state` = \"" + state + "\", `editor` = \"" + editor + "\" WHERE `postID` = " + ID + ";";
+		DB.alter(query);
 	}
 	
 	/**
