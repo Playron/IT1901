@@ -8,6 +8,7 @@ import application.database.CurrentUser;
 import application.database.DB;
 import application.logic.Post;
 import application.logic.Posts;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -32,6 +33,11 @@ import javafx.stage.Stage;
 public class Home {
 	
 	/**
+	 * This is the name of the website. This will show up in the adressbar.
+	 */
+	static String website = "          https://www.contentmanagementsystem.com";
+	
+	/**
 	 * This is a byte-value that decides what content is being viewed.
 	 * <br><br>The different values represents:
 	 * <ol start="0">
@@ -43,10 +49,25 @@ public class Home {
 	static byte showContent = 1;
 	
 	/**
-	 * This is a static variable that keeps track of which post the editor wants to edit. 
+	 * This is a int that keeps track of which post the editor wants to edit. 
 	 * This is only a global variable because the variable has to be global to work as intended.
 	 */
 	static int postToEdit = -1;
+	
+	/**
+	 * This is a String that holds the username that is currently being searched for.
+	 */
+	static String search = "";
+	
+	/**
+	 * The is a String that holds the ending to the adressbar based on the value of the search-String.
+	 */
+	static String searchFull = "";
+	
+	private static void updateSearch(String newSearch) {
+		search = newSearch;
+		searchFull = "results?search_query=" + newSearch;
+	}
 
 	/**
 	 * Contains all the buttons and panes you can see on the homescreen,
@@ -60,16 +81,20 @@ public class Home {
 		
 		Pane root = new Pane();
 		
+		TextField searchField = new TextField();
+		searchField.setPromptText("Search");
+		
 		Pane topPane = new Pane();
 		root.getChildren().add(topPane);
 		
-		TextField adressField = new TextField("www.contentmanagementsystem.com/published_content");
+		TextField adressField = new TextField(website + "/published_content" + searchFull);
 		topPane.getChildren().add(adressField);
 		adressField.setFocusTraversable(false);
 		
 		Pane optionsPane = new Pane();
 		root.getChildren().add(optionsPane);
 		optionsPane.setStyle("-fx-background-color: #444444;");
+		optionsPane.getChildren().add(searchField);
 		
 		Label loggedInLabel = new Label();
 		optionsPane.getChildren().add(loggedInLabel);
@@ -87,9 +112,9 @@ public class Home {
 		root.getChildren().add(rightScroll);
 		int i = 0;
 		if (showContent == 0) {
-			contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
-			adressField.setText("www.contentmanagementsystem.com/all_content");
-			for (Label label : Posts.getLabels()) {
+			contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
+			adressField.setText(website + "/all_content" + searchFull);
+			for (Label label : Posts.getLabels(search)) {
 				contentPane.getChildren().add(label);
 				label.setLayoutX(80);
 				label.setLayoutY(40 + (200 * i));
@@ -97,9 +122,9 @@ public class Home {
 			}
 		}
 		else if (showContent == 1) {
-			contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels().size()));
-			adressField.setText("www.contentmanagementsystem.com/published_content");
-			for (Label label : Posts.getPublishedLabels()) {
+			contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
+			adressField.setText(website + "/published_content" + searchFull);
+			for (Label label : Posts.getPublishedLabels(search)) {
 				contentPane.getChildren().add(label);
 				label.setLayoutX(80);
 				label.setLayoutY(40 + (200 * i));
@@ -107,9 +132,9 @@ public class Home {
 			}
 		}
 		else if (showContent == 2) {
-			contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels().size()));
-			adressField.setText("www.contentmanagementsystem.com/submitted_content");
-			for (Label label : Posts.getSubmittedLabels()) {
+			contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
+			adressField.setText(website + "/submitted_content" + searchFull);
+			for (Label label : Posts.getSubmittedLabels(search)) {
 				contentPane.getChildren().add(label);
 				label.setLayoutX(80);
 				label.setLayoutY(40 + (200 * i));
@@ -143,9 +168,9 @@ public class Home {
 				contentPane.getChildren().clear();
 				int i = 0;
 				if (showContent == 0) {
-					contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
-					adressField.setText("www.contentmanagementsystem.com/all_content");
-					for (Label label : Posts.getLabels()) {
+					contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
+					adressField.setText(website + "/all_content" + searchFull);
+					for (Label label : Posts.getLabels(search)) {
 						contentPane.getChildren().add(label);
 						label.setLayoutX(80);
 						label.setLayoutY(40 + (200 * i));
@@ -153,9 +178,9 @@ public class Home {
 					}
 				}
 				else if (showContent == 1) {
-					contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels().size()));
-					adressField.setText("www.contentmanagementsystem.com/published_content");
-					for (Label label : Posts.getPublishedLabels()) {
+					contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
+					adressField.setText(website + "/published_content" + searchFull);
+					for (Label label : Posts.getPublishedLabels(search)) {
 						contentPane.getChildren().add(label);
 						label.setLayoutX(80);
 						label.setLayoutY(40 + (200 * i));
@@ -163,9 +188,9 @@ public class Home {
 					}
 				}
 				else if (showContent == 2) {
-					contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels().size()));
-					adressField.setText("www.contentmanagementsystem.com/submitted_content");
-					for (Label label : Posts.getSubmittedLabels()) {
+					contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
+					adressField.setText(website + "/submitted_content" + searchFull);
+					for (Label label : Posts.getSubmittedLabels(search)) {
 						contentPane.getChildren().add(label);
 						label.setLayoutX(80);
 						label.setLayoutY(40 + (200 * i));
@@ -244,9 +269,9 @@ public class Home {
 					contentPane.getChildren().clear();
 					int i = 0;
 					if (showContent == 0) {
-						contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
-						adressField.setText("www.contentmanagementsystem.com/all_content");
-						for (Label label : Posts.getLabels()) {
+						contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
+						adressField.setText(website + "/all_content" + searchFull);
+						for (Label label : Posts.getLabels(search)) {
 							contentPane.getChildren().add(label);
 							label.setLayoutX(80);
 							label.setLayoutY(40 + (200 * i));
@@ -254,9 +279,9 @@ public class Home {
 						}
 					}
 					else if (showContent == 1) {
-						contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels().size()));
-						adressField.setText("www.contentmanagementsystem.com/published_content");
-						for (Label label : Posts.getPublishedLabels()) {
+						contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
+						adressField.setText(website + "/published_content" + searchFull);
+						for (Label label : Posts.getPublishedLabels(search)) {
 							contentPane.getChildren().add(label);
 							label.setLayoutX(80);
 							label.setLayoutY(40 + (200 * i));
@@ -264,9 +289,9 @@ public class Home {
 						}
 					}
 					else if (showContent == 2) {
-						contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels().size()));
-						adressField.setText("www.contentmanagementsystem.com/submitted_content");
-						for (Label label : Posts.getSubmittedLabels()) {
+						contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
+						adressField.setText(website + "/submitted_content" + searchFull);
+						for (Label label : Posts.getSubmittedLabels(search)) {
 							contentPane.getChildren().add(label);
 							label.setLayoutX(80);
 							label.setLayoutY(40 + (200 * i));
@@ -285,11 +310,11 @@ public class Home {
 			@Override
 			public void handle(ActionEvent ae) {
 				showContent = 0;
-				adressField.setText("www.contentmanagementsystem.com/all_content");
+				adressField.setText(website + "/all_content" + searchFull);
 				contentPane.getChildren().clear();
 				int i = 0;
-				contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
-				for (Label label : Posts.getLabels()) {
+				contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
+				for (Label label : Posts.getLabels(search)) {
 					contentPane.getChildren().add(label);
 					label.setLayoutX(80);
 					label.setLayoutY(40 + (200 * i));
@@ -298,7 +323,7 @@ public class Home {
 			}
 		});
 		
-		Button showSubmittedButton = new Button("View submitted content");
+		Button showSubmittedButton = new Button("View submitted content" + searchFull);
 		optionsPane.getChildren().add(showSubmittedButton);
 		if (!CurrentUser.hasEditorRights())
 			showSubmittedButton.setDisable(true);
@@ -306,11 +331,11 @@ public class Home {
 			@Override
 			public void handle(ActionEvent ae) {
 				showContent = 2;
-				adressField.setText("www.contentmanagementsystem.com/submitted_content");
+				adressField.setText(website + "/submitted_content" + searchFull);
 				contentPane.getChildren().clear();
 				int i = 0;
-				contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels().size()));
-				for (Label label : Posts.getSubmittedLabels()) {
+				contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
+				for (Label label : Posts.getSubmittedLabels(search)) {
 					postToEdit = i;
 					contentPane.getChildren().add(label);
 					label.setLayoutX(80);
@@ -367,9 +392,9 @@ public class Home {
 							contentPane.getChildren().clear();
 							int i = 0;
 							if (showContent == 0) {
-								contentPane.setPrefHeight(40 + (200 * Posts.getLabels().size()));
-								adressField.setText("www.contentmanagementsystem.com/all_content");
-								for (Label label : Posts.getLabels()) {
+								contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
+								adressField.setText(website + "/all_content" + searchFull);
+								for (Label label : Posts.getLabels(search)) {
 									contentPane.getChildren().add(label);
 									label.setLayoutX(80);
 									label.setLayoutY(40 + (200 * i));
@@ -377,9 +402,9 @@ public class Home {
 								}
 							}
 							else if (showContent == 1) {
-								contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels().size()));
-								adressField.setText("www.contentmanagementsystem.com/published_content");
-								for (Label label : Posts.getPublishedLabels()) {
+								contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
+								adressField.setText(website + "/published_content" + searchFull);
+								for (Label label : Posts.getPublishedLabels(search)) {
 									contentPane.getChildren().add(label);
 									label.setLayoutX(80);
 									label.setLayoutY(40 + (200 * i));
@@ -387,9 +412,9 @@ public class Home {
 								}
 							}
 							else if (showContent == 2) {
-								contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels().size()));
-								adressField.setText("www.contentmanagementsystem.com/submitted_content");
-								for (Label label : Posts.getSubmittedLabels()) {
+								contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
+								adressField.setText(website + "/submitted_content" + searchFull);
+								for (Label label : Posts.getSubmittedLabels(search)) {
 									contentPane.getChildren().add(label);
 									label.setLayoutX(80);
 									label.setLayoutY(40 + (200 * i));
@@ -411,11 +436,11 @@ public class Home {
 			@Override
 			public void handle(ActionEvent ae) {
 				showContent = 1;
-				adressField.setText("www.contentmanagementsystem.com/published_content");
+				adressField.setText(website + "/published_content" + searchFull);
 				contentPane.getChildren().clear();
 				int i = 0;
-				contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels().size()));
-				for (Label label : Posts.getPublishedLabels()) {
+				contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
+				for (Label label : Posts.getPublishedLabels(search)) {
 					contentPane.getChildren().add(label);
 					label.setLayoutX(80);
 					label.setLayoutY(40 + (200 * i));
@@ -423,6 +448,19 @@ public class Home {
 				}
 			}
 		});
+		
+		searchField.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				search = searchField.getText();
+				searchFull = "/results?search_query=" + searchField.getText();
+				refreshButton.fire();
+			}
+		});
+		
+		
+		
+		
 		
 		Scene scene = new Scene(root, 200, 200);
 		scene.getStylesheets().add("application/library/stylesheets/basic.css");
@@ -440,6 +478,8 @@ public class Home {
 		stage.show();
 		
 		refreshButton.requestFocus();
+		
+		
 		
 		
 		
@@ -472,6 +512,10 @@ public class Home {
 		
 		loggedInLabel.setLayoutX(6);
 		loggedInLabel.setLayoutY(6);
+		
+		searchField.setLayoutX(5);
+		searchField.setLayoutY(110);
+		searchField.setPrefSize((w/6)-10, 30);
 		
 		createButton.setLayoutX(0);
 		createButton.setLayoutY(50);

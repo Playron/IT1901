@@ -3,6 +3,7 @@ package application;
 import application.database.CurrentUser;
 import application.database.DB;
 import application.scene.Home;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 
