@@ -6,7 +6,13 @@ import application.scene.Home;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * Main.java should run when you start the program.
+ * 
+ * @author Niklas Sølvberg
+ */
 public class Main extends Application {
+	
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -21,7 +27,7 @@ public class Main extends Application {
 		
 //		FIXME: The next line of code is used for testing functionality until we have a working log-in system
 //		
-		CurrentUser.setCurrentUser("testeditor", 'E');
+//		CurrentUser.setCurrentUser("testeditor", 'E');
 		
 		launch(args);
 		DB.disconnect();
