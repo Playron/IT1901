@@ -3,7 +3,6 @@ package application.database;
 import java.sql.ResultSet;
 
 public class Content {
-
 	
 	/**
 	 * Adds a post to the database.
@@ -58,6 +57,32 @@ public class Content {
 	public static ResultSet getPosts(String authorOrEditor) {
 		String query = "SELECT * FROM `post` WHERE (`poster` = \"" + authorOrEditor + "\") OR (`editor` = \"" + authorOrEditor + "\");";
 		return DB.select(query);
+	}
+	
+	/**
+	 * Retrieves information about all users in the database.
+	 * <br><br>This method should only be called if the user is an admin.
+	 * 
+	 * @return all users in the database
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static ResultSet getUsers() {
+		if (!CurrentUser.hasAdminRights())
+			throw new IllegalStateException("This method can only be called if the current user is an admin.");
+		String query = "SELECT * FROM `user`;";
+		return DB.select(query);
+	}
+	
+	/**
+	 * @param username is the username of the user that is being updated
+	 * @param usertype is the usertype / access level of the user that is being updated
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void updateUser(String username, char usertype) {
+		String query = "UPDATE `user` SET `usertype` = \"" + usertype + "\" WHERE `username` = \"" + username + "\";";
+		DB.alter(query);
 	}
 	
 }
