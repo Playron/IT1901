@@ -20,18 +20,32 @@ public class Main extends Application {
 		Stage stage = primaryStage;
 		stage.setMaximized(true);
 		
-		Home.showHome(stage);
+		Home.showHome(stage, 1, 1);
 	}
 	
 	public static void main(String[] args) {
+		
+		System.out.println("Connecting to database...");
 		DB.connect();
+		System.out.println("Database connection established.");
+		
 		
 //		FIXME: The next line of code is used for testing functionality until we have a working log-in system
 //		
 //		CurrentUser.setCurrentUser("testeditor", 'E');
+//		CurrentUser.setCurrentUser("testadmin", 'A');
 		
+		
+		System.out.println("\nApplication running...\n");
 		launch(args);
+		
+		System.out.println("Database connection closing...");
 		DB.disconnect();
+		if (DB.connected())
+			throw new IllegalStateException("Database connection could not close.");
+		else
+			System.out.println("Database connection closed.");
+		
 	}
 	
 }

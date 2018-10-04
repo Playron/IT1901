@@ -11,6 +11,7 @@ import application.logic.Posts;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -35,7 +36,17 @@ public class Home {
 	/**
 	 * This is the name of the website. This will show up in the adressbar.
 	 */
-	static String website = "          https://www.contentmanagementsystem.com";
+	static String website = "          https://www.contentmanagementsystem.com/home";
+	
+	/**
+	 * This will represent the width of the maximised stage
+	 */
+	static double w;
+	
+	/**
+	 * This will represent the height of the maximised stage
+	 */
+	static double h;
 	
 	/**
 	 * This is a byte-value that decides what content is being viewed.
@@ -66,18 +77,25 @@ public class Home {
 	
 	private static void updateSearch(String newSearch) {
 		search = newSearch;
-		searchFull = "results?search_query=" + newSearch;
+		if (search.length() > 0)
+			searchFull = "/results?search_query=" + newSearch;
+		else
+			searchFull = "";
 	}
 
 	/**
 	 * Contains all the buttons and panes you can see on the homescreen,
 	 * and this is where you would see your feed (content).
 	 * 
-	 * @param stage is the primaryStage passed along from Main.java
+	 * @param stage is the primaryStage passed along from Main
+	 * @param w is the width of the maximised stage
+	 * @param h is the height of the maximised stage
 	 * 
 	 * @author Niklas Sølvberg
 	 */
-	public static void showHome(Stage stage) {
+	public static void showHome(Stage stage, double width, double height) {
+		w = width;
+		h = height;
 		
 		Pane root = new Pane();
 		
@@ -90,6 +108,7 @@ public class Home {
 		TextField adressField = new TextField(website + "/published_content" + searchFull);
 		topPane.getChildren().add(adressField);
 		adressField.setFocusTraversable(false);
+		adressField.setEditable(false);
 		
 		Pane optionsPane = new Pane();
 		root.getChildren().add(optionsPane);
@@ -452,8 +471,7 @@ public class Home {
 		searchField.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ae) {
-				search = searchField.getText();
-				searchFull = "/results?search_query=" + searchField.getText();
+				updateSearch(searchField.getText());
 				refreshButton.fire();
 			}
 		});
@@ -462,7 +480,7 @@ public class Home {
 		
 		
 		
-		Scene scene = new Scene(root, 200, 200);
+		Scene scene = new Scene(root, w, h);
 		scene.getStylesheets().add("application/library/stylesheets/basic.css");
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
@@ -476,6 +494,7 @@ public class Home {
 		
 		stage.setScene(scene);
 		stage.show();
+//		stage.setMaximized(true);
 		
 		refreshButton.requestFocus();
 		
@@ -483,8 +502,19 @@ public class Home {
 		
 		
 		
-		double w = stage.getWidth();
-		double h = stage.getHeight();
+		w = stage.getWidth();
+		h = stage.getHeight();
+		
+		Button adminToolButton = new Button("Admin tool");
+		optionsPane.getChildren().add(adminToolButton);
+		if (!CurrentUser.hasAdminRights())
+			adminToolButton.setDisable(true);
+		adminToolButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				AdminTool.showAdminTool(stage, w, h);
+			}
+		});
 		
 		topPane.setLayoutX(0);
 		topPane.setLayoutY(0);
@@ -532,6 +562,10 @@ public class Home {
 		showPublishedButton.setLayoutX(0);
 		showPublishedButton.setLayoutY(250);
 		showPublishedButton.setPrefSize(w/6, 50);
+		
+		adminToolButton.setLayoutX(0);
+		adminToolButton.setLayoutY(350);
+		adminToolButton.setPrefSize(w/6, 50);
 		
 		rightScroll.setLayoutX(w/6);
 		rightScroll.setLayoutY(h/12);

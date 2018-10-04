@@ -92,7 +92,7 @@ public class CurrentUser {
 	 */
 	public static boolean hasEditorRights() {
 		if (isRegistered())
-			return usertype.equals('E');
+			return (usertype.equals('E') || usertype.equals('A'));
 		return false;
 	}
 	
