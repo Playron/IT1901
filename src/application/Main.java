@@ -1,6 +1,5 @@
 package application;
 
-import application.database.CurrentUser;
 import application.database.DB;
 import application.scene.Home;
 
@@ -30,14 +29,9 @@ public class Main extends Application {
 		System.out.println("Database connection established.");
 		
 		
-//		FIXME: The next line of code is used for testing functionality until we have a working log-in system
-//		
-//		CurrentUser.setCurrentUser("testeditor", 'E');
-//		CurrentUser.setCurrentUser("testadmin", 'A');
-		
-		
 		System.out.println("\nApplication running...\n");
 		launch(args);
+		
 		
 		System.out.println("Database connection closing...");
 		DB.disconnect();

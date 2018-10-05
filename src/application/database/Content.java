@@ -1,6 +1,7 @@
 package application.database;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Content {
 	
@@ -75,6 +76,9 @@ public class Content {
 	}
 	
 	/**
+	 * Updates an existing user's usertype / access level.
+	 * <br><br>This method should never be called unless the current user is an admin.
+	 * 
 	 * @param username is the username of the user that is being updated
 	 * @param usertype is the usertype / access level of the user that is being updated
 	 * 
@@ -83,6 +87,29 @@ public class Content {
 	public static void updateUser(String username, char usertype) {
 		String query = "UPDATE `user` SET `usertype` = \"" + usertype + "\" WHERE `username` = \"" + username + "\";";
 		DB.alter(query);
+	}
+	
+	/**
+	 * Creates a user with the passed arguments.
+	 * 
+	 * @param username the username the user chose at registration
+	 * @param password the password the user chose at registration
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void createUser(String username, String password) {
+		String hash = Hashing.generateHash(password);
+		String query = "INSERT INTO `user` VALUES (\"" + username + "\", \"" + hash + "\", \"U\");";
+		try {
+			ResultSet r = DB.select("SELECT * FROM `user`;");
+			while (r.next())
+				if (r.getString("username").equals(username))
+					throw new IllegalArgumentException("");
+			DB.insert(query);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

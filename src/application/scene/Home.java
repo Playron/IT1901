@@ -6,12 +6,12 @@ import java.util.Optional;
 import application.database.Content;
 import application.database.CurrentUser;
 import application.database.DB;
+import application.database.Login;
 import application.logic.Post;
 import application.logic.Posts;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -161,26 +161,9 @@ public class Home {
 			}
 		}
 		
-		Button backButton = new Button("<");
-		topPane.getChildren().add(backButton);
-		backButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent ae) {
-				// TODO: add functionality to this button if there's time; otherwise, remove button entirely
-			}
-		});
-		
-		Button forwardButton = new Button(">");
-		topPane.getChildren().add(forwardButton);
-		forwardButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent ae) {
-				// TODO: add functionality to this button if there's time; otherwise, remove button entirely
-			}
-		});
-		
 		Button refreshButton = new Button("O");
 		topPane.getChildren().add(refreshButton);
+		refreshButton.setVisible(false);
 		refreshButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ae) {
@@ -516,17 +499,26 @@ public class Home {
 			}
 		});
 		
+		Button loginButton = new Button();
+		if (CurrentUser.getUsername() == null)
+			loginButton.setText("Log in");
+		else loginButton.setText("Log out");
+		optionsPane.getChildren().add(loginButton);
+		loginButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				if (CurrentUser.getUsername() == null)
+					LoginScreen.showLoginScreen(stage, w, h);
+				else {
+					Login.logout();
+					loginButton.setText("Log in");
+				}
+			}
+		});
+		
 		topPane.setLayoutX(0);
 		topPane.setLayoutY(0);
 		topPane.setPrefSize(w, h/12);
-		
-		backButton.setLayoutX(0);
-		backButton.setLayoutY(((h/12)-adressField.getHeight())/2);
-		backButton.setPrefSize(w/42, adressField.getHeight());
-		
-		forwardButton.setLayoutX(w/42);
-		forwardButton.setLayoutY(((h/12)-adressField.getHeight())/2);
-		forwardButton.setPrefSize(w/42, adressField.getHeight());
 		
 		refreshButton.setLayoutX(2*(w/42));
 		refreshButton.setLayoutY(((h/12)-adressField.getHeight())/2);
@@ -566,6 +558,10 @@ public class Home {
 		adminToolButton.setLayoutX(0);
 		adminToolButton.setLayoutY(350);
 		adminToolButton.setPrefSize(w/6, 50);
+		
+		loginButton.setLayoutX(0);
+		loginButton.setLayoutY(450);
+		loginButton.setPrefSize(w/6, 50);
 		
 		rightScroll.setLayoutX(w/6);
 		rightScroll.setLayoutY(h/12);
