@@ -501,7 +501,7 @@ public class Home {
 		
 		Button loginButton = new Button();
 		if (CurrentUser.getUsername() == null)
-			loginButton.setText("Log in");
+			loginButton.setText("Log in / Register");
 		else loginButton.setText("Log out");
 		optionsPane.getChildren().add(loginButton);
 		loginButton.setOnAction(new EventHandler<ActionEvent>() {
