@@ -2,12 +2,14 @@ package application.logic;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 import application.database.Content;
 import application.database.CurrentUser;
+
 import javafx.scene.control.Label;
 
 public class Users {

@@ -8,6 +8,7 @@ import application.database.DB;
 import application.logic.User;
 import application.logic.Users;
 import application.logic.Usertype;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -62,33 +63,6 @@ public class AdminTool {
 		topPane.getChildren().add(adressField);
 		adressField.setFocusTraversable(false);
 		adressField.setEditable(false);
-		
-		Button backButton = new Button("<");
-		topPane.getChildren().add(backButton);
-		backButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent ae) {
-				// TODO: add functionality to this button if there's time; otherwise, remove button entirely
-			}
-		});
-		
-		Button forwardButton = new Button(">");
-		topPane.getChildren().add(forwardButton);
-		forwardButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent ae) {
-				// TODO: add functionality to this button if there's time; otherwise, remove button entirely
-			}
-		});
-		
-		Button refreshButton = new Button("O");
-		topPane.getChildren().add(refreshButton);
-		refreshButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent ae) {
-				// TODO: add functionality to this button if there's time; otherwise, remove button entirely
-			}
-		});
 		
 		Pane usersPane = new Pane();
 		ScrollPane scrollPane = new ScrollPane(usersPane);
@@ -154,18 +128,6 @@ public class AdminTool {
 		topPane.setLayoutX(0);
 		topPane.setLayoutY(0);
 		topPane.setPrefSize(w, h/12);
-		
-		backButton.setLayoutX(0);
-		backButton.setLayoutY(((h/12)-adressField.getHeight())/2);
-		backButton.setPrefSize(w/42, adressField.getHeight());
-		
-		forwardButton.setLayoutX(w/42);
-		forwardButton.setLayoutY(((h/12)-adressField.getHeight())/2);
-		forwardButton.setPrefSize(w/42, adressField.getHeight());
-		
-		refreshButton.setLayoutX(2*(w/42));
-		refreshButton.setLayoutY(((h/12)-adressField.getHeight())/2);
-		refreshButton.setPrefSize(w/42, adressField.getHeight());
 		
 		adressField.setLayoutX(w/14);
 		adressField.setLayoutY(((h/12)-adressField.getHeight())/2);
