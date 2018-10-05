@@ -35,7 +35,12 @@ public class LoginScreen {
 	/**
 	 * This is the height of which the content of this scene will be adjusted by.
 	 */
-	static short y = 300;
+	static float y = 300;
+	
+	/**
+	 * This is the width of elements with fixed width.
+	 */
+	static float x = 220;
 	
 	/**
 	 * Contains all the buttons and panes you can see in the login screen,
@@ -90,7 +95,15 @@ public class LoginScreen {
 					invalidLoginLabel.setVisible(true);
 			}
 		});
-		loginButton.requestFocus();
+		
+		Button loginCancelButton = new Button("Cancel");
+		loginPane.getChildren().add(loginCancelButton);
+		loginCancelButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				Home.showHome(stage, w, h);
+			}
+		});
 		
 		
 		
@@ -139,6 +152,16 @@ public class LoginScreen {
 			}
 		});
 		
+		Button registerCancelButton = new Button("Cancel");
+		registerPane.getChildren().add(registerCancelButton);
+		registerCancelButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				Home.showHome(stage, w, h);
+			}
+		});
+		
+		
 		
 		Hyperlink registerHyperlink = new Hyperlink("Don't have a user? Register here");
 		loginPane.getChildren().add(registerHyperlink);
@@ -153,6 +176,7 @@ public class LoginScreen {
 				root.getChildren().remove(loginPane);
 				root.getChildren().add(registerPane);
 				registerButton.requestFocus();
+				adressField.setText(websiteRegister);
 			}
 		});
 		registerHyperlink.setFocusTraversable(false);
@@ -172,7 +196,8 @@ public class LoginScreen {
 				root.getChildren().add(loginPane);
 				loginButton.requestFocus();
 				loginHyperlink.setLayoutX((w-loginHyperlink.getWidth())/2);
-				loginHyperlink.setLayoutY(y+130);
+				loginHyperlink.setLayoutY(y+180);
+				adressField.setText(websiteLogin);
 			}
 		});
 		loginHyperlink.setFocusTraversable(false);
@@ -202,22 +227,26 @@ public class LoginScreen {
 		
 		loginPane.setLayoutX(0);
 		loginPane.setLayoutY(h/12);
-		loginPane.setPrefSize(2, h-(h/12));
+		loginPane.setPrefSize(w, h-(h/12));
 		
-		loginUsernameField.setLayoutX((w-160)/2);
+		loginUsernameField.setLayoutX((w-x)/2);
 		loginUsernameField.setLayoutY(y);
-		loginUsernameField.setPrefSize(160, 25);
+		loginUsernameField.setPrefSize(x, 25);
 		
-		loginPasswordField.setLayoutX((w-160)/2);
+		loginPasswordField.setLayoutX((w-x)/2);
 		loginPasswordField.setLayoutY(y+50);
-		loginPasswordField.setPrefSize(160, 25);
+		loginPasswordField.setPrefSize(x, 25);
 		
-		loginButton.setLayoutX((w-160)/2);
+		loginButton.setLayoutX((w-x)/2);
 		loginButton.setLayoutY(y+100);
-		loginButton.setPrefSize(160, 25);
+		loginButton.setPrefSize(x, 25);
+		
+		loginCancelButton.setLayoutX((w-x)/2);
+		loginCancelButton.setLayoutY(y+130);
+		loginCancelButton.setPrefSize(x, 25);
 		
 		registerHyperlink.setLayoutX((w-registerHyperlink.getWidth())/2);
-		registerHyperlink.setLayoutY(y+130);
+		registerHyperlink.setLayoutY(y+180);
 		
 		invalidLoginLabel.setLayoutX((w-invalidLoginLabel.getWidth())/2);
 		invalidLoginLabel.setLayoutY(y+230);
@@ -228,26 +257,30 @@ public class LoginScreen {
 		
 		registerPane.setLayoutX(0);
 		registerPane.setLayoutY(h/12);
-		registerPane.setPrefSize(2, h-(h/12));
+		registerPane.setPrefSize(w, h-(h/12));
 		
-		registerUsernameField.setLayoutX((w-160)/2);
+		registerUsernameField.setLayoutX((w-x)/2);
 		registerUsernameField.setLayoutY(y-50);
-		registerUsernameField.setPrefSize(160, 25);
+		registerUsernameField.setPrefSize(x, 25);
 		
-		registerPasswordField.setLayoutX((w-160)/2);
+		registerPasswordField.setLayoutX((w-x)/2);
 		registerPasswordField.setLayoutY(y);
-		registerPasswordField.setPrefSize(160, 25);
+		registerPasswordField.setPrefSize(x, 25);
 		
-		registerConfirmField.setLayoutX((w-160)/2);
+		registerConfirmField.setLayoutX((w-x)/2);
 		registerConfirmField.setLayoutY(y+50);
-		registerConfirmField.setPrefSize(160, 25);
+		registerConfirmField.setPrefSize(x, 25);
 		
-		registerButton.setLayoutX((w-160)/2);
+		registerButton.setLayoutX((w-x)/2);
 		registerButton.setLayoutY(y+100);
-		registerButton.setPrefSize(160, 25);
+		registerButton.setPrefSize(x, 25);
+		
+		registerCancelButton.setLayoutX((w-x)/2);
+		registerCancelButton.setLayoutY(y+130);
+		registerCancelButton.setPrefSize(x, 25);
 		
 		loginHyperlink.setLayoutX((w-loginHyperlink.getWidth())/2);
-		loginHyperlink.setLayoutY(y+130);
+		loginHyperlink.setLayoutY(y+180);
 		
 		invalidRegisterLabel.setLayoutX((w-invalidRegisterLabel.getWidth())/2);
 		invalidRegisterLabel.setLayoutY(y+230);
@@ -262,7 +295,7 @@ public class LoginScreen {
 		adressField.setLayoutY(((h/12)-adressField.getHeight())/2);
 		adressField.setPrefWidth(w-(w/7));
 		
-		
+		loginButton.requestFocus();
 		
 	}
 	
