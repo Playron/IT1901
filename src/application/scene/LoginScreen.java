@@ -9,6 +9,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -59,15 +61,31 @@ public class LoginScreen {
 		Pane topPane = new Pane();
 		root.getChildren().add(topPane);
 		
+		ImageView background = new ImageView(new Image("application/library/images/background.png"));
+		topPane.getChildren().add(background);
+		background.setLayoutX(0);
+		background.setLayoutY(0);
+		background.setFitWidth(20000);
+		background.setFitHeight(10000);
+		
+		ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
+		topPane.getChildren().add(buttons);
+		
 		TextField adressField = new TextField(websiteLogin);
 		topPane.getChildren().add(adressField);
 		adressField.setFocusTraversable(false);
 		adressField.setEditable(false);
 		
+		ImageView lock = new ImageView(new Image("application/library/images/lock.png"));
+		topPane.getChildren().add(lock);
+		
 		
 		
 		Pane loginPane = new Pane();
 		root.getChildren().add(loginPane);
+		
+		ImageView loginLogo = new ImageView(new Image("application/library/images/logo.png"));
+		loginPane.getChildren().add(loginLogo);
 		
 		TextField loginUsernameField = new TextField();
 		loginPane.getChildren().add(loginUsernameField);
@@ -109,6 +127,9 @@ public class LoginScreen {
 		
 		Pane registerPane = new Pane();
 		root.getChildren().add(registerPane);
+		
+		ImageView registerLogo = new ImageView(new Image("application/library/images/logo.png"));
+		registerPane.getChildren().add(registerLogo);
 		
 		TextField registerUsernameField = new TextField();
 		registerPane.getChildren().add(registerUsernameField);
@@ -223,11 +244,12 @@ public class LoginScreen {
 		
 		
 		
-		
-		
 		loginPane.setLayoutX(0);
 		loginPane.setLayoutY(h/12);
 		loginPane.setPrefSize(w, h-(h/12));
+		
+		loginLogo.setLayoutX((w-411)/2);
+		loginLogo.setLayoutY(y-200);
 		
 		loginUsernameField.setLayoutX((w-x)/2);
 		loginUsernameField.setLayoutY(y);
@@ -258,6 +280,9 @@ public class LoginScreen {
 		registerPane.setLayoutX(0);
 		registerPane.setLayoutY(h/12);
 		registerPane.setPrefSize(w, h-(h/12));
+		
+		registerLogo.setLayoutX((w-411)/2);
+		registerLogo.setLayoutY(y-200);
 		
 		registerUsernameField.setLayoutX((w-x)/2);
 		registerUsernameField.setLayoutY(y-50);
@@ -294,6 +319,12 @@ public class LoginScreen {
 		adressField.setLayoutX(w/14);
 		adressField.setLayoutY(((h/12)-adressField.getHeight())/2);
 		adressField.setPrefWidth(w-(w/7));
+
+		buttons.setLayoutX((adressField.getLayoutX()-78) / 2);
+		buttons.setLayoutY(adressField.getLayoutY()+((adressField.getHeight()-14)/2));
+		
+		lock.setLayoutX(adressField.getLayoutX()+20);
+		lock.setLayoutY(adressField.getLayoutY()+((adressField.getHeight()-13)/2));
 		
 		loginButton.requestFocus();
 		

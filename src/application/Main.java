@@ -24,21 +24,33 @@ public class Main extends Application {
 	
 	public static void main(String[] args) {
 		
-		System.out.println("Connecting to database...");
-		DB.connect();
-		System.out.println("Database connection established.");
+		try {
+			System.out.println("Connecting to database...");
+			DB.connect();
+			System.out.println("Database connection established.");
+			
+			System.out.println("\nApplication running...\n");
+			launch(args);
+			
+			System.out.println("Database connection closing...");
+			DB.disconnect();
+			if (DB.connected())
+				throw new IllegalStateException("Database connection could not close.");
+			else
+				System.out.println("Database connection closed.");
+		}
+		catch (Exception e) {
+			if (DB.connected()) {
+				DB.disconnect();
+				System.out.println("Database connection closed.");
+			}
+			else
+				System.out.println("No connection.");
+		}
 		
 		
-		System.out.println("\nApplication running...\n");
-		launch(args);
 		
 		
-		System.out.println("Database connection closing...");
-		DB.disconnect();
-		if (DB.connected())
-			throw new IllegalStateException("Database connection could not close.");
-		else
-			System.out.println("Database connection closed.");
 		
 	}
 	
