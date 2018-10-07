@@ -22,6 +22,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -105,10 +107,23 @@ public class Home {
 		Pane topPane = new Pane();
 		root.getChildren().add(topPane);
 		
+		ImageView background = new ImageView(new Image("application/library/images/background.png"));
+		topPane.getChildren().add(background);
+		background.setLayoutX(0);
+		background.setLayoutY(0);
+		background.setFitWidth(20000);
+		background.setFitHeight(10000);
+		
+		ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
+		topPane.getChildren().add(buttons);
+		
 		TextField adressField = new TextField(website + "/published_content" + searchFull);
 		topPane.getChildren().add(adressField);
 		adressField.setFocusTraversable(false);
 		adressField.setEditable(false);
+		
+		ImageView lock = new ImageView(new Image("application/library/images/lock.png"));
+		topPane.getChildren().add(lock);
 		
 		Pane optionsPane = new Pane();
 		root.getChildren().add(optionsPane);
@@ -127,7 +142,7 @@ public class Home {
 		Pane contentPane = new Pane();
 		ScrollPane rightScroll = new ScrollPane(contentPane);
 		rightScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-		rightScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+		rightScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		root.getChildren().add(rightScroll);
 		int i = 0;
 		if (showContent == 0) {
@@ -161,6 +176,7 @@ public class Home {
 			}
 		}
 		
+		// Button not visible. Still here as the onAction property still has uses
 		Button refreshButton = new Button("O");
 		topPane.getChildren().add(refreshButton);
 		refreshButton.setVisible(false);
@@ -516,6 +532,8 @@ public class Home {
 			}
 		});
 		
+		
+		
 		topPane.setLayoutX(0);
 		topPane.setLayoutY(0);
 		topPane.setPrefSize(w, h/12);
@@ -527,6 +545,12 @@ public class Home {
 		adressField.setLayoutX(w/14);
 		adressField.setLayoutY(((h/12)-adressField.getHeight())/2);
 		adressField.setPrefWidth(w-(w/7));
+		
+		buttons.setLayoutX((adressField.getLayoutX()-78) / 2);
+		buttons.setLayoutY(adressField.getLayoutY()+((adressField.getHeight()-14)/2));
+		
+		lock.setLayoutX(adressField.getLayoutX()+20);
+		lock.setLayoutY(adressField.getLayoutY()+((adressField.getHeight()-13)/2));
 		
 		optionsPane.setLayoutX(0);
 		optionsPane.setLayoutY(h/12);

@@ -17,6 +17,8 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -59,10 +61,23 @@ public class AdminTool {
 		Pane topPane = new Pane();
 		root.getChildren().add(topPane);
 		
+		ImageView background = new ImageView(new Image("application/library/images/background.png"));
+		topPane.getChildren().add(background);
+		background.setLayoutX(0);
+		background.setLayoutY(0);
+		background.setFitWidth(20000);
+		background.setFitHeight(10000);
+		
+		ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
+		topPane.getChildren().add(buttons);
+		
 		TextField adressField = new TextField(website);
 		topPane.getChildren().add(adressField);
 		adressField.setFocusTraversable(false);
 		adressField.setEditable(false);
+		
+		ImageView lock = new ImageView(new Image("application/library/images/lock.png"));
+		topPane.getChildren().add(lock);
 		
 		Pane usersPane = new Pane();
 		ScrollPane scrollPane = new ScrollPane(usersPane);
@@ -132,6 +147,12 @@ public class AdminTool {
 		adressField.setLayoutX(w/14);
 		adressField.setLayoutY(((h/12)-adressField.getHeight())/2);
 		adressField.setPrefWidth(w-(w/7));
+
+		buttons.setLayoutX((adressField.getLayoutX()-78) / 2);
+		buttons.setLayoutY(adressField.getLayoutY()+((adressField.getHeight()-14)/2));
+		
+		lock.setLayoutX(adressField.getLayoutX()+20);
+		lock.setLayoutY(adressField.getLayoutY()+((adressField.getHeight()-13)/2));
 		
 		backToHomeButton.setLayoutX(0);
 		backToHomeButton.setLayoutY(h/12);
