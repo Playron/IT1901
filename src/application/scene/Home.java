@@ -109,10 +109,6 @@ public class Home {
 		
 		ImageView background = new ImageView(new Image("application/library/images/background.png"));
 		topPane.getChildren().add(background);
-		background.setLayoutX(0);
-		background.setLayoutY(0);
-		background.setFitWidth(20000);
-		background.setFitHeight(10000);
 		
 		ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
 		topPane.getChildren().add(buttons);
@@ -527,7 +523,7 @@ public class Home {
 					LoginScreen.showLoginScreen(stage, w, h);
 				else {
 					Login.logout();
-					loginButton.setText("Log in");
+					loginButton.setText("Log in / Register");
 				}
 			}
 		});
@@ -537,14 +533,17 @@ public class Home {
 		topPane.setLayoutX(0);
 		topPane.setLayoutY(0);
 		topPane.setPrefSize(w, h/12);
+
+		background.setLayoutX(0);
+		background.setLayoutY(0);
 		
 		refreshButton.setLayoutX(2*(w/42));
 		refreshButton.setLayoutY(((h/12)-adressField.getHeight())/2);
 		refreshButton.setPrefSize(w/42, adressField.getHeight());
 		
-		adressField.setLayoutX(w/14);
+		adressField.setLayoutX(w/12);
 		adressField.setLayoutY(((h/12)-adressField.getHeight())/2);
-		adressField.setPrefWidth(w-(w/7));
+		adressField.setPrefWidth(w-(w/6));
 		
 		buttons.setLayoutX((adressField.getLayoutX()-78) / 2);
 		buttons.setLayoutY(adressField.getLayoutY()+((adressField.getHeight()-14)/2));

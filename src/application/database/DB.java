@@ -124,7 +124,10 @@ public class DB {
 	 * @author Niklas Sølvberg
 	 */
 	private static void initDatabase() {
-		String query = "INSERT INTO `user` VALUES (\"admin\", \"adminpass\", \"A\");";
+		String query;
+		query = "DELETE FROM `user` WHERE `username` = \"admin\";";
+		delete(query);
+		query = "INSERT INTO `user` VALUES (\"admin\", \"" + Hashing.generateHash("adminpass") + "\", \"A\");";
 		insert(query);
 	}
 	
@@ -142,7 +145,6 @@ public class DB {
 	 */
 	public static void main(String[] args) {
 //		connect();
-//		delete("DELETE FROM `user`;");
 //		initDatabase();
 //		disconnect();
 	}
