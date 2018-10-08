@@ -20,6 +20,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class LoginScreen {
@@ -98,6 +99,7 @@ public class LoginScreen {
 		loginPane.getChildren().add(invalidLoginLabel);
 		invalidLoginLabel.setTextFill(Color.web("#ff0000"));
 		invalidLoginLabel.setVisible(false);
+		invalidLoginLabel.setFont(Font.font(10));
 		
 		Button loginButton = new Button("Login");
 		loginPane.getChildren().add(loginButton);
@@ -137,41 +139,55 @@ public class LoginScreen {
 		registerPane.getChildren().add(registerUsernameField);
 		registerUsernameField.setPromptText("Username");
 		
+		Label invalidRegisterUsernameLabel = new Label("Username must be 4-30 characters long");
+		registerPane.getChildren().add(invalidRegisterUsernameLabel);
+		invalidRegisterUsernameLabel.setTextFill(Color.web("#ff0000"));
+		invalidRegisterUsernameLabel.setVisible(false);
+		invalidRegisterUsernameLabel.setFont(Font.font(10));
+		
 		PasswordField registerPasswordField = new PasswordField();
 		registerPane.getChildren().add(registerPasswordField);
 		registerPasswordField.setPromptText("Password");
+		
+		Label invalidRegisterPasswordLabel = new Label("Password must be 4-30 characters long");
+		registerPane.getChildren().add(invalidRegisterPasswordLabel);
+		invalidRegisterPasswordLabel.setTextFill(Color.web("#ff0000"));
+		invalidRegisterPasswordLabel.setVisible(false);
+		invalidRegisterPasswordLabel.setFont(Font.font(10));
 		
 		PasswordField registerConfirmField = new PasswordField();
 		registerPane.getChildren().add(registerConfirmField);
 		registerConfirmField.setPromptText("Confirm password");
 		
-		Label invalidRegisterLabel = new Label("Invalid registration!");
-		registerPane.getChildren().add(invalidRegisterLabel);
-		invalidRegisterLabel.setTextFill(Color.web("#ff0000"));
-		invalidRegisterLabel.setVisible(false);
+		Label invalidRegisterConfirmLabel = new Label("Passwords must match");
+		registerPane.getChildren().add(invalidRegisterConfirmLabel);
+		invalidRegisterConfirmLabel.setTextFill(Color.web("#ff0000"));
+		invalidRegisterConfirmLabel.setVisible(false);
+		invalidRegisterConfirmLabel.setFont(Font.font(10));
 		
 		Button registerButton = new Button("Register");
 		registerPane.getChildren().add(registerButton);
 		registerButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ae) {
-				if (registerPasswordField.getText().equals(registerConfirmField.getText()) && registerPasswordField.getText().length() > 5 && registerUsernameField.getText().length() > 5) {
-					try {
-						Content.createUser(registerUsernameField.getText(), registerPasswordField.getText());
-						Alert alert = new Alert(AlertType.INFORMATION);
-						alert.setTitle(null);
-						alert.setHeaderText(null);
-						alert.setContentText("User registration was successful!");
-						alert.showAndWait();
-						root.getChildren().remove(registerPane);
-						root.getChildren().add(loginPane);
-					}
-					catch (IllegalArgumentException e) {
-						invalidRegisterLabel.setVisible(true);
-					}
+				if (registerPasswordField.getText().equals(registerConfirmField.getText()) && registerPasswordField.getText().length() > 3 && registerPasswordField.getText().length() < 31 && registerUsernameField.getText().length() > 3 && registerUsernameField.getText().length() < 31) {
+					Content.createUser(registerUsernameField.getText(), registerPasswordField.getText());
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle(null);
+					alert.setHeaderText(null);
+					alert.setContentText("User registration was successful!");
+					alert.showAndWait();
+					root.getChildren().remove(registerPane);
+					root.getChildren().add(loginPane);
 				}
-				else
-					invalidRegisterLabel.setVisible(true);
+				else {
+					if (registerUsernameField.getText().length() < 4 || registerUsernameField.getText().length() > 30)
+						invalidRegisterUsernameLabel.setVisible(true);
+					if (registerPasswordField.getText().length() < 4 || registerPasswordField.getText().length() > 30)
+						invalidRegisterPasswordLabel.setVisible(true);
+					if (!registerConfirmField.getText().equals(registerPasswordField.getText()))
+						invalidRegisterConfirmLabel.setVisible(true);
+				}
 			}
 		});
 		
@@ -213,7 +229,9 @@ public class LoginScreen {
 				registerUsernameField.setText("");
 				registerPasswordField.setText("");
 				registerConfirmField.setText("");
-				invalidRegisterLabel.setVisible(false);
+				invalidRegisterUsernameLabel.setVisible(false);
+				invalidRegisterPasswordLabel.setVisible(false);
+				invalidRegisterConfirmLabel.setVisible(false);
 				loginHyperlink.setTextFill(Color.web("#0000ff"));
 				root.getChildren().remove(registerPane);
 				root.getChildren().add(loginPane);
@@ -243,6 +261,19 @@ public class LoginScreen {
 		
 		stage.setScene(scene);
 		stage.show();
+		
+		
+		
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent ke) {
+				if (ke.getCode() == KeyCode.ENTER)
+					if (root.getChildren().contains(registerPane))
+						registerButton.fire();
+					else if (root.getChildren().contains(loginPane))
+						loginButton.fire();
+			}
+		});
 		
 		
 		
@@ -296,13 +327,22 @@ public class LoginScreen {
 		registerUsernameField.setLayoutY(y-50);
 		registerUsernameField.setPrefSize(x, 25);
 		
+		invalidRegisterUsernameLabel.setLayoutX((w-invalidRegisterUsernameLabel.getWidth())/2);
+		invalidRegisterUsernameLabel.setLayoutY(y-22);
+		
 		registerPasswordField.setLayoutX((w-x)/2);
 		registerPasswordField.setLayoutY(y);
 		registerPasswordField.setPrefSize(x, 25);
 		
+		invalidRegisterPasswordLabel.setLayoutX((w-invalidRegisterPasswordLabel.getWidth())/2);
+		invalidRegisterPasswordLabel.setLayoutY(y+28);
+		
 		registerConfirmField.setLayoutX((w-x)/2);
 		registerConfirmField.setLayoutY(y+50);
 		registerConfirmField.setPrefSize(x, 25);
+		
+		invalidRegisterConfirmLabel.setLayoutX((w-invalidRegisterConfirmLabel.getWidth())/2);
+		invalidRegisterConfirmLabel.setLayoutY(y+78);
 		
 		registerButton.setLayoutX((w-x)/2);
 		registerButton.setLayoutY(y+100);
@@ -314,9 +354,6 @@ public class LoginScreen {
 		
 		loginHyperlink.setLayoutX((w-loginHyperlink.getWidth())/2);
 		loginHyperlink.setLayoutY(y+180);
-		
-		invalidRegisterLabel.setLayoutX((w-invalidRegisterLabel.getWidth())/2);
-		invalidRegisterLabel.setLayoutY(y+230);
 		
 		
 		
