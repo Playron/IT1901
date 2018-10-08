@@ -167,6 +167,7 @@ public class LoginScreen {
 					catch (IllegalArgumentException e) {
 						invalidRegisterLabel.setVisible(true);
 					}
+					// TODO Add clearer message for password and username, or clarify rules for password.
 				}
 				else
 					invalidRegisterLabel.setVisible(true);
