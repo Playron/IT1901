@@ -503,7 +503,7 @@ public class Home {
 		Button adminToolButton = new Button("Admin tool");
 		optionsPane.getChildren().add(adminToolButton);
 		if (!CurrentUser.hasAdminRights())
-			adminToolButton.setDisable(true);
+			adminToolButton.setVisible(false);
 		adminToolButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent ae) {
@@ -523,6 +523,7 @@ public class Home {
 					LoginScreen.showLoginScreen(stage, w, h);
 				else {
 					Login.logout();
+					loggedInLabel.setText("You are not logged in");
 					loginButton.setText("Log in / Register");
 				}
 			}

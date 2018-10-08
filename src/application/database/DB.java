@@ -144,9 +144,9 @@ public class DB {
 	 * @author Niklas Sølvberg
 	 */
 	public static void main(String[] args) {
-//		connect();
-//		initDatabase();
-//		disconnect();
+		connect();
+		initDatabase();
+		disconnect();
 	}
 	
 }
