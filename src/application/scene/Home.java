@@ -251,12 +251,26 @@ public class Home {
 					Node submitButton = dialog.getDialogPane().lookupButton(submitButtonType);
 					submitButton.setDisable(true);
 					contentArea.textProperty().addListener((observable, oldValue, newValue) -> {
-						submitButton.setDisable(newValue.trim().isEmpty());
+						headerField.textProperty().addListener((observable1, oldValue1, newValue1) -> {
+							submitButton.setDisable(newValue.trim().isEmpty() || newValue1.trim().isEmpty());
+						});
+					});
+					headerField.textProperty().addListener((observable, oldValue, newValue) -> {
+						contentArea.textProperty().addListener((observable1, oldValue1, newValue1) -> {
+							submitButton.setDisable(newValue.trim().isEmpty() || newValue1.trim().isEmpty());
+						});
 					});
 					Node publishButton = dialog.getDialogPane().lookupButton(publishButtonType);
 					publishButton.setDisable(true);
 					contentArea.textProperty().addListener((observable, oldValue, newValue) -> {
-						publishButton.setDisable(newValue.trim().isEmpty());
+						headerField.textProperty().addListener((observable1, oldValue1, newValue1) -> {
+							publishButton.setDisable(newValue.trim().isEmpty() || newValue1.trim().isEmpty());
+						});
+					});
+					headerField.textProperty().addListener((observable, oldValue, newValue) -> {
+						contentArea.textProperty().addListener((observable1, oldValue1, newValue1) -> {
+							publishButton.setDisable(newValue.trim().isEmpty() || newValue1.trim().isEmpty());
+						});
 					});
 					dialog.getDialogPane().setContent(dialogPane);
 					dialog.setResultConverter(dialogButton -> {

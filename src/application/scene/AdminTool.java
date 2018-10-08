@@ -93,8 +93,10 @@ public class AdminTool {
 					dialog.setContentText("Set access level: ");
 					Optional<Character> result = dialog.showAndWait();
 					result.ifPresent(type -> {
-						if (type != ' ')
+						if (type != ' ') {
 							Content.updateUser(user.getUsername(), type);
+							AdminTool.showAdminTool(stage, w, h);
+						}
 					});
 				}
 			});
