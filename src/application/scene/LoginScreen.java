@@ -63,10 +63,6 @@ public class LoginScreen {
 		
 		ImageView background = new ImageView(new Image("application/library/images/background.png"));
 		topPane.getChildren().add(background);
-		background.setLayoutX(0);
-		background.setLayoutY(0);
-		background.setFitWidth(20000);
-		background.setFitHeight(10000);
 		
 		ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
 		topPane.getChildren().add(buttons);
@@ -83,6 +79,9 @@ public class LoginScreen {
 		
 		Pane loginPane = new Pane();
 		root.getChildren().add(loginPane);
+		
+		ImageView loginBackground = new ImageView(new Image("application/library/images/line.png"));
+		loginPane.getChildren().add(loginBackground);
 		
 		ImageView loginLogo = new ImageView(new Image("application/library/images/logo.png"));
 		loginPane.getChildren().add(loginLogo);
@@ -127,6 +126,9 @@ public class LoginScreen {
 		
 		Pane registerPane = new Pane();
 		root.getChildren().add(registerPane);
+		
+		ImageView registerBackground = new ImageView(new Image("application/library/images/line.png"));
+		registerPane.getChildren().add(registerBackground);
 		
 		ImageView registerLogo = new ImageView(new Image("application/library/images/logo.png"));
 		registerPane.getChildren().add(registerLogo);
@@ -247,6 +249,9 @@ public class LoginScreen {
 		loginPane.setLayoutX(0);
 		loginPane.setLayoutY(h/12);
 		loginPane.setPrefSize(w, h-(h/12));
+
+		loginBackground.setLayoutX(0);
+		loginBackground.setLayoutY(0);
 		
 		loginLogo.setLayoutX((w-411)/2);
 		loginLogo.setLayoutY(y-200);
@@ -280,6 +285,9 @@ public class LoginScreen {
 		registerPane.setLayoutX(0);
 		registerPane.setLayoutY(h/12);
 		registerPane.setPrefSize(w, h-(h/12));
+
+		registerBackground.setLayoutX(0);
+		registerBackground.setLayoutY(0);
 		
 		registerLogo.setLayoutX((w-411)/2);
 		registerLogo.setLayoutY(y-200);
@@ -315,10 +323,13 @@ public class LoginScreen {
 		topPane.setLayoutX(0);
 		topPane.setLayoutY(0);
 		topPane.setPrefSize(w, h/12);
+
+		background.setLayoutX(0);
+		background.setLayoutY(0);
 		
-		adressField.setLayoutX(w/14);
+		adressField.setLayoutX(w/12);
 		adressField.setLayoutY(((h/12)-adressField.getHeight())/2);
-		adressField.setPrefWidth(w-(w/7));
+		adressField.setPrefWidth(w-(w/6));
 
 		buttons.setLayoutX((adressField.getLayoutX()-78) / 2);
 		buttons.setLayoutY(adressField.getLayoutY()+((adressField.getHeight()-14)/2));

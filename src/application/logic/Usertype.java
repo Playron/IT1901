@@ -11,9 +11,9 @@ public class Usertype {
 	 */
 	public static ArrayList<Character> usertypes() {
 		ArrayList<Character> list = new ArrayList<Character>();
-		list.add('A');
-		list.add('E');
 		list.add('U');
+		list.add('E');
+		list.add('A');
 		return list;
 	}
 	

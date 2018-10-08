@@ -56,17 +56,12 @@ public class AdminTool {
 	public static void showAdminTool(Stage stage, double w, double h) {
 		
 		Pane root = new Pane();
-		root.setStyle("-fx-background-color: #444444;");
 		
 		Pane topPane = new Pane();
 		root.getChildren().add(topPane);
 		
 		ImageView background = new ImageView(new Image("application/library/images/background.png"));
 		topPane.getChildren().add(background);
-		background.setLayoutX(0);
-		background.setLayoutY(0);
-		background.setFitWidth(20000);
-		background.setFitHeight(10000);
 		
 		ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
 		topPane.getChildren().add(buttons);
@@ -91,7 +86,7 @@ public class AdminTool {
 			label.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent me) {
-					User user = Users.getUsers().get(usersPane.getChildren().indexOf(label));
+					User user = Users.getUsersNotCurrent().get(usersPane.getChildren().indexOf(label));
 					ChoiceDialog<Character> dialog = new ChoiceDialog<Character>(user.getUsertype(), usertypes);
 					dialog.setTitle(null);
 					dialog.setHeaderText("User: " + user.getUsername());
@@ -144,9 +139,12 @@ public class AdminTool {
 		topPane.setLayoutY(0);
 		topPane.setPrefSize(w, h/12);
 		
-		adressField.setLayoutX(w/14);
+		background.setLayoutX(0);
+		background.setLayoutY(0);
+		
+		adressField.setLayoutX(w/12);
 		adressField.setLayoutY(((h/12)-adressField.getHeight())/2);
-		adressField.setPrefWidth(w-(w/7));
+		adressField.setPrefWidth(w-(w/6));
 
 		buttons.setLayoutX((adressField.getLayoutX()-78) / 2);
 		buttons.setLayoutY(adressField.getLayoutY()+((adressField.getHeight()-14)/2));
