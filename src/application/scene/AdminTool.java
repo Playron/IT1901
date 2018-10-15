@@ -65,11 +65,11 @@ public class AdminTool {
 		
 		ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
 		topPane.getChildren().add(buttons);
-		
-		TextField adressField = new TextField(website);
-		topPane.getChildren().add(adressField);
-		adressField.setFocusTraversable(false);
-		adressField.setEditable(false);
+
+		TextField addressField = new TextField(website);
+		topPane.getChildren().add(addressField);
+		addressField.setFocusTraversable(false);
+		addressField.setEditable(false);
 		
 		ImageView lock = new ImageView(new Image("application/library/images/lock.png"));
 		topPane.getChildren().add(lock);
@@ -93,8 +93,10 @@ public class AdminTool {
 					dialog.setContentText("Set access level: ");
 					Optional<Character> result = dialog.showAndWait();
 					result.ifPresent(type -> {
-						if (type != ' ')
+						if (type != ' ') {
 							Content.updateUser(user.getUsername(), type);
+							AdminTool.showAdminTool(stage, w, h);
+						}
 					});
 				}
 			});
@@ -141,16 +143,16 @@ public class AdminTool {
 		
 		background.setLayoutX(0);
 		background.setLayoutY(0);
-		
-		adressField.setLayoutX(w/12);
-		adressField.setLayoutY(((h/12)-adressField.getHeight())/2);
-		adressField.setPrefWidth(w-(w/6));
 
-		buttons.setLayoutX((adressField.getLayoutX()-78) / 2);
-		buttons.setLayoutY(adressField.getLayoutY()+((adressField.getHeight()-14)/2));
-		
-		lock.setLayoutX(adressField.getLayoutX()+20);
-		lock.setLayoutY(adressField.getLayoutY()+((adressField.getHeight()-13)/2));
+		addressField.setLayoutX(w / 12);
+		addressField.setLayoutY(((h / 12) - addressField.getHeight()) / 2);
+		addressField.setPrefWidth(w - (w / 6));
+
+		buttons.setLayoutX((addressField.getLayoutX() - 78) / 2);
+		buttons.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 14) / 2));
+
+		lock.setLayoutX(addressField.getLayoutX() + 20);
+		lock.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 13) / 2));
 		
 		backToHomeButton.setLayoutX(0);
 		backToHomeButton.setLayoutY(h/12);

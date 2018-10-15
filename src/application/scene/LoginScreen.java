@@ -172,6 +172,12 @@ public class LoginScreen {
 			public void handle(ActionEvent ae) {
 				if (registerPasswordField.getText().equals(registerConfirmField.getText()) && registerPasswordField.getText().length() > 3 && registerPasswordField.getText().length() < 31 && registerUsernameField.getText().length() > 3 && registerUsernameField.getText().length() < 31) {
 					Content.createUser(registerUsernameField.getText(), registerPasswordField.getText());
+					registerUsernameField.setText("");
+					registerPasswordField.setText("");
+					registerConfirmField.setText("");
+					invalidRegisterUsernameLabel.setVisible(false);
+					invalidRegisterPasswordLabel.setVisible(false);
+					invalidRegisterConfirmLabel.setVisible(false);
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle(null);
 					alert.setHeaderText(null);
