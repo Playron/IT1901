@@ -1,0 +1,9 @@
+$host="mysql.stud.ntnu.no";
+$port=3306;
+$socket="";
+$user="niklaso_tdt4140";
+$password="gruppe69";
+$dbname="niklaso_tdt4140";
+
+$con = new mysqli($host, $user, $password, $dbname, $port, $socket)
+or die ('Could not connect to the database server' . mysqli_connect_error());

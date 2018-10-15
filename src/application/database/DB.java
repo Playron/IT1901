@@ -110,4 +110,43 @@ public class DB {
 		alter(query);
 	}
 	
+	/**
+	 * This method shall never run outside DB.main(String[]), as it should only be used for 
+	 * initializing the database with an admin.
+	 * <br><br>This is done so that the data in the database can be deleted before / during / after testing of
+	 * the product without any real consequences, as this method assures that we can easily create a new admin.
+	 * <br><br>The admin created will have following login details:
+	 * <ul>
+	 * <li>Username:   admin</li>
+	 * <li>Password:   adminpass</li>
+	 * <br>
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	private static void initDatabase() {
+		String query;
+		query = "DELETE FROM `user` WHERE `username` = \"admin\";";
+		delete(query);
+		query = "INSERT INTO `user` VALUES (\"admin\", \"" + Hashing.generateHash("adminpass") + "\", \"A\");";
+		insert(query);
+	}
+	
+	/**
+	 * The only purpose of this main-method is to initialize the database with an admin in the user-table.
+	 * <br><br>This method should never do anything else than run the initDatabase()-method.
+	 * <br><ul>
+	 * <li>Username:  tadmin</li>
+	 * <li>Password:  adminpass</li>
+	 * </ul>
+	 * 
+	 * @param args
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void main(String[] args) {
+		connect();
+		initDatabase();
+		disconnect();
+	}
+	
 }
