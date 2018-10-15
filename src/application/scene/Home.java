@@ -90,8 +90,8 @@ public class Home {
 	 * and this is where you would see your feed (content).
 	 * 
 	 * @param stage is the primaryStage passed along from Main
-	 * @param w is the width of the maximised stage
-	 * @param h is the height of the maximised stage
+	 * @param width is the width of the maximised stage
+	 * @param height is the height of the maximised stage
 	 * 
 	 * @author Niklas Sølvberg
 	 */
