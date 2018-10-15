@@ -70,7 +70,7 @@ public class Login
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Should be called when a user is logging out
 	 *
@@ -80,5 +80,5 @@ public class Login
 	{
 		CurrentUser.logOutCurrentUser();
 	}
-
+	
 }

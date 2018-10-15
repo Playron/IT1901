@@ -76,7 +76,7 @@ public class Home {
 	 * The is a String that holds the ending to the adressbar based on the value of the search-String.
 	 */
 	static String searchFull = "";
-
+	
 	private static void updateSearch(String newSearch)
 	{
 		search = newSearch;
@@ -85,8 +85,8 @@ public class Home {
 		else
 			searchFull = "";
 	}
-
-
+	
+	
 	/**
 	 * @param contentPane  The Pane in which we want to add content.
 	 * @param addressField The Field which holds the "address" of the pane
@@ -106,16 +106,56 @@ public class Home {
 			i++;
 		}
 	}
+	
+	
+	private static void populateContent(Pane contentPane, TextField adressField)
+	{
+		if (showContent == 0)
+		{
+			addContentToPane(contentPane, adressField, "/all_content");
+			/*contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
+			adressField.setText(website + "/all_content" + searchFull);
+			for (Label label : Posts.getLabels(search)) {
+				contentPane.getChildren().add(label);
+				label.setLayoutX(80);
+				label.setLayoutY(40 + (200 * i));
+				i++;
+			}*/
+		} else if (showContent == 1)
+		{
+			addContentToPane(contentPane, adressField, "/published_content");
+			/*contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
+			adressField.setText(website + "/published_content" + searchFull);
+			for (Label label : Posts.getPublishedLabels(search)) {
+				contentPane.getChildren().add(label);
+				label.setLayoutX(80);
+				label.setLayoutY(40 + (200 * i));
+				i++;
+			}*/
+		} else if (showContent == 2)
+		{
+			addContentToPane(contentPane, adressField, "submitted_content");
+			/*contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
+			adressField.setText(website + "/submitted_content" + searchFull);
+			for (Label label : Posts.getSubmittedLabels(search)) {
+				contentPane.getChildren().add(label);
+				label.setLayoutX(80);
+				label.setLayoutY(40 + (200 * i));
+				i++;
+			}*/
+		}
+	}
+	
 
 	/**
 	 * Contains all the buttons and panes you can see on the homescreen,
 	 * and this is where you would see your feed (content).
 	 *
 	 * @param stage is the primaryStage passed along from Main
-	 * @param w is the width of the maximised stage
-	 * @param h is the height of the maximised stage
+	 * @param width is the width of the maximised stage
+	 * @param height is the height of the maximised stage
 	 *
-	 * @author Niklas S&oslash;lvberg
+	 * @author Niklas Sølvberg
 	 */
 	public static void showHome(Stage stage, double width, double height) {
 		w = width;
@@ -163,37 +203,42 @@ public class Home {
 		rightScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		root.getChildren().add(rightScroll);
 		int i = 0;
-		if (showContent == 0)
+		populateContent(contentPane, adressField);
+		/*if (showContent == 0)
 		{
-			contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
+			addContentToPane(contentPane, adressField, "/all_content");
+			*//*contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
 			adressField.setText(website + "/all_content" + searchFull);
 			for (Label label : Posts.getLabels(search)) {
 				contentPane.getChildren().add(label);
 				label.setLayoutX(80);
 				label.setLayoutY(40 + (200 * i));
 				i++;
-			}
+			}*//*
 		} else if (showContent == 1)
 		{
-			contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
+			addContentToPane(contentPane, adressField, "/published_content");
+			*//*contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
 			adressField.setText(website + "/published_content" + searchFull);
 			for (Label label : Posts.getPublishedLabels(search)) {
 				contentPane.getChildren().add(label);
 				label.setLayoutX(80);
 				label.setLayoutY(40 + (200 * i));
 				i++;
-			}
+			}*//*
 		} else if (showContent == 2)
 		{
-			contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
+			addContentToPane(contentPane, adressField, "submitted_content");
+			*//*contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
 			adressField.setText(website + "/submitted_content" + searchFull);
 			for (Label label : Posts.getSubmittedLabels(search)) {
 				contentPane.getChildren().add(label);
 				label.setLayoutX(80);
 				label.setLayoutY(40 + (200 * i));
 				i++;
-			}
-		}
+			}*//*
+		}*/
+		
 
 		// Button not visible. Still here as the onAction property still has uses
 		Button refreshButton = new Button("O");
@@ -204,37 +249,40 @@ public class Home {
 			public void handle(ActionEvent ae) {
 				contentPane.getChildren().clear();
 				int i = 0;
-				if (showContent == 0)
+				populateContent(contentPane, adressField);
+				/*if (showContent == 0)
 				{
-					contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
+					addContentToPane(contentPane, adressField, "/all_content");
+					*//*contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
 					adressField.setText(website + "/all_content" + searchFull);
 					for (Label label : Posts.getLabels(search)) {
 						contentPane.getChildren().add(label);
 						label.setLayoutX(80);
 						label.setLayoutY(40 + (200 * i));
 						i++;
-					}
+					}*//*
 				} else if (showContent == 1)
 				{
-					contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
+					addContentToPane(contentPane, adressField, "/published_content");
+					*//*contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
 					adressField.setText(website + "/published_content" + searchFull);
 					for (Label label : Posts.getPublishedLabels(search)) {
 						contentPane.getChildren().add(label);
 						label.setLayoutX(80);
 						label.setLayoutY(40 + (200 * i));
 						i++;
-					}
+					}*//*
 				} else if (showContent == 2)
 				{
-					contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
+					*//*contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
 					adressField.setText(website + "/submitted_content" + searchFull);
 					for (Label label : Posts.getSubmittedLabels(search)) {
 						contentPane.getChildren().add(label);
 						label.setLayoutX(80);
 						label.setLayoutY(40 + (200 * i));
 						i++;
-					}
-				}
+					}*//*
+				}*/
 			}
 		});
 
@@ -327,38 +375,7 @@ public class Home {
 						Content.addContent(text.get(0), text.get(1), text.get(2), null);
 					});
 					contentPane.getChildren().clear();
-					int i = 0;
-					if (showContent == 0)
-					{
-						contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
-						adressField.setText(website + "/all_content" + searchFull);
-						for (Label label : Posts.getLabels(search)) {
-							contentPane.getChildren().add(label);
-							label.setLayoutX(80);
-							label.setLayoutY(40 + (200 * i));
-							i++;
-						}
-					} else if (showContent == 1)
-					{
-						contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
-						adressField.setText(website + "/published_content" + searchFull);
-						for (Label label : Posts.getPublishedLabels(search)) {
-							contentPane.getChildren().add(label);
-							label.setLayoutX(80);
-							label.setLayoutY(40 + (200 * i));
-							i++;
-						}
-					} else if (showContent == 2)
-					{
-						contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
-						adressField.setText(website + "/submitted_content" + searchFull);
-						for (Label label : Posts.getSubmittedLabels(search)) {
-							contentPane.getChildren().add(label);
-							label.setLayoutX(80);
-							label.setLayoutY(40 + (200 * i));
-							i++;
-						}
-					}
+					populateContent(contentPane, adressField);
 				}
 			}
 		});
@@ -367,7 +384,8 @@ public class Home {
 		optionsPane.getChildren().add(showAllButton);
 		if (!CurrentUser.hasEditorRights())
 			showAllButton.setDisable(true);
-		showAllButton.setOnAction(new EventHandler<ActionEvent>() {
+		showAllButton.setOnAction(new EventHandler<ActionEvent>()
+		{
 			@Override
 			public void handle(ActionEvent ae)
 			{
@@ -389,7 +407,8 @@ public class Home {
 		optionsPane.getChildren().add(showSubmittedButton);
 		if (!CurrentUser.hasEditorRights())
 			showSubmittedButton.setDisable(true);
-		showSubmittedButton.setOnAction(new EventHandler<ActionEvent>() {
+		showSubmittedButton.setOnAction(new EventHandler<ActionEvent>()
+		{
 			@Override
 			public void handle(ActionEvent ae)
 			{
@@ -453,38 +472,7 @@ public class Home {
 								Content.updateContent(post.getID(), text.get(0), text.get(1), text.get(2), CurrentUser.getUsername());
 							});
 							contentPane.getChildren().clear();
-							int i = 0;
-							if (showContent == 0)
-							{
-								contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
-								adressField.setText(website + "/all_content" + searchFull);
-								for (Label label : Posts.getLabels(search)) {
-									contentPane.getChildren().add(label);
-									label.setLayoutX(80);
-									label.setLayoutY(40 + (200 * i));
-									i++;
-								}
-							} else if (showContent == 1)
-							{
-								contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
-								adressField.setText(website + "/published_content" + searchFull);
-								for (Label label : Posts.getPublishedLabels(search)) {
-									contentPane.getChildren().add(label);
-									label.setLayoutX(80);
-									label.setLayoutY(40 + (200 * i));
-									i++;
-								}
-							} else if (showContent == 2)
-							{
-								contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
-								adressField.setText(website + "/submitted_content" + searchFull);
-								for (Label label : Posts.getSubmittedLabels(search)) {
-									contentPane.getChildren().add(label);
-									label.setLayoutX(80);
-									label.setLayoutY(40 + (200 * i));
-									i++;
-								}
-							}
+							populateContent(contentPane, adressField);
 							showAllButton.fire();
 							showSubmittedButton.fire();
 						}
@@ -496,7 +484,8 @@ public class Home {
 		
 		Button showPublishedButton = new Button("View published content");
 		optionsPane.getChildren().add(showPublishedButton);
-		showPublishedButton.setOnAction(new EventHandler<ActionEvent>() {
+		showPublishedButton.setOnAction(new EventHandler<ActionEvent>()
+		{
 			@Override
 			public void handle(ActionEvent ae)
 			{
@@ -513,7 +502,7 @@ public class Home {
 				}
 			}
 		});
-
+		
 		searchField.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -523,8 +512,8 @@ public class Home {
 				refreshButton.fire();
 			}
 		});
-
-
+		
+		
 		Scene scene = new Scene(root, w, h);
 		scene.getStylesheets().add("application/library/stylesheets/basic.css");
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -542,11 +531,11 @@ public class Home {
 //		stage.setMaximized(true);
 		
 		refreshButton.requestFocus();
-
-
+		
+		
 		w = stage.getWidth();
 		h = stage.getHeight();
-
+		
 		Button adminToolButton = new Button("Admin tool");
 		optionsPane.getChildren().add(adminToolButton);
 		if (!CurrentUser.hasAdminRights())
@@ -559,7 +548,7 @@ public class Home {
 				AdminTool.showAdminTool(stage, w, h);
 			}
 		});
-
+		
 		Button loginButton = new Button();
 		if (CurrentUser.getUsername() == null)
 			loginButton.setText("Log in / Register");
@@ -593,14 +582,14 @@ public class Home {
 		refreshButton.setLayoutX(2*(w/42));
 		refreshButton.setLayoutY(((h/12)-adressField.getHeight())/2);
 		refreshButton.setPrefSize(w/42, adressField.getHeight());
-
-		adressField.setLayoutX(w/12);
+		
+		adressField.setLayoutX(w / 12);
 		adressField.setLayoutY(((h / 12) - adressField.getHeight()) / 2);
 		adressField.setPrefWidth(w - (w / 6));
-
+		
 		buttons.setLayoutX((adressField.getLayoutX() - 78) / 2);
 		buttons.setLayoutY(adressField.getLayoutY() + ((adressField.getHeight() - 14) / 2));
-
+		
 		lock.setLayoutX(adressField.getLayoutX() + 20);
 		lock.setLayoutY(adressField.getLayoutY() + ((adressField.getHeight() - 13) / 2));
 		
@@ -610,7 +599,7 @@ public class Home {
 		
 		loggedInLabel.setLayoutX(6);
 		loggedInLabel.setLayoutY(6);
-
+		
 		searchField.setLayoutX(5);
 		searchField.setLayoutY(110);
 		searchField.setPrefSize((w/6)-10, 30);

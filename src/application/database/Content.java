@@ -91,7 +91,7 @@ public class Content {
 		String query = "UPDATE `user` SET `usertype` = \"" + usertype + "\" WHERE `username` = \"" + username + "\";";
 		DB.alter(query);
 	}
-
+	
 	/**
 	 * Creates a user with the passed arguments.
 	 *

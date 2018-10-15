@@ -23,7 +23,7 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-
+		
 		try
 		{
 			System.out.println("Connecting to database...");
@@ -32,7 +32,7 @@ public class Main extends Application {
 
 			System.out.println("\nApplication running...\n");
 			launch(args);
-
+			
 			System.out.println("Database connection closing...");
 			DB.disconnect();
 			if (DB.connected())

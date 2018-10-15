@@ -38,7 +38,7 @@ public class User
 	{
 		return usertype;
 	}
-
+	
 	/**
 	 * Identical to getUsertype()
 	 *
@@ -49,5 +49,5 @@ public class User
 	{
 		return usertype;
 	}
-
+	
 }

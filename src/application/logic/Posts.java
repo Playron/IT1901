@@ -267,7 +267,7 @@ public class Posts {
 		}
 		return labels;
 	}
-
+	
 	/**
 	 * Creates a list of labels, representing a selection of all submitted posts from the database
 	 *
@@ -296,7 +296,7 @@ public class Posts {
 		}
 		return labels;
 	}
-
+	
 	/**
 	 * Creates a list of labels, representing a selection of published posts from the database
 	 *
@@ -325,5 +325,5 @@ public class Posts {
 		}
 		return labels;
 	}
-
+	
 }

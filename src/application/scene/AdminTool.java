@@ -66,7 +66,7 @@ public class AdminTool
 
 		ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
 		topPane.getChildren().add(buttons);
-
+		
 		TextField addressField = new TextField(website);
 		topPane.getChildren().add(addressField);
 		addressField.setFocusTraversable(false);
@@ -108,8 +108,8 @@ public class AdminTool
 			});
 			i++;
 		}
-
-
+		
+		
 		Scene scene = new Scene(root, w, h);
 		scene.getStylesheets().add("application/library/stylesheets/basic.css");
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>()
@@ -127,8 +127,8 @@ public class AdminTool
 
 		stage.setScene(scene);
 		stage.show();
-
-
+		
+		
 		Button backToHomeButton = new Button("<-- back to the feed");
 		root.getChildren().add(backToHomeButton);
 		backToHomeButton.setOnAction(new EventHandler<ActionEvent>()
@@ -139,33 +139,33 @@ public class AdminTool
 				Home.showHome(stage, w, h);
 			}
 		});
-
-
+		
+		
 		topPane.setLayoutX(0);
 		topPane.setLayoutY(0);
 		topPane.setPrefSize(w, h / 12);
 
 		background.setLayoutX(0);
 		background.setLayoutY(0);
-
+		
 		addressField.setLayoutX(w / 12);
 		addressField.setLayoutY(((h / 12) - addressField.getHeight()) / 2);
 		addressField.setPrefWidth(w - (w / 6));
-
+		
 		buttons.setLayoutX((addressField.getLayoutX() - 78) / 2);
 		buttons.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 14) / 2));
-
+		
 		lock.setLayoutX(addressField.getLayoutX() + 20);
 		lock.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 13) / 2));
 
 		backToHomeButton.setLayoutX(0);
 		backToHomeButton.setLayoutY(h / 12);
 		backToHomeButton.setPrefSize(w, 50);
-
+		
 		scrollPane.setLayoutX(0);
 		scrollPane.setLayoutY((h / 12) + 50);
 		scrollPane.setPrefSize(w, h - (h / 12) - 72);
 
 	}
-
+	
 }

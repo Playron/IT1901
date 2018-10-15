@@ -23,22 +23,22 @@ import java.util.Optional;
 
 public class EditorTool
 {
-
+	
 	/**
 	 * This is the name of the website. This will show up in the adressbar.
 	 */
 	static String website = "          https://www.contentmanagementsystem.com/Edit_tool";
-
+	
 	/**
 	 * List that contains all different usertypes
 	 */
 	static ArrayList<Character> usertypes = Usertype.usertypes();
-
+	
 	/**
 	 * Used for iterations
 	 */
 	static int i;
-
+	
 	/**
 	 * Contains all the buttons and panes you can see in the admin tool,
 	 * and this is where an admin would assign and manage the roles of users on the site.
@@ -50,27 +50,27 @@ public class EditorTool
 	 */
 	public static void showEditTool(Stage stage, double w, double h)
 	{
-
+		
 		Pane root = new Pane();
-
+		
 		/**
 		 Pane topPane = new Pane();
 		 root.getChildren().add(topPane);
-
+		 
 		 ImageView background = new ImageView(new Image("application/library/images/background.png"));
 		 topPane.getChildren().add(background);
-
+		 
 		 ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
 		 topPane.getChildren().add(buttons);
-
+		 
 		 TextField addressField = new TextField(website);
 		 topPane.getChildren().add(addressField);
 		 addressField.setFocusTraversable(false);
 		 addressField.setEditable(false);
-
+		 
 		 ImageView lock = new ImageView(new Image("application/library/images/lock.png"));
 		 topPane.getChildren().add(lock);
-
+		 
 		 Pane usersPane = new Pane();
 		 ScrollPane scrollPane = new ScrollPane(usersPane);
 		 root.getChildren().add(scrollPane);
@@ -103,8 +103,8 @@ public class EditorTool
 		 });
 		 i++;
 		 }
-
-
+		 
+		 
 		 Scene scene = new Scene(root, w, h);
 		 scene.getStylesheets().add("application/library/stylesheets/basic.css");
 		 scene.setOnKeyPressed(new EventHandler<KeyEvent>()
@@ -118,11 +118,11 @@ public class EditorTool
 		 }
 		 }
 		 });
-
+		 
 		 stage.setScene(scene);
 		 stage.show();
-
-
+		 
+		 
 		 Button backToHomeButton = new Button("<-- back to the feed");
 		 root.getChildren().add(backToHomeButton);
 		 backToHomeButton.setOnAction(new EventHandler<ActionEvent>()
@@ -132,34 +132,34 @@ public class EditorTool
 		 Home.showHome(stage, w, h);
 		 }
 		 });
-
-
+		 
+		 
 		 topPane.setLayoutX(0);
 		 topPane.setLayoutY(0);
 		 topPane.setPrefSize(w, h / 12);
-
+		 
 		 background.setLayoutX(0);
 		 background.setLayoutY(0);
-
+		 
 		 addressField.setLayoutX(w / 12);
 		 addressField.setLayoutY(((h / 12) - addressField.getHeight()) / 2);
 		 addressField.setPrefWidth(w - (w / 6));
-
+		 
 		 buttons.setLayoutX((addressField.getLayoutX() - 78) / 2);
 		 buttons.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 14) / 2));
-
+		 
 		 lock.setLayoutX(addressField.getLayoutX() + 20);
 		 lock.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 13) / 2));
-
+		 
 		 backToHomeButton.setLayoutX(0);
 		 backToHomeButton.setLayoutY(h / 12);
 		 backToHomeButton.setPrefSize(w, 50);
-
+		 
 		 scrollPane.setLayoutX(0);
 		 scrollPane.setLayoutY((h / 12) + 50);
 		 scrollPane.setPrefSize(w, h - (h / 12) - 72);
 		 */
-
+		
 	}
-
+	
 }

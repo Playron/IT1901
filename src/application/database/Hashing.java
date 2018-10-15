@@ -89,7 +89,7 @@ public class Hashing
 			binary[i] = (byte) Integer.parseInt(hex.substring(2 * i, (2 * i) + 2), 16);
 		return binary;
 	}
-
+	
 	/**
 	 * Used when hashing
 	 *
@@ -104,5 +104,5 @@ public class Hashing
 			return String.format("%0" + paddingLength + "d", 0) + hex;
 		return hex;
 	}
-
+	
 }

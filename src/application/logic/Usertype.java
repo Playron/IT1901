@@ -17,5 +17,5 @@ public class Usertype
 		list.add('A');
 		return list;
 	}
-
+	
 }
