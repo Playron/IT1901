@@ -12,48 +12,56 @@ import application.database.CurrentUser;
 
 import javafx.scene.control.Label;
 
-public class Users {
+public class Users
+{
 
 	/**
 	 * @return all users that is stored in the database and sorts them by usertype / access level and username
-	 * 
 	 * @author Niklas Sølvberg
 	 */
-	public static ArrayList<User> getUsers() {
+	public static ArrayList<User> getUsers()
+	{
 		ArrayList<User> users = new ArrayList<User>();
 		ResultSet r = Content.getUsers();
-		try {
+		try
+		{
 			while (r.next())
 				users.add(new User(r.getString("username"), r.getString("usertype").charAt(0)));
-		}
-		catch (SQLException e) {
+		} catch (SQLException e)
+		{
 			e.printStackTrace();
 		}
-		if (users.size() > 1) {
-			Collections.sort(users, new Comparator<User>() {
+		if (users.size() > 1)
+		{
+			Collections.sort(users, new Comparator<User>()
+			{
 				@Override
-				public int compare(User o1, User o2) {
+				public int compare(User o1, User o2)
+				{
 					return o1.getUsername().compareTo(o2.getUsername());
 				}
 			});
-			Collections.sort(users, new Comparator<User>() {
+			Collections.sort(users, new Comparator<User>()
+			{
 				@Override
-				public int compare(User o1, User o2) {
+				public int compare(User o1, User o2)
+				{
 					return (o1.getAccessLevel() > o2.getAccessLevel() ? 1 : -1);
 				}
 			});
 		}
 		return users;
 	}
-	
+
 	/**
 	 * @return label representations of all users that is stored in the database sorted by usertype / access level and username
-	 * 
 	 * @author Niklas Sølvberg
 	 */
-	public static ArrayList<Label> getLabels() {
+	public static ArrayList<Label> getLabels()
+	{
 		ArrayList<Label> labels = new ArrayList<Label>();
-		for (User user : getUsers()) {
+		for (User user : getUsers())
+		{
 			String line = "     " + user.getUsername();
 			int l = line.length();
 			for (int i = 0; i < 50 - l; i++)
@@ -63,33 +71,39 @@ public class Users {
 		}
 		return labels;
 	}
-	
+
 	/**
 	 * @return all users that is stored in the database except for the current user, and sorts them by usertype / access level and username
-	 * 
 	 * @author Niklas Sølvberg
 	 */
-	public static ArrayList<User> getUsersNotCurrent() {
+	public static ArrayList<User> getUsersNotCurrent()
+	{
 		ArrayList<User> users = new ArrayList<User>();
 		ResultSet r = Content.getUsers();
-		try {
+		try
+		{
 			while (r.next())
 				if (!r.getString("username").equals(CurrentUser.getUsername()))
 					users.add(new User(r.getString("username"), r.getString("usertype").charAt(0)));
-		}
-		catch (SQLException e) {
+		} catch (SQLException e)
+		{
 			e.printStackTrace();
 		}
-		if (users.size() > 1) {
-			Collections.sort(users, new Comparator<User>() {
+		if (users.size() > 1)
+		{
+			Collections.sort(users, new Comparator<User>()
+			{
 				@Override
-				public int compare(User o1, User o2) {
+				public int compare(User o1, User o2)
+				{
 					return o1.getUsername().compareTo(o2.getUsername());
 				}
 			});
-			Collections.sort(users, new Comparator<User>() {
+			Collections.sort(users, new Comparator<User>()
+			{
 				@Override
-				public int compare(User o1, User o2) {
+				public int compare(User o1, User o2)
+				{
 					return (o1.getAccessLevel() > o2.getAccessLevel() ? 1 : -1);
 				}
 			});
@@ -99,12 +113,13 @@ public class Users {
 
 	/**
 	 * @return label representations of all users that is stored in the database except for the current user, sorted by usertype / access level and username
-	 * 
 	 * @author Niklas Sølvberg
 	 */
-	public static ArrayList<Label> getLabelsNotCurrent() {
+	public static ArrayList<Label> getLabelsNotCurrent()
+	{
 		ArrayList<Label> labels = new ArrayList<Label>();
-		for (User user : getUsersNotCurrent()) {
+		for (User user : getUsersNotCurrent())
+		{
 			String line = "     " + user.getUsername();
 			int l = line.length();
 			for (int i = 0; i < 50 - l; i++)
@@ -114,5 +129,5 @@ public class Users {
 		}
 		return labels;
 	}
-	
+
 }
