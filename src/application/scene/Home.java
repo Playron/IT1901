@@ -86,6 +86,27 @@ public class Home {
 			searchFull = "";
 	}
 
+
+	/**
+	 * @param contentPane  The Pane in which we want to add content.
+	 * @param addressField The Field which holds the "address" of the pane
+	 * @param subSite      The text appended to the address to give proper TODO fix javadoc
+	 * @author Torleif Hensvold
+	 */
+	private static void addContentToPane(Pane contentPane, TextField addressField, String subSite)
+	{
+		int i = 0;
+		contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
+		addressField.setText(website + subSite + searchFull);
+		for (Label label : Posts.getLabels(search))
+		{
+			contentPane.getChildren().add(label);
+			label.setLayoutX(80);
+			label.setLayoutY(40 + (200 * i));
+			i++;
+		}
+	}
+
 	/**
 	 * Contains all the buttons and panes you can see on the homescreen,
 	 * and this is where you would see your feed (content).
@@ -216,7 +237,7 @@ public class Home {
 				}
 			}
 		});
-				
+
 		Button createButton = new Button("Create content");
 		optionsPane.getChildren().add(createButton);
 		if (!CurrentUser.isRegistered())
