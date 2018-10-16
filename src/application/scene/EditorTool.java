@@ -30,11 +30,6 @@ public class EditorTool
 	static String website = "          https://www.contentmanagementsystem.com/Edit_tool";
 	
 	/**
-	 * List that contains all different usertypes
-	 */
-	static ArrayList<Character> usertypes = Usertype.usertypes();
-	
-	/**
 	 * This will represent the width of the maximised stage
 	 */
 	static double w;
