@@ -52,16 +52,22 @@ public class EditorTool
 	 * Contains all the buttons and panes you can see in the admin tool,
 	 * and this is where an admin would assign and manage the roles of users on the site.
 	 *
-	 * @param stage is the primaryStage passed along from Main
-	 * @param width     is the width of the maximised stage
-	 * @param height     is the height of the maximised stage
+	 * @param stage  is the primaryStage passed along from Main
+	 * @param width  is the width of the maximised stage
+	 * @param height is the height of the maximised stage
 	 * @author Torleif Hensvold
 	 */
 	public static void showEditTool(Stage stage, double width, double height)
 	{
 		System.out.println("Started Edit tool");
 		
+		
+		/*
 		Pane root = new Pane();
+		Scene editScene = new Scene(root, width, height);
+		stage.setScene(editScene);
+		stage.show();
+		
 		Pane topPane = new Pane();
 		
 		root.getChildren().add(topPane);
@@ -71,113 +77,98 @@ public class EditorTool
 		
 		System.out.println("adding view2");
 		addViews(topPane, images + "buttons.png");
-		/**
-		 Pane topPane = new Pane();
-		 root.getChildren().add(topPane);
-		 
-		 ImageView background = new ImageView(new Image("application/library/images/background.png"));
-		 topPane.getChildren().add(background);
-		 
-		 ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
-		 topPane.getChildren().add(buttons);
-		 
-		 TextField addressField = new TextField(website);
-		 topPane.getChildren().add(addressField);
-		 addressField.setFocusTraversable(false);
-		 addressField.setEditable(false);
-		 
-		 ImageView lock = new ImageView(new Image("application/library/images/lock.png"));
-		 topPane.getChildren().add(lock);
-		 
-		 Pane usersPane = new Pane();
-		 ScrollPane scrollPane = new ScrollPane(usersPane);
-		 root.getChildren().add(scrollPane);
-		 i = 0;
-		 for (Label label : Users.getLabelsNotCurrent())
-		 {
-		 usersPane.getChildren().add(label);
-		 label.setLayoutX(200);
-		 label.setLayoutY(160 + (60 * i));
-		 label.setFont(Font.font("Andale Mono", 16));
-		 label.setOnMouseClicked(new EventHandler<MouseEvent>()
-		 {
-		 @Override public void handle(MouseEvent me)
-		 {
-		 User user = Users.getUsersNotCurrent().get(usersPane.getChildren().indexOf(label));
-		 ChoiceDialog<Character> dialog = new ChoiceDialog<Character>(user.getUsertype(), usertypes);
-		 dialog.setTitle(null);
-		 dialog.setHeaderText("User: " + user.getUsername());
-		 dialog.setContentText("Set access level: ");
-		 Optional<Character> result = dialog.showAndWait();
-		 result.ifPresent(type ->
-		 {
-		 if (type != ' ')
-		 {
-		 Content.updateUser(user.getUsername(), type);
-		 EditorTool.showAdminTool(stage, w, h);
-		 }
-		 });
-		 }
-		 });
-		 i++;
-		 }
-		 
-		 
-		 Scene scene = new Scene(root, w, h);
-		 scene.getStylesheets().add("application/library/stylesheets/basic.css");
-		 scene.setOnKeyPressed(new EventHandler<KeyEvent>()
-		 {
-		 @Override public void handle(KeyEvent ke)
-		 {
-		 if (ke.getCode() == KeyCode.ESCAPE)
-		 {
-		 stage.close();
-		 DB.disconnect();
-		 }
-		 }
-		 });
-		 
-		 stage.setScene(scene);
-		 stage.show();
-		 
-		 
-		 Button backToHomeButton = new Button("<-- back to the feed");
-		 root.getChildren().add(backToHomeButton);
-		 backToHomeButton.setOnAction(new EventHandler<ActionEvent>()
-		 {
-		 @Override public void handle(ActionEvent ae)
-		 {
-		 Home.showHome(stage, w, h);
-		 }
-		 });
-		 
-		 
-		 topPane.setLayoutX(0);
-		 topPane.setLayoutY(0);
-		 topPane.setPrefSize(w, h / 12);
-		 
-		 background.setLayoutX(0);
-		 background.setLayoutY(0);
-		 
-		 addressField.setLayoutX(w / 12);
-		 addressField.setLayoutY(((h / 12) - addressField.getHeight()) / 2);
-		 addressField.setPrefWidth(w - (w / 6));
-		 
-		 buttons.setLayoutX((addressField.getLayoutX() - 78) / 2);
-		 buttons.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 14) / 2));
-		 
-		 lock.setLayoutX(addressField.getLayoutX() + 20);
-		 lock.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 13) / 2));
-		 
-		 backToHomeButton.setLayoutX(0);
-		 backToHomeButton.setLayoutY(h / 12);
-		 backToHomeButton.setPrefSize(w, 50);
-		 
-		 scrollPane.setLayoutX(0);
-		 scrollPane.setLayoutY((h / 12) + 50);
-		 scrollPane.setPrefSize(w, h - (h / 12) - 72);
-		 */
+		*/
+		
+		Pane root = new Pane();
+		
+		Pane topPane = new Pane();
+		root.getChildren().add(topPane);
+		
+		ImageView background = new ImageView(new Image("application/library/images/background.png"));
+		topPane.getChildren().add(background);
+		
+		ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
+		topPane.getChildren().add(buttons);
+		
+		TextField addressField = new TextField(website);
+		topPane.getChildren().add(addressField);
+		addressField.setFocusTraversable(false);
+		addressField.setEditable(false);
+		
+		ImageView lock = new ImageView(new Image("application/library/images/lock.png"));
+		topPane.getChildren().add(lock);
+		
+		Pane usersPane = new Pane();
+		ScrollPane scrollPane = new ScrollPane(usersPane);
+		root.getChildren().add(scrollPane);
+		int i = 0;
+		for (Label label : Users.getLabelsNotCurrent())
+		{
+			usersPane.getChildren().add(label);
+			label.setLayoutX(200);
+			label.setLayoutY(160 + (60 * i));
+			label.setFont(Font.font("Andale Mono", 16));
+			i++;
+		}
+		
+		
+		Scene scene = new Scene(root, w, h);
+		scene.getStylesheets().add("application/library/stylesheets/basic.css");
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>()
+		{
+			@Override
+			public void handle(KeyEvent ke)
+			{
+				if (ke.getCode() == KeyCode.ESCAPE)
+				{
+					stage.close();
+					DB.disconnect();
+				}
+			}
+		});
+		
+		stage.setScene(scene);
+		stage.show();
+		
+		
+		Button backToHomeButton = new Button("<-- back to the feed");
+		root.getChildren().add(backToHomeButton);
+		backToHomeButton.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent ae)
+			{
+				Home.showHome(stage, w, h);
+			}
+		});
+		
+		
+		topPane.setLayoutX(0);
+		topPane.setLayoutY(0);
+		topPane.setPrefSize(w, h / 12);
+		
+		background.setLayoutX(0);
+		background.setLayoutY(0);
+		
+		addressField.setLayoutX(w / 12);
+		addressField.setLayoutY(((h / 12) - addressField.getHeight()) / 2);
+		addressField.setPrefWidth(w - (w / 6));
+		
+		buttons.setLayoutX((addressField.getLayoutX() - 78) / 2);
+		buttons.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 14) / 2));
+		
+		lock.setLayoutX(addressField.getLayoutX() + 20);
+		lock.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 13) / 2));
+		
+		backToHomeButton.setLayoutX(0);
+		backToHomeButton.setLayoutY(h / 12);
+		backToHomeButton.setPrefSize(w, 50);
+		
+		scrollPane.setLayoutX(0);
+		scrollPane.setLayoutY((h / 12) + 50);
+		scrollPane.setPrefSize(w, h - (h / 12) - 72);
 		
 	}
+	
 	
 }
