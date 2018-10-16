@@ -24,6 +24,8 @@ import java.util.Optional;
 public class EditorTool
 {
 	
+	private static String images = "application/library/images";
+	
 	/**
 	 * This is the name of the website. This will show up in the adressbar.
 	 */
@@ -40,7 +42,11 @@ public class EditorTool
 	static double h;
 	
 	
-	
+	private static void addViews(Pane parentPane, String imagePath)
+	{
+		ImageView iv = new ImageView(new Image(imagePath));
+		parentPane.getChildren().add(iv);
+	}
 	
 	/**
 	 * Contains all the buttons and panes you can see in the admin tool,
@@ -53,12 +59,18 @@ public class EditorTool
 	 */
 	public static void showEditTool(Stage stage, double width, double height)
 	{
+		System.out.println("Started Edit tool");
 		
 		Pane root = new Pane();
 		Pane topPane = new Pane();
 		
 		root.getChildren().add(topPane);
 		
+		System.out.println("adding view1");
+		addViews(topPane, images + "/background.png");
+		
+		System.out.println("adding view2");
+		addViews(topPane, images + "buttons.png");
 		/**
 		 Pane topPane = new Pane();
 		 root.getChildren().add(topPane);
