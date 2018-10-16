@@ -202,40 +202,6 @@ public class Home {
 		root.getChildren().add(rightScroll);
 		int i = 0;
 		populateContent(contentPane, adressField);
-		/*if (showContent == 0)
-		{
-			addContentToPane(contentPane, adressField, "/all_content");
-			*//*contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
-			adressField.setText(website + "/all_content" + searchFull);
-			for (Label label : Posts.getLabels(search)) {
-				contentPane.getChildren().add(label);
-				label.setLayoutX(80);
-				label.setLayoutY(40 + (200 * i));
-				i++;
-			}*//*
-		} else if (showContent == 1)
-		{
-			addContentToPane(contentPane, adressField, "/published_content");
-			*//*contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
-			adressField.setText(website + "/published_content" + searchFull);
-			for (Label label : Posts.getPublishedLabels(search)) {
-				contentPane.getChildren().add(label);
-				label.setLayoutX(80);
-				label.setLayoutY(40 + (200 * i));
-				i++;
-			}*//*
-		} else if (showContent == 2)
-		{
-			addContentToPane(contentPane, adressField, "submitted_content");
-			*//*contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
-			adressField.setText(website + "/submitted_content" + searchFull);
-			for (Label label : Posts.getSubmittedLabels(search)) {
-				contentPane.getChildren().add(label);
-				label.setLayoutX(80);
-				label.setLayoutY(40 + (200 * i));
-				i++;
-			}*//*
-		}*/
 		
 
 		// Button not visible. Still here as the onAction property still has uses
@@ -248,39 +214,6 @@ public class Home {
 				contentPane.getChildren().clear();
 				int i = 0;
 				populateContent(contentPane, adressField);
-				/*if (showContent == 0)
-				{
-					addContentToPane(contentPane, adressField, "/all_content");
-					*//*contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
-					adressField.setText(website + "/all_content" + searchFull);
-					for (Label label : Posts.getLabels(search)) {
-						contentPane.getChildren().add(label);
-						label.setLayoutX(80);
-						label.setLayoutY(40 + (200 * i));
-						i++;
-					}*//*
-				} else if (showContent == 1)
-				{
-					addContentToPane(contentPane, adressField, "/published_content");
-					*//*contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
-					adressField.setText(website + "/published_content" + searchFull);
-					for (Label label : Posts.getPublishedLabels(search)) {
-						contentPane.getChildren().add(label);
-						label.setLayoutX(80);
-						label.setLayoutY(40 + (200 * i));
-						i++;
-					}*//*
-				} else if (showContent == 2)
-				{
-					*//*contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
-					adressField.setText(website + "/submitted_content" + searchFull);
-					for (Label label : Posts.getSubmittedLabels(search)) {
-						contentPane.getChildren().add(label);
-						label.setLayoutX(80);
-						label.setLayoutY(40 + (200 * i));
-						i++;
-					}*//*
-				}*/
 			}
 		});
 
