@@ -92,6 +92,7 @@ public class Home {
 	 * @param addressField The Field which holds the "address" of the pane
 	 * @param subSite      The text appended to the address to give proper TODO fix javadoc
 	 * @author Torleif Hensvold
+	 * @author Niklas Sølvberg
 	 */
 	private static void addContentToPane(Pane contentPane, TextField addressField, String subSite)
 	{
@@ -100,49 +101,47 @@ public class Home {
 		addressField.setText(website + subSite + searchFull);
 		for (Label label : Posts.getLabels(search))
 		{
-			contentPane.getChildren().add(label);
-			label.setLayoutX(80);
-			label.setLayoutY(40 + (200 * i));
+			addLabels(contentPane, label, 80, 40, 200, i);
 			i++;
 		}
 	}
-	
-	
-	private static void populateContent(Pane contentPane, TextField adressField)
+
+	/**
+	 * @param contentPane The Pane in which we want to add Labels
+	 * @param label       The label we want to add
+	 * @param x           The TODO find out what this actually is!
+	 * @param y           The TODO Find out what this actually is!
+	 * @param dy          The TODO Find out what this actually is!
+	 * @param i           Variable to keep count of iterations.
+	 * @author Torleif Hensvold
+	 * @author Niklas Sølvberg
+	 */
+	private static void addLabels(Pane contentPane, Label label, int x, int y, int dy, int i)
+	{
+		contentPane.getChildren().add(label);
+		label.setLayoutX(x);
+		label.setLayoutY(y + (dy * i));
+	}
+
+
+	/**
+	 * @param contentPane  The Pane in which we want to add content
+	 * @param addressField The addressfield of the scene.
+	 * @author Torleif Hensvold
+	 * @author Niklas Sølvberg
+	 */
+	private static void populateContent(Pane contentPane, TextField addressField)
 	{
 		if (showContent == 0)
 		{
-			addContentToPane(contentPane, adressField, "/all_content");
-			/*contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
-			adressField.setText(website + "/all_content" + searchFull);
-			for (Label label : Posts.getLabels(search)) {
-				contentPane.getChildren().add(label);
-				label.setLayoutX(80);
-				label.setLayoutY(40 + (200 * i));
-				i++;
-			}*/
+			addContentToPane(contentPane, addressField, "/all_content");
+
 		} else if (showContent == 1)
 		{
-			addContentToPane(contentPane, adressField, "/published_content");
-			/*contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
-			adressField.setText(website + "/published_content" + searchFull);
-			for (Label label : Posts.getPublishedLabels(search)) {
-				contentPane.getChildren().add(label);
-				label.setLayoutX(80);
-				label.setLayoutY(40 + (200 * i));
-				i++;
-			}*/
+			addContentToPane(contentPane, addressField, "/published_content");
 		} else if (showContent == 2)
 		{
-			addContentToPane(contentPane, adressField, "submitted_content");
-			/*contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
-			adressField.setText(website + "/submitted_content" + searchFull);
-			for (Label label : Posts.getSubmittedLabels(search)) {
-				contentPane.getChildren().add(label);
-				label.setLayoutX(80);
-				label.setLayoutY(40 + (200 * i));
-				i++;
-			}*/
+			addContentToPane(contentPane, addressField, "submitted_content");
 		}
 	}
 	
