@@ -84,7 +84,7 @@ public class EditorTool
 
 		editScene.getStylesheets().add(stylesheets + "/basic.css");
 
-		escapeKeyHandler(editScene);
+		escapeKeyHandler(editScene);                        // Handles the escape key
 
 		//Main.disconnectDB();
 		
@@ -196,6 +196,11 @@ public class EditorTool
 		*/
 	}
 
+	/**
+	 * This is a method to handle the use of the escape key in the application
+	 *
+	 * @param scene The Scene which we want to handle the KeyEvent
+	 */
 	private static void escapeKeyHandler(Scene scene)
 	{
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>()
