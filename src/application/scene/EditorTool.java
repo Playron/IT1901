@@ -35,23 +35,34 @@ public class EditorTool
 	static ArrayList<Character> usertypes = Usertype.usertypes();
 	
 	/**
-	 * Used for iterations
+	 * This will represent the width of the maximised stage
 	 */
-	static int i;
+	static double w;
+	
+	/**
+	 * This will represent the height of the maximised stage
+	 */
+	static double h;
+	
+	
+	
 	
 	/**
 	 * Contains all the buttons and panes you can see in the admin tool,
 	 * and this is where an admin would assign and manage the roles of users on the site.
 	 *
 	 * @param stage is the primaryStage passed along from Main
-	 * @param w     is the width of the maximised stage
-	 * @param h     is the height of the maximised stage
+	 * @param width     is the width of the maximised stage
+	 * @param height     is the height of the maximised stage
 	 * @author Torleif Hensvold
 	 */
-	public static void showEditTool(Stage stage, double w, double h)
+	public static void showEditTool(Stage stage, double width, double height)
 	{
 		
 		Pane root = new Pane();
+		Pane topPane = new Pane();
+		
+		root.getChildren().add(topPane);
 		
 		/**
 		 Pane topPane = new Pane();
