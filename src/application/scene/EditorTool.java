@@ -6,6 +6,7 @@ import application.database.DB;
 import application.logic.User;
 import application.logic.Users;
 import application.logic.Usertype;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -82,6 +83,8 @@ public class EditorTool
 		stage.show();                                       // Instructs the single Stage to be shown. Necessary!
 
 		editScene.getStylesheets().add(stylesheets + "/basic.css");
+
+		escapeKeyHandler(editScene);
 
 		//Main.disconnectDB();
 		
@@ -192,6 +195,20 @@ public class EditorTool
 		scrollPane.setPrefSize(w, h - (h / 12) - 72);
 		*/
 	}
-	
-	
+
+	private static void escapeKeyHandler(Scene scene)
+	{
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>()
+		{
+			@Override
+			public void handle(KeyEvent ke)
+			{
+				if (ke.getCode() == KeyCode.ESCAPE)
+				{
+					Platform.exit();
+					//Main.disconnectDB();
+				}
+			}
+		});
+	}
 }
