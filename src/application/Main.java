@@ -19,9 +19,9 @@ public class Main extends Application
 	{
 		Stage stage = primaryStage;
 		stage.setMaximized(true);
-		
-		Home.showHome(stage, 1, 1);
-		//EditorTool.showEditTool(stage, 1, 1);
+
+		//Home.showHome(stage, 1, 1);
+		EditorTool.showEditTool(stage, 1, 1);
 		
 		System.out.println("Out of Main.start");
 	}
