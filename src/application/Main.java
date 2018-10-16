@@ -38,7 +38,8 @@ public class Main extends Application
 			launch(args);
 			
 			System.out.println("Database connection closing...");
-			DB.disconnect();
+			disconnectDB();
+			/*DB.disconnect();
 			if (DB.connected())
 			{
 				throw new IllegalStateException("Database connection could not close.");
@@ -46,7 +47,7 @@ public class Main extends Application
 			else
 			{
 				System.out.println("Database connection closed.");
-			}
+			}*/
 		} catch (Exception e)
 		{
 			if (DB.connected())
@@ -62,5 +63,17 @@ public class Main extends Application
 		
 		
 	}
-	
+
+	public static void disconnectDB()
+	{
+		DB.disconnect();
+		if (DB.connected())
+		{
+			throw new IllegalStateException("Database connection could not close.");
+		} else
+		{
+			System.out.println("Database connection closed.");
+		}
+	}
+
 }
