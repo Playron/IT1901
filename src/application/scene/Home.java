@@ -154,6 +154,7 @@ public class Home {
 	 * @param height is the height of the maximised stage
 	 *
 	 * @author Niklas Sølvberg
+	 * @author Torleif Hensvold
 	 */
 	public static void showHome(Stage stage, double width, double height) {
 		w = width;
