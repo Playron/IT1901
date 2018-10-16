@@ -135,7 +135,6 @@ public class Home {
 		if (showContent == 0)
 		{
 			addContentToPane(contentPane, addressField, "/all_content");
-
 		} else if (showContent == 1)
 		{
 			addContentToPane(contentPane, addressField, "/published_content");
