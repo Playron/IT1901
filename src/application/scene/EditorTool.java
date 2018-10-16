@@ -24,8 +24,22 @@ import java.util.Optional;
 
 public class EditorTool
 {
-	
-	private static String images = "application/library/images";
+
+	/**
+	 * This is the path to our application library
+	 */
+	private static String library = "application/library";
+
+	/**
+	 * This is the path to our application image library
+	 */
+	private static String images = library + "/images";
+
+	/**
+	 * This is the path to our application stylesheet library
+	 */
+	private static String stylesheets = library + "/stylesheets";
+
 	
 	/**
 	 * This is the name of the website. This will show up in the adressbar.
@@ -61,7 +75,15 @@ public class EditorTool
 	public static void showEditTool(Stage stage, double width, double height)
 	{
 		System.out.println("Started Edit tool");
-		Main.disconnectDB();
+
+		Pane root = new Pane();                             // Creates a root in which we hang everything else in the scene
+		Scene editScene = new Scene(root, width, height);   // Creates a new Scene using the root and given dimensions
+		stage.setScene(editScene);                          // Instructs the single Stage to prepare the Scene
+		stage.show();                                       // Instructs the single Stage to be shown. Necessary!
+
+		editScene.getStylesheets().add(stylesheets + "/basic.css");
+
+		//Main.disconnectDB();
 		
 		/*
 		Pane root = new Pane();
