@@ -1,5 +1,6 @@
 package application.scene;
 
+import application.Main;
 import application.database.Content;
 import application.database.DB;
 import application.logic.User;
@@ -60,7 +61,7 @@ public class EditorTool
 	public static void showEditTool(Stage stage, double width, double height)
 	{
 		System.out.println("Started Edit tool");
-		
+		Main.disconnectDB();
 		
 		/*
 		Pane root = new Pane();
@@ -79,7 +80,7 @@ public class EditorTool
 		addViews(topPane, images + "buttons.png");
 		*/
 		
-		Pane root = new Pane();
+		/*Pane root = new Pane();
 		
 		Pane topPane = new Pane();
 		root.getChildren().add(topPane);
@@ -167,7 +168,7 @@ public class EditorTool
 		scrollPane.setLayoutX(0);
 		scrollPane.setLayoutY((h / 12) + 50);
 		scrollPane.setPrefSize(w, h - (h / 12) - 72);
-		
+		*/
 	}
 	
 	
