@@ -126,7 +126,7 @@ public class Home {
 
 	/**
 	 * @param contentPane  The Pane in which we want to add content
-	 * @param addressField The addressfield of the scene.
+	 * @param addressField The address field of the scene.
 	 * @author Torleif Hensvold
 	 * @author Niklas Sølvberg
 	 */
