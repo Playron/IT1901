@@ -9,6 +9,7 @@ import application.logic.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -77,13 +78,23 @@ public class EditorTool
 	 * This will represent the height of the maximised stage
 	 */
 	static double h;
-
-
-	private static void addViews(Pane parentPane, String imagePath, double x, double y)
+	
+	/**
+	 * Method for adding views to a pane.
+	 *
+	 * @param parentPane The parent pane of the view
+	 * @param imagePath  The path of the image we want to display
+	 * @param x          Layout x-value for topmost left corner
+	 * @param y          Layout y-value for topmost left corner
+	 * @param width      Width of the Viewport we want to view the image through
+	 * @param height     Height of the Viewport we want to view the image through
+	 */
+	private static void addViews(Pane parentPane, String imagePath, double x, double y, double width, double height)
 	{
 		ImageView iv = new ImageView(new Image(imagePath));
 		iv.setLayoutX(x);
 		iv.setLayoutY(y);
+		iv.setViewport(new Rectangle2D(0, 0, width, height));
 		parentPane.getChildren().add(iv);
 	}
 	
@@ -157,10 +168,12 @@ public class EditorTool
 	 */
 	public static void showEditTool(Stage stage, double width, double height)
 	{
-		
 		w = width;
 		h = height;
 		
+		/*double stageHeight = stage.getHeight();
+		double stageWidth = stage.getWidth();*/
+		System.out.println(w + " " + h);
 		Pane root = new Pane();
 		
 		TextField searchField = new TextField();
@@ -170,20 +183,21 @@ public class EditorTool
 		root.getChildren().add(topPane);
 		
 		ImageView background = new ImageView(new Image("application/library/images/background.png"));
+		background.setViewport(new Rectangle2D(0,0,w,h/25));
 		topPane.getChildren().add(background);
 		
 		ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
 		topPane.getChildren().add(buttons);
 		
-		TextField adressField = new TextField(website + "/published_content" + searchFull);
-		topPane.getChildren().add(adressField);
-		adressField.setFocusTraversable(false);
-		adressField.setEditable(false);
+		TextField addressField = new TextField(website);
+		topPane.getChildren().add(addressField);
+		addressField.setFocusTraversable(false);
+		addressField.setEditable(false);
 		
 		ImageView lock = new ImageView(new Image("application/library/images/lock.png"));
 		topPane.getChildren().add(lock);
 		
-		Pane optionsPane = new Pane();
+		/*Pane optionsPane = new Pane();
 		root.getChildren().add(optionsPane);
 		optionsPane.setStyle("-fx-background-color: #444444;");
 		optionsPane.getChildren().add(searchField);
@@ -206,11 +220,10 @@ public class EditorTool
 		rightScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		rightScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		root.getChildren().add(rightScroll);
-		int i = 0;
-		populateContent(contentPane, adressField);
+		populateContent(contentPane, addressField);*/
 		
 		
-		// Button not visible. Still here as the onAction property still has uses
+		/*// Button not visible. Still here as the onAction property still has uses
 		Button refreshButton = new Button("O");
 		topPane.getChildren().add(refreshButton);
 		refreshButton.setVisible(false);
@@ -221,9 +234,9 @@ public class EditorTool
 			{
 				contentPane.getChildren().clear();
 				int i = 0;
-				populateContent(contentPane, adressField);
+				populateContent(contentPane, addressField);
 			}
-		});
+		});*/
 		
 		/*Button createButton = new Button("Create content");
 		optionsPane.getChildren().add(createButton);
@@ -314,12 +327,12 @@ public class EditorTool
 						Content.addContent(text.get(0), text.get(1), text.get(2), null);
 					});
 					contentPane.getChildren().clear();
-					populateContent(contentPane, adressField);
+					populateContent(contentPane, addressField);
 				}
 			}
 		});*/
 		
-		Button showAllButton = new Button("View all content");
+		/*Button showAllButton = new Button("View all content");
 		optionsPane.getChildren().add(showAllButton);
 		if (!CurrentUser.hasEditorRights())
 		{
@@ -331,7 +344,7 @@ public class EditorTool
 			public void handle(ActionEvent ae)
 			{
 				showContent = 0;
-				adressField.setText(website + "/all_content" + searchFull);
+				addressField.setText(website + "/all_content" + searchFull);
 				contentPane.getChildren().clear();
 				int i = 0;
 				contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
@@ -343,21 +356,21 @@ public class EditorTool
 					i++;
 				}
 			}
-		});
+		});*/
 		
-		Button showSubmittedButton = new Button("View submitted content" + searchFull);
+		/*Button showSubmittedButton = new Button("View submitted content" + searchFull);
 		optionsPane.getChildren().add(showSubmittedButton);
 		if (!CurrentUser.hasEditorRights())
 		{
 			showSubmittedButton.setDisable(true);
-		}
-		showSubmittedButton.setOnAction(new EventHandler<ActionEvent>()
+		}*/
+		/*showSubmittedButton.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent ae)
 			{
 				showContent = 2;
-				adressField.setText(website + "/submitted_content" + searchFull);
+				addressField.setText(website + "/submitted_content" + searchFull);
 				contentPane.getChildren().clear();
 				int i = 0;
 				contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
@@ -423,7 +436,7 @@ public class EditorTool
 								Content.updateContent(post.getID(), text.get(0), text.get(1), text.get(2), CurrentUser.getUsername());
 							});
 							contentPane.getChildren().clear();
-							populateContent(contentPane, adressField);
+							populateContent(contentPane, addressField);
 							showAllButton.fire();
 							showSubmittedButton.fire();
 						}
@@ -431,9 +444,9 @@ public class EditorTool
 					i++;
 				}
 			}
-		});
+		});*/
 		
-		Button showPublishedButton = new Button("View published content");
+		/*Button showPublishedButton = new Button("View published content");
 		optionsPane.getChildren().add(showPublishedButton);
 		showPublishedButton.setOnAction(new EventHandler<ActionEvent>()
 		{
@@ -441,7 +454,7 @@ public class EditorTool
 			public void handle(ActionEvent ae)
 			{
 				showContent = 1;
-				adressField.setText(website + "/published_content" + searchFull);
+				addressField.setText(website + "/published_content" + searchFull);
 				contentPane.getChildren().clear();
 				int i = 0;
 				contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
@@ -453,9 +466,9 @@ public class EditorTool
 					i++;
 				}
 			}
-		});
+		});*/
 		
-		searchField.setOnAction(new EventHandler<ActionEvent>()
+		/*searchField.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent ae)
@@ -464,7 +477,7 @@ public class EditorTool
 				refreshButton.fire();
 			}
 		});
-		
+		*/
 		
 		Scene scene = new Scene(root, w, h);
 		scene.getStylesheets().add("application/library/stylesheets/basic.css");
@@ -485,13 +498,13 @@ public class EditorTool
 		stage.show();
 //		stage.setMaximized(true);
 		
-		refreshButton.requestFocus();
+		/*refreshButton.requestFocus();*/
 		
 		
 		w = stage.getWidth();
 		h = stage.getHeight();
 		
-		Button adminToolButton = new Button("Admin tool");
+		/*Button adminToolButton = new Button("Admin tool");
 		optionsPane.getChildren().add(adminToolButton);
 		if (!CurrentUser.hasAdminRights())
 		{
@@ -504,7 +517,7 @@ public class EditorTool
 			{
 				AdminTool.showAdminTool(stage, w, h);
 			}
-		});
+		});*/
 		
 		/*Button loginButton = new Button();
 		if (CurrentUser.getUsername() == null)
@@ -528,33 +541,31 @@ public class EditorTool
 		});*/
 		
 		
+		topPane.setPrefSize(w, 100);
 		topPane.setLayoutX(0);
 		topPane.setLayoutY(0);
-		topPane.setPrefSize(w, h / 12);
+		topPane.setMaxHeight(h/12);
 		
 		background.setLayoutX(0);
 		background.setLayoutY(0);
 		
-		refreshButton.setLayoutX(2 * (w / 42));
-		refreshButton.setLayoutY(((h / 12) - adressField.getHeight()) / 2);
-		refreshButton.setPrefSize(w / 42, adressField.getHeight());
 		
-		adressField.setLayoutX(w / 12);
-		adressField.setLayoutY(((h / 12) - adressField.getHeight()) / 2);
-		adressField.setPrefWidth(w - (w / 6));
+		addressField.setLayoutX(w / 12);
+		addressField.setLayoutY(((h / 12) - addressField.getHeight()) / 2);
+		addressField.setPrefWidth(w - (w / 6));
 		
-		buttons.setLayoutX((adressField.getLayoutX() - 78) / 2);
-		buttons.setLayoutY(adressField.getLayoutY() + ((adressField.getHeight() - 14) / 2));
+		buttons.setLayoutX((addressField.getLayoutX() - 78) / 2);
+		buttons.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 14) / 2));
 		
-		lock.setLayoutX(adressField.getLayoutX() + 20);
-		lock.setLayoutY(adressField.getLayoutY() + ((adressField.getHeight() - 13) / 2));
+		lock.setLayoutX(addressField.getLayoutX() + 20);
+		lock.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 13) / 2));
 		
-		optionsPane.setLayoutX(0);
+		/*optionsPane.setLayoutX(0);
 		optionsPane.setLayoutY(h / 12);
 		optionsPane.setPrefSize(w / 6, h - (h / 12) - 22);
 		
 		loggedInLabel.setLayoutX(6);
-		loggedInLabel.setLayoutY(6);
+		loggedInLabel.setLayoutY(6);*/
 		
 		searchField.setLayoutX(5);
 		searchField.setLayoutY(110);
@@ -564,11 +575,11 @@ public class EditorTool
 		createButton.setLayoutY(50);
 		createButton.setPrefSize(w/6, 50);*/
 		
-		showAllButton.setLayoutX(0);
+		/*showAllButton.setLayoutX(0);
 		showAllButton.setLayoutY(150);
-		showAllButton.setPrefSize(w / 6, 50);
+		showAllButton.setPrefSize(w / 6, 50);*/
 		
-		showSubmittedButton.setLayoutX(0);
+	/*	showSubmittedButton.setLayoutX(0);
 		showSubmittedButton.setLayoutY(200);
 		showSubmittedButton.setPrefSize(w / 6, 50);
 		
@@ -578,15 +589,15 @@ public class EditorTool
 		
 		adminToolButton.setLayoutX(0);
 		adminToolButton.setLayoutY(350);
-		adminToolButton.setPrefSize(w / 6, 50);
+		adminToolButton.setPrefSize(w / 6, 50);*/
 		
 		/*loginButton.setLayoutX(0);
 		loginButton.setLayoutY(450);
 		loginButton.setPrefSize(w / 6, 50);*/
 		
-		rightScroll.setLayoutX(w / 6);
+		/*rightScroll.setLayoutX(w / 6);
 		rightScroll.setLayoutY(h / 12);
-		rightScroll.setPrefSize(w-(w/6), h-(h/12)-22);
+		rightScroll.setPrefSize(w-(w/6), h-(h/12)-22);*/
 		
 		
 		
