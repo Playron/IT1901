@@ -94,12 +94,24 @@ public class EditorTool
 		Pane topPane = new Pane();
 		topPane.setId("topPane");
 		root.getChildren().add(topPane);
-		addTopBar(topPane);
+		//addTopBar(topPane);
+
+		addViews(topPane, images + "/background.png", 0, 0);
+		topPane.setLayoutX(0);
+		topPane.setLayoutY(0);
+		topPane.setPrefSize(w, h / 12);
+
+
 
 		Pane optionsPane = new Pane();
 		optionsPane.setId("optionsPane");
 		root.getChildren().add(optionsPane);
+		optionsPane.setStyle("-fx-background-color: #444444;");
 
+		optionsPane.setLayoutX(0);
+		optionsPane.setLayoutY(h / 12);
+		optionsPane.setPrefSize(w / 6, h - (h / 12) - 22);
+		optionsPane.getChildren().add(new TextField());
 
 		for (Object o : root.getChildren())
 		{
