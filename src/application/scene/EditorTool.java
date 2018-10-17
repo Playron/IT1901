@@ -41,7 +41,6 @@ public class EditorTool
 	 */
 	private static String stylesheets = library + "/stylesheets";
 
-	
 	/**
 	 * This is the name of the website. This will show up in the adressbar.
 	 */
@@ -56,11 +55,13 @@ public class EditorTool
 	 * This will represent the height of the maximised stage
 	 */
 	static double h;
-	
-	
-	private static void addViews(Pane parentPane, String imagePath)
+
+
+	private static void addViews(Pane parentPane, String imagePath, double x, double y)
 	{
 		ImageView iv = new ImageView(new Image(imagePath));
+		iv.setLayoutX(x);
+		iv.setLayoutY(y);
 		parentPane.getChildren().add(iv);
 	}
 	
@@ -75,9 +76,13 @@ public class EditorTool
 	 */
 	public static void showEditTool(Stage stage, double width, double height)
 	{
+		w = width;
+		h = height;
+
 		System.out.println("Started Edit tool");
 
 		Pane root = new Pane();                             // Creates a root in which we hang everything else in the scene
+		root.setId("root");                                 // Allows searching the scene for this pane.
 		Scene editScene = new Scene(root, width, height);   // Creates a new Scene using the root and given dimensions
 		stage.setScene(editScene);                          // Instructs the single Stage to prepare the Scene
 		stage.show();                                       // Instructs the single Stage to be shown. Necessary!
@@ -85,6 +90,21 @@ public class EditorTool
 		editScene.getStylesheets().add(stylesheets + "/basic.css");
 
 		escapeKeyHandler(editScene);                        // Handles the escape key
+
+		Pane topPane = new Pane();
+		topPane.setId("topPane");
+		root.getChildren().add(topPane);
+		addTopBar(topPane);
+
+		Pane optionsPane = new Pane();
+		optionsPane.setId("optionsPane");
+		root.getChildren().add(optionsPane);
+
+
+		for (Object o : root.getChildren())
+		{
+			System.out.println(o.toString());
+		}
 
 		//Main.disconnectDB();
 		
@@ -215,5 +235,13 @@ public class EditorTool
 				}
 			}
 		});
+	}
+
+	public static void addTopBar(Pane topPane)
+	{
+		addViews(topPane, images + "/background.png", 0, 0);
+		topPane.setLayoutX(0);
+		topPane.setLayoutY(0);
+		topPane.setPrefSize(w, h / 12);
 	}
 }
