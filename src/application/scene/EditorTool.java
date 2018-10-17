@@ -175,6 +175,7 @@ public class EditorTool
 		double stageWidth = stage.getWidth();*/
 		System.out.println(w + " " + h);
 		Pane root = new Pane();
+		Scene scene = new Scene(root, w, h);
 		
 		TextField searchField = new TextField();
 		searchField.setPromptText("Search");
@@ -479,7 +480,7 @@ public class EditorTool
 		});
 		*/
 		
-		Scene scene = new Scene(root, w, h);
+		
 		scene.getStylesheets().add("application/library/stylesheets/basic.css");
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>()
 		{
@@ -501,8 +502,11 @@ public class EditorTool
 		/*refreshButton.requestFocus();*/
 		
 		
-		w = stage.getWidth();
-		h = stage.getHeight();
+		System.out.println(stage.getWidth() + " " + stage.getHeight());
+		System.out.println(scene.getWidth() + " " + scene.getHeight());
+		
+		/*w = stage.getWidth();
+		h = stage.getHeight();*/
 		
 		/*Button adminToolButton = new Button("Admin tool");
 		optionsPane.getChildren().add(adminToolButton);
@@ -544,14 +548,14 @@ public class EditorTool
 		topPane.setPrefSize(w, 100);
 		topPane.setLayoutX(0);
 		topPane.setLayoutY(0);
-		topPane.setMaxHeight(h/12);
+		topPane.setMaxHeight(h / 25);
 		
 		background.setLayoutX(0);
 		background.setLayoutY(0);
 		
 		
-		addressField.setLayoutX(w / 12);
-		addressField.setLayoutY(((h / 12) - addressField.getHeight()) / 2);
+		addressField.setLayoutX(w / 20);
+		addressField.setLayoutY(((h / 20) - addressField.getHeight()) / 2);
 		addressField.setPrefWidth(w - (w / 6));
 		
 		buttons.setLayoutX((addressField.getLayoutX() - 78) / 2);
@@ -776,7 +780,7 @@ public class EditorTool
 
 	public static void addTopBar(Pane topPane)
 	{
-		addViews(topPane, images + "/background.png", 0, 0);
+		addViews(topPane, images + "/background.png", 0, 0, w, h / 25);
 		topPane.setLayoutX(0);
 		topPane.setLayoutY(0);
 		topPane.setPrefSize(w, h / 12);
