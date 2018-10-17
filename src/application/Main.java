@@ -7,6 +7,8 @@ import application.scene.Home;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.awt.*;
+
 /**
  * Main.java should run when you start the program.
  *
@@ -19,9 +21,10 @@ public class Main extends Application
 	{
 		Stage stage = primaryStage;
 		stage.setMaximized(true);
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
 		//Home.showHome(stage, 1, 1);
-		EditorTool.showEditTool(stage, 1, 1);
+		EditorTool.showEditTool(stage, dimension.getWidth(), dimension.getHeight());
 		
 		System.out.println("Out of Main.start");
 	}
