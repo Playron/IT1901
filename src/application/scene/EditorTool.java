@@ -149,6 +149,7 @@ public class EditorTool
 	 */
 	public static void showEditTool(Stage staged, double width, double height)
 	{
+		stage = staged;
 		w = width;
 		h = height;
 
@@ -216,227 +217,27 @@ public class EditorTool
 		optionsPane.getChildren().add(createButton);
 		if (!CurrentUser.isRegistered())
 			createButton.setDisable(true);
-		createButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent ae) {
-				if (CurrentUser.isRegistered()) {
-					Dialog<ArrayList<String>> dialog = new Dialog<ArrayList<String>>();
-					dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
-					dialog.initModality(Modality.APPLICATION_MODAL);
-					dialog.setTitle("Make new post");
-					dialog.setHeaderText(null);
-					ButtonType publishButtonType = new ButtonType("Publish", ButtonBar.ButtonData.OK_DONE);
-					ButtonType submitButtonType = new ButtonType("Submit", ButtonBar.ButtonData.OK_DONE);
-					dialog.getDialogPane().getButtonTypes().setAll(publishButtonType, submitButtonType, ButtonType.CANCEL);
-					Pane dialogPane = new Pane();
-					dialogPane.setPrefSize(300, 300);
-					Label headerLabel = new Label("Header:");
-					headerLabel.setLayoutX(20);
-					headerLabel.setLayoutY(20);
-					TextField headerField = new TextField();
-					headerField.setLayoutX(20);
-					headerField.setLayoutY(50);
-					headerField.setPrefSize(260, 25);
-					Label contentLabel = new Label("Content:");
-					contentLabel.setLayoutX(20);
-					contentLabel.setLayoutY(90);
-					TextArea contentArea = new TextArea();
-					contentArea.setLayoutX(20);
-					contentArea.setLayoutY(120);
-					contentArea.setPrefSize(260, 160);
-					contentArea.setWrapText(true);
-					dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea);
-					Node submitButton = dialog.getDialogPane().lookupButton(submitButtonType);
-					submitButton.setDisable(true);
-					contentArea.textProperty().addListener((observable, oldValue, newValue) ->
-					{
-						headerField.textProperty().addListener((observable1, oldValue1, newValue1) ->
-						{
-							submitButton.setDisable(newValue.trim().isEmpty() || newValue1.trim().isEmpty());
-						});
-					});
-					headerField.textProperty().addListener((observable, oldValue, newValue) ->
-					{
-						contentArea.textProperty().addListener((observable1, oldValue1, newValue1) ->
-						{
-							submitButton.setDisable(newValue.trim().isEmpty() || newValue1.trim().isEmpty());
-						});
-					});
-					Node publishButton = dialog.getDialogPane().lookupButton(publishButtonType);
-					publishButton.setDisable(true);
-					contentArea.textProperty().addListener((observable, oldValue, newValue) ->
-					{
-						headerField.textProperty().addListener((observable1, oldValue1, newValue1) ->
-						{
-							publishButton.setDisable(newValue.trim().isEmpty() || newValue1.trim().isEmpty());
-						});
-					});
-					headerField.textProperty().addListener((observable, oldValue, newValue) ->
-					{
-						contentArea.textProperty().addListener((observable1, oldValue1, newValue1) ->
-						{
-							publishButton.setDisable(newValue.trim().isEmpty() || newValue1.trim().isEmpty());
-						});
-					});
-					dialog.getDialogPane().setContent(dialogPane);
-					dialog.setResultConverter(dialogButton -> {
-						if (dialogButton == submitButtonType) {
-							ArrayList<String> list = new ArrayList<String>();
-							list.add(headerField.getText());
-							list.add(contentArea.getText());
-							list.add("submitted");
-							return list;
-						}
-						else if (dialogButton == publishButtonType) {
-							ArrayList<String> list = new ArrayList<String>();
-							list.add(headerField.getText());
-							list.add(contentArea.getText());
-							list.add("published");
-							return list;
-						}
-						return null;
-					});
-					Optional<ArrayList<String>> result = dialog.showAndWait();
-					result.ifPresent(text -> {
-						Content.addContent(text.get(0), text.get(1), text.get(2), null);
-					});
-					contentPane.getChildren().clear();
-					Home.populateContent(contentPane, adressField);
-				}
-			}
-		});
+		Home.createButtonOnAction(createButton, contentPane, adressField);
+
 
 		Button showAllButton = new Button("View all content");
 		optionsPane.getChildren().add(showAllButton);
 		if (!CurrentUser.hasEditorRights())
 			showAllButton.setDisable(true);
-		showAllButton.setOnAction(new EventHandler<ActionEvent>()
-		{
-			@Override
-			public void handle(ActionEvent ae)
-			{
-				showContent = 0;
-				adressField.setText(website + "/all_content" + searchFull);
-				contentPane.getChildren().clear();
-				int i = 0;
-				contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
-				for (Label label : Posts.getLabels(search))
-				{
-					contentPane.getChildren().add(label);
-					label.setLayoutX(80);
-					label.setLayoutY(40 + (200 * i));
-					i++;
-				}
-			}
-		});
+		Home.showAllButtonOnAction(showAllButton, adressField, contentPane);
+
+
 
 		Button showSubmittedButton = new Button("View submitted content" + searchFull);
 		optionsPane.getChildren().add(showSubmittedButton);
 		if (!CurrentUser.hasEditorRights())
 			showSubmittedButton.setDisable(true);
-		showSubmittedButton.setOnAction(new EventHandler<ActionEvent>()
-		{
-			@Override
-			public void handle(ActionEvent ae)
-			{
-				showContent = 2;
-				adressField.setText(website + "/submitted_content" + searchFull);
-				contentPane.getChildren().clear();
-				int i = 0;
-				contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
-				for (Label label : Posts.getSubmittedLabels(search))
-				{
-					postToEdit = i;
-					contentPane.getChildren().add(label);
-					label.setLayoutX(80);
-					label.setLayoutY(40 + (200 * i));
-					label.setOnMouseClicked(new EventHandler<MouseEvent>()
-					{
-						@Override
-						public void handle(MouseEvent me)
-						{
-							Post post = Posts.getSubmittedPosts().get(contentPane.getChildren().indexOf(label));
-							Dialog<ArrayList<String>> dialog = new Dialog<ArrayList<String>>();
-							dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
-							dialog.initModality(Modality.APPLICATION_MODAL);
-							dialog.setTitle("Make new post");
-							dialog.setHeaderText(null);
-							ButtonType publishButtonType = new ButtonType("Publish", ButtonBar.ButtonData.OK_DONE);
-							dialog.getDialogPane().getButtonTypes().setAll(publishButtonType, ButtonType.CANCEL);
-							Pane dialogPane = new Pane();
-							dialogPane.setPrefSize(300, 300);
-							Label headerLabel = new Label("Header:");
-							headerLabel.setLayoutX(20);
-							headerLabel.setLayoutY(20);
-							TextField headerField = new TextField(post.getHeader());
-							headerField.setLayoutX(20);
-							headerField.setLayoutY(50);
-							headerField.setPrefSize(260, 25);
-							Label contentLabel = new Label("Content:");
-							contentLabel.setLayoutX(20);
-							contentLabel.setLayoutY(90);
-							TextArea contentArea = new TextArea(post.getBody());
-							contentArea.setLayoutX(20);
-							contentArea.setLayoutY(120);
-							contentArea.setPrefSize(260, 160);
-							contentArea.setWrapText(true);
-							dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea);
-							Node publishButton = dialog.getDialogPane().lookupButton(publishButtonType);
-							publishButton.setDisable(true);
-							contentArea.textProperty().addListener((observable, oldValue, newValue) ->
-							{
-								publishButton.setDisable(newValue.trim().isEmpty());
-							});
-							dialog.getDialogPane().setContent(dialogPane);
-							dialog.setResultConverter(dialogButton ->
-							{
-								if (dialogButton == publishButtonType)
-								{
-									ArrayList<String> list = new ArrayList<String>();
-									list.add(headerField.getText());
-									list.add(contentArea.getText());
-									list.add("published");
-									return list;
-								}
-								return null;
-							});
-							Optional<ArrayList<String>> result = dialog.showAndWait();
-							result.ifPresent(text ->
-							{
-								Content.updateContent(post.getID(), text.get(0), text.get(1), text.get(2), CurrentUser.getUsername());
-							});
-							contentPane.getChildren().clear();
-							Home.populateContent(contentPane, adressField);
-							showAllButton.fire();
-							showSubmittedButton.fire();
-						}
-					});
-					i++;
-				}
-			}
-		});
+		Home.showSubmittedButtonOnAction(showSubmittedButton, adressField, contentPane, showAllButton);
+
 
 		Button showPublishedButton = new Button("View published content");
 		optionsPane.getChildren().add(showPublishedButton);
-		showPublishedButton.setOnAction(new EventHandler<ActionEvent>()
-		{
-			@Override
-			public void handle(ActionEvent ae)
-			{
-				showContent = 1;
-				adressField.setText(website + "/published_content" + searchFull);
-				contentPane.getChildren().clear();
-				int i = 0;
-				contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
-				for (Label label : Posts.getPublishedLabels(search))
-				{
-					contentPane.getChildren().add(label);
-					label.setLayoutX(80);
-					label.setLayoutY(40 + (200 * i));
-					i++;
-				}
-			}
-		});
+		Home.showPublishedButtonOnAction(showPublishedButton, adressField, contentPane);
 
 		searchField.setOnAction(new EventHandler<ActionEvent>()
 		{
@@ -492,21 +293,7 @@ public class EditorTool
 			loginButton.setText("Log in / Register");
 		else loginButton.setText("Log out");
 		optionsPane.getChildren().add(loginButton);
-		loginButton.setOnAction(new EventHandler<ActionEvent>()
-		{
-			@Override
-			public void handle(ActionEvent ae)
-			{
-				if (CurrentUser.getUsername() == null)
-					LoginScreen.showLoginScreen(stage, w, h);
-				else
-				{
-					Login.logout();
-					loggedInLabel.setText("You are not logged in");
-					loginButton.setText("Log in / Register");
-				}
-			}
-		});
+		Home.loginButton(loginButton, loggedInLabel);
 
 
 
