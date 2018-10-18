@@ -34,7 +34,10 @@ public class EditorTool
 	private static String search = "";
 	private static Byte showContent = 0;
 	private static int postToEdit = -1;
-	
+
+	private static Stage stage;
+	private static Scene editScene;
+
 	private static void updateSearch(String newSearch)
 	{
 		search = newSearch;
@@ -133,97 +136,68 @@ public class EditorTool
 		label.setLayoutX(x);
 		label.setLayoutY(y + (dy * i));
 	}
-	
-	
-	/**
-	 * @param contentPane  The Pane in which we want to add content
-	 * @param addressField The address field of the scene.
-	 * @author Torleif Hensvold
-	 * @author Niklas Sølvberg
-	 */
-	private static void populateContent(Pane contentPane, TextField addressField)
-	{
-		if (showContent == 0)
-		{
-			addContentToPane(contentPane, addressField, "/all_content");
-		}
-		else if (showContent == 1)
-		{
-			addContentToPane(contentPane, addressField, "/published_content");
-		}
-		else if (showContent == 2)
-		{
-			addContentToPane(contentPane, addressField, "submitted_content");
-		}
-	}
+
 	
 	/**
 	 * Contains all the buttons and panes you can see in the admin tool,
 	 * and this is where an admin would assign and manage the roles of users on the site.
 	 *
-	 * @param stage  is the primaryStage passed along from Main
+	 * @param staged  is the primaryStage passed along from Main
 	 * @param width  is the width of the maximised stage
 	 * @param height is the height of the maximised stage
 	 * @author Torleif Hensvold
 	 */
-	public static void showEditTool(Stage stage, double width, double height)
+	public static void showEditTool(Stage staged, double width, double height)
 	{
 		w = width;
 		h = height;
-		
-		/*double stageHeight = stage.getHeight();
-		double stageWidth = stage.getWidth();*/
-		System.out.println(w + " " + h);
+
 		Pane root = new Pane();
-		
+
 		TextField searchField = new TextField();
 		searchField.setPromptText("Search");
-		
+
 		Pane topPane = new Pane();
 		root.getChildren().add(topPane);
-		
+
 		ImageView background = new ImageView(new Image("application/library/images/background.png"));
-		background.setViewport(new Rectangle2D(0,0,w,h/25));
 		topPane.getChildren().add(background);
-		
+
 		ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
 		topPane.getChildren().add(buttons);
-		
-		TextField addressField = new TextField(website);
-		topPane.getChildren().add(addressField);
-		addressField.setFocusTraversable(false);
-		addressField.setEditable(false);
-		
+
+		TextField adressField = new TextField(website + "/published_content" + searchFull);
+		topPane.getChildren().add(adressField);
+		adressField.setFocusTraversable(false);
+		adressField.setEditable(false);
+
 		ImageView lock = new ImageView(new Image("application/library/images/lock.png"));
 		topPane.getChildren().add(lock);
-		
-		/*Pane optionsPane = new Pane();
+
+		Pane optionsPane = new Pane();
 		root.getChildren().add(optionsPane);
 		optionsPane.setStyle("-fx-background-color: #444444;");
 		optionsPane.getChildren().add(searchField);
-		
+
 		Label loggedInLabel = new Label();
 		optionsPane.getChildren().add(loggedInLabel);
 		if (CurrentUser.getUsername() == null)
-		{
 			loggedInLabel.setText("You are not logged in");
-		}
 		else
-		{
 			loggedInLabel.setText("Logged in as:\n\t" + CurrentUser.getUsername());
-		}
 		loggedInLabel.setTextFill(Color.web("#ffffff"));
 		loggedInLabel.setFont(Font.font(10));
-		
+
 		Pane contentPane = new Pane();
 		ScrollPane rightScroll = new ScrollPane(contentPane);
 		rightScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		rightScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		root.getChildren().add(rightScroll);
-		populateContent(contentPane, addressField);*/
-		
-		
-		/*// Button not visible. Still here as the onAction property still has uses
+		int i = 0;
+		Home.populateContent(contentPane, adressField);
+
+
+		// Button not visible. Still here as the onAction property still has uses
 		Button refreshButton = new Button("O");
 		topPane.getChildren().add(refreshButton);
 		refreshButton.setVisible(false);
@@ -234,11 +208,11 @@ public class EditorTool
 			{
 				contentPane.getChildren().clear();
 				int i = 0;
-				populateContent(contentPane, addressField);
+				Home.populateContent(contentPane, adressField);
 			}
-		});*/
-		
-		/*Button createButton = new Button("Create content");
+		});
+
+		Button createButton = new Button("Create content");
 		optionsPane.getChildren().add(createButton);
 		if (!CurrentUser.isRegistered())
 			createButton.setDisable(true);
@@ -327,24 +301,22 @@ public class EditorTool
 						Content.addContent(text.get(0), text.get(1), text.get(2), null);
 					});
 					contentPane.getChildren().clear();
-					populateContent(contentPane, addressField);
+					Home.populateContent(contentPane, adressField);
 				}
 			}
-		});*/
-		
-		/*Button showAllButton = new Button("View all content");
+		});
+
+		Button showAllButton = new Button("View all content");
 		optionsPane.getChildren().add(showAllButton);
 		if (!CurrentUser.hasEditorRights())
-		{
 			showAllButton.setDisable(true);
-		}
 		showAllButton.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent ae)
 			{
 				showContent = 0;
-				addressField.setText(website + "/all_content" + searchFull);
+				adressField.setText(website + "/all_content" + searchFull);
 				contentPane.getChildren().clear();
 				int i = 0;
 				contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
@@ -356,21 +328,19 @@ public class EditorTool
 					i++;
 				}
 			}
-		});*/
-		
-		/*Button showSubmittedButton = new Button("View submitted content" + searchFull);
+		});
+
+		Button showSubmittedButton = new Button("View submitted content" + searchFull);
 		optionsPane.getChildren().add(showSubmittedButton);
 		if (!CurrentUser.hasEditorRights())
-		{
 			showSubmittedButton.setDisable(true);
-		}*/
-		/*showSubmittedButton.setOnAction(new EventHandler<ActionEvent>()
+		showSubmittedButton.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent ae)
 			{
 				showContent = 2;
-				addressField.setText(website + "/submitted_content" + searchFull);
+				adressField.setText(website + "/submitted_content" + searchFull);
 				contentPane.getChildren().clear();
 				int i = 0;
 				contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
@@ -436,7 +406,7 @@ public class EditorTool
 								Content.updateContent(post.getID(), text.get(0), text.get(1), text.get(2), CurrentUser.getUsername());
 							});
 							contentPane.getChildren().clear();
-							populateContent(contentPane, addressField);
+							Home.populateContent(contentPane, adressField);
 							showAllButton.fire();
 							showSubmittedButton.fire();
 						}
@@ -444,9 +414,9 @@ public class EditorTool
 					i++;
 				}
 			}
-		});*/
-		
-		/*Button showPublishedButton = new Button("View published content");
+		});
+
+		Button showPublishedButton = new Button("View published content");
 		optionsPane.getChildren().add(showPublishedButton);
 		showPublishedButton.setOnAction(new EventHandler<ActionEvent>()
 		{
@@ -454,7 +424,7 @@ public class EditorTool
 			public void handle(ActionEvent ae)
 			{
 				showContent = 1;
-				addressField.setText(website + "/published_content" + searchFull);
+				adressField.setText(website + "/published_content" + searchFull);
 				contentPane.getChildren().clear();
 				int i = 0;
 				contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
@@ -466,9 +436,9 @@ public class EditorTool
 					i++;
 				}
 			}
-		});*/
-		
-		/*searchField.setOnAction(new EventHandler<ActionEvent>()
+		});
+
+		searchField.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent ae)
@@ -477,8 +447,8 @@ public class EditorTool
 				refreshButton.fire();
 			}
 		});
-		*/
-		
+
+
 		Scene scene = new Scene(root, w, h);
 		scene.getStylesheets().add("application/library/stylesheets/basic.css");
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>()
@@ -493,23 +463,21 @@ public class EditorTool
 				}
 			}
 		});
-		
+
 		stage.setScene(scene);
 		stage.show();
 //		stage.setMaximized(true);
-		
-		/*refreshButton.requestFocus();*/
-		
-		
+
+		refreshButton.requestFocus();
+
+
 		w = stage.getWidth();
 		h = stage.getHeight();
-		
-		/*Button adminToolButton = new Button("Admin tool");
+
+		Button adminToolButton = new Button("Admin tool");
 		optionsPane.getChildren().add(adminToolButton);
 		if (!CurrentUser.hasAdminRights())
-		{
 			adminToolButton.setVisible(false);
-		}
 		adminToolButton.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -517,9 +485,9 @@ public class EditorTool
 			{
 				AdminTool.showAdminTool(stage, w, h);
 			}
-		});*/
-		
-		/*Button loginButton = new Button();
+		});
+
+		Button loginButton = new Button();
 		if (CurrentUser.getUsername() == null)
 			loginButton.setText("Log in / Register");
 		else loginButton.setText("Log out");
@@ -538,219 +506,69 @@ public class EditorTool
 					loginButton.setText("Log in / Register");
 				}
 			}
-		});*/
-		
-		
-		topPane.setPrefSize(w, 100);
-		topPane.setLayoutX(0);
-		topPane.setLayoutY(0);
-		topPane.setMaxHeight(h/12);
-		
-		background.setLayoutX(0);
-		background.setLayoutY(0);
-		
-		
-		addressField.setLayoutX(w / 12);
-		addressField.setLayoutY(((h / 12) - addressField.getHeight()) / 2);
-		addressField.setPrefWidth(w - (w / 6));
-		
-		buttons.setLayoutX((addressField.getLayoutX() - 78) / 2);
-		buttons.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 14) / 2));
-		
-		lock.setLayoutX(addressField.getLayoutX() + 20);
-		lock.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 13) / 2));
-		
-		/*optionsPane.setLayoutX(0);
-		optionsPane.setLayoutY(h / 12);
-		optionsPane.setPrefSize(w / 6, h - (h / 12) - 22);
-		
-		loggedInLabel.setLayoutX(6);
-		loggedInLabel.setLayoutY(6);*/
-		
-		searchField.setLayoutX(5);
-		searchField.setLayoutY(110);
-		searchField.setPrefSize((w / 6) - 10, 30);
-		
-		/*createButton.setLayoutX(0);
-		createButton.setLayoutY(50);
-		createButton.setPrefSize(w/6, 50);*/
-		
-		/*showAllButton.setLayoutX(0);
-		showAllButton.setLayoutY(150);
-		showAllButton.setPrefSize(w / 6, 50);*/
-		
-	/*	showSubmittedButton.setLayoutX(0);
-		showSubmittedButton.setLayoutY(200);
-		showSubmittedButton.setPrefSize(w / 6, 50);
-		
-		showPublishedButton.setLayoutX(0);
-		showPublishedButton.setLayoutY(250);
-		showPublishedButton.setPrefSize(w / 6, 50);
-		
-		adminToolButton.setLayoutX(0);
-		adminToolButton.setLayoutY(350);
-		adminToolButton.setPrefSize(w / 6, 50);*/
-		
-		/*loginButton.setLayoutX(0);
-		loginButton.setLayoutY(450);
-		loginButton.setPrefSize(w / 6, 50);*/
-		
-		/*rightScroll.setLayoutX(w / 6);
-		rightScroll.setLayoutY(h / 12);
-		rightScroll.setPrefSize(w-(w/6), h-(h/12)-22);*/
-		
-		
-		
-		/*w = width;
-		h = height;
+		});
 
-		System.out.println("Started Edit tool");
 
-		Pane root = new Pane();                             // Creates a root in which we hang everything else in the scene
-		root.setId("root");                                 // Allows searching the scene for this pane.
-		Scene editScene = new Scene(root, width, height);   // Creates a new Scene using the root and given dimensions
-		stage.setScene(editScene);                          // Instructs the single Stage to prepare the Scene
-		stage.show();                                       // Instructs the single Stage to be shown. Necessary!
 
-		editScene.getStylesheets().add(stylesheets + "/basic.css");
-
-		escapeKeyHandler(editScene);                        // Handles the escape key
-
-		Pane topPane = new Pane();
-		topPane.setId("topPane");
-		root.getChildren().add(topPane);
-		//addTopBar(topPane);
-
-		addViews(topPane, images + "/background.png", 0, 0);
 		topPane.setLayoutX(0);
 		topPane.setLayoutY(0);
 		topPane.setPrefSize(w, h / 12);
 
+		background.setLayoutX(0);
+		background.setLayoutY(0);
 
+		refreshButton.setLayoutX(2 * (w / 42));
+		refreshButton.setLayoutY(((h / 12) - adressField.getHeight()) / 2);
+		refreshButton.setPrefSize(w / 42, adressField.getHeight());
 
-		Pane optionsPane = new Pane();
-		optionsPane.setId("optionsPane");
-		root.getChildren().add(optionsPane);
-		optionsPane.setStyle("-fx-background-color: #444444;");
+		adressField.setLayoutX(w / 12);
+		adressField.setLayoutY(((h / 12) - adressField.getHeight()) / 2);
+		adressField.setPrefWidth(w - (w / 6));
+
+		buttons.setLayoutX((adressField.getLayoutX() - 78) / 2);
+		buttons.setLayoutY(adressField.getLayoutY() + ((adressField.getHeight() - 14) / 2));
+
+		lock.setLayoutX(adressField.getLayoutX() + 20);
+		lock.setLayoutY(adressField.getLayoutY() + ((adressField.getHeight() - 13) / 2));
 
 		optionsPane.setLayoutX(0);
 		optionsPane.setLayoutY(h / 12);
 		optionsPane.setPrefSize(w / 6, h - (h / 12) - 22);
-		optionsPane.getChildren().add(new TextField());
 
-		for (Object o : root.getChildren())
-		{
-			System.out.println(o.toString());
-		}
-*/
-		//Main.disconnectDB();
-		
-		/*
-		Pane root = new Pane();
-		Scene editScene = new Scene(root, width, height);
-		stage.setScene(editScene);
-		stage.show();
-		
-		Pane topPane = new Pane();
-		
-		root.getChildren().add(topPane);
-		
-		System.out.println("adding view1");
-		addViews(topPane, images + "/background.png");
-		
-		System.out.println("adding view2");
-		addViews(topPane, images + "buttons.png");
-		*/
-		
-		/*Pane root = new Pane();
-		
-		Pane topPane = new Pane();
-		root.getChildren().add(topPane);
-		
-		ImageView background = new ImageView(new Image("application/library/images/background.png"));
-		topPane.getChildren().add(background);
-		
-		ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
-		topPane.getChildren().add(buttons);
-		
-		TextField addressField = new TextField(website);
-		topPane.getChildren().add(addressField);
-		addressField.setFocusTraversable(false);
-		addressField.setEditable(false);
-		
-		ImageView lock = new ImageView(new Image("application/library/images/lock.png"));
-		topPane.getChildren().add(lock);
-		
-		Pane usersPane = new Pane();
-		ScrollPane scrollPane = new ScrollPane(usersPane);
-		root.getChildren().add(scrollPane);
-		int i = 0;
-		for (Label label : Users.getLabelsNotCurrent())
-		{
-			usersPane.getChildren().add(label);
-			label.setLayoutX(200);
-			label.setLayoutY(160 + (60 * i));
-			label.setFont(Font.font("Andale Mono", 16));
-			i++;
-		}
-		
-		
-		Scene scene = new Scene(root, w, h);
-		scene.getStylesheets().add("application/library/stylesheets/basic.css");
-		scene.setOnKeyPressed(new EventHandler<KeyEvent>()
-		{
-			@Override
-			public void handle(KeyEvent ke)
-			{
-				if (ke.getCode() == KeyCode.ESCAPE)
-				{
-					stage.close();
-					DB.disconnect();
-				}
-			}
-		});
-		
-		stage.setScene(scene);
-		stage.show();
-		
-		
-		Button backToHomeButton = new Button("<-- back to the feed");
-		root.getChildren().add(backToHomeButton);
-		backToHomeButton.setOnAction(new EventHandler<ActionEvent>()
-		{
-			@Override
-			public void handle(ActionEvent ae)
-			{
-				Home.showHome(stage, w, h);
-			}
-		});
-		
-		
-		topPane.setLayoutX(0);
-		topPane.setLayoutY(0);
-		topPane.setPrefSize(w, h / 12);
-		
-		background.setLayoutX(0);
-		background.setLayoutY(0);
-		
-		addressField.setLayoutX(w / 12);
-		addressField.setLayoutY(((h / 12) - addressField.getHeight()) / 2);
-		addressField.setPrefWidth(w - (w / 6));
-		
-		buttons.setLayoutX((addressField.getLayoutX() - 78) / 2);
-		buttons.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 14) / 2));
-		
-		lock.setLayoutX(addressField.getLayoutX() + 20);
-		lock.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 13) / 2));
-		
-		backToHomeButton.setLayoutX(0);
-		backToHomeButton.setLayoutY(h / 12);
-		backToHomeButton.setPrefSize(w, 50);
-		
-		scrollPane.setLayoutX(0);
-		scrollPane.setLayoutY((h / 12) + 50);
-		scrollPane.setPrefSize(w, h - (h / 12) - 72);
-		*/
+		loggedInLabel.setLayoutX(6);
+		loggedInLabel.setLayoutY(6);
+
+		searchField.setLayoutX(5);
+		searchField.setLayoutY(110);
+		searchField.setPrefSize((w / 6) - 10, 30);
+
+		createButton.setLayoutX(0);
+		createButton.setLayoutY(50);
+		createButton.setPrefSize(w / 6, 50);
+
+		showAllButton.setLayoutX(0);
+		showAllButton.setLayoutY(150);
+		showAllButton.setPrefSize(w / 6, 50);
+
+		showSubmittedButton.setLayoutX(0);
+		showSubmittedButton.setLayoutY(200);
+		showSubmittedButton.setPrefSize(w / 6, 50);
+
+		showPublishedButton.setLayoutX(0);
+		showPublishedButton.setLayoutY(250);
+		showPublishedButton.setPrefSize(w / 6, 50);
+
+		adminToolButton.setLayoutX(0);
+		adminToolButton.setLayoutY(350);
+		adminToolButton.setPrefSize(w / 6, 50);
+
+		loginButton.setLayoutX(0);
+		loginButton.setLayoutY(450);
+		loginButton.setPrefSize(w / 6, 50);
+
+		rightScroll.setLayoutX(w / 6);
+		rightScroll.setLayoutY(h / 12);
+		rightScroll.setPrefSize(w - (w / 6), h - (h / 12) - 22);
 	}
 
 	/**
@@ -774,11 +592,42 @@ public class EditorTool
 		});
 	}
 
+	/**
+	 * Creates the TopBar with standard size according to screen size.
+	 *
+	 * @param topPane The Pane which is to hold the TopBar
+	 */
 	public static void addTopBar(Pane topPane)
 	{
-		addViews(topPane, images + "/background.png", 0, 0);
+		addViews(topPane, images + "/background.png", 0, 0, w, h / 12);
 		topPane.setLayoutX(0);
 		topPane.setLayoutY(0);
 		topPane.setPrefSize(w, h / 12);
+
+		TextField addressField = new TextField(website);
+		addressField.setId("addressField");
+		stage.setScene(editScene);
+		stage.setResizable(true);
+		stage.setResizable(false);
+		topPane.getChildren().add(addressField);
+		addressField.setFocusTraversable(false);
+		addressField.setEditable(false);
+		addressField.setLayoutX(w / 12);
+		addressField.setLayoutY(((h / 12) - addressField.getHeight()) / 2);
+		addressField.setPrefWidth(w - (w / 6));
+
+		System.out.println(addressField.getHeight());
+		System.out.println(h / 12);
+
+
+		ImageView buttons = new ImageView(new Image("application/library/images/buttons.png"));
+		topPane.getChildren().add(buttons);
+		buttons.setLayoutX((addressField.getLayoutX() - 78) / 2);
+		buttons.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 14) / 2));
+
+		ImageView lock = new ImageView(new Image("application/library/images/lock.png"));
+		topPane.getChildren().add(lock);
+		lock.setLayoutX(addressField.getLayoutX() + 20);
+		lock.setLayoutY(addressField.getLayoutY() + ((addressField.getHeight() - 13) / 2));
 	}
 }

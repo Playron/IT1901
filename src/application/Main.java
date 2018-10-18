@@ -21,10 +21,11 @@ public class Main extends Application
 	{
 		Stage stage = primaryStage;
 		stage.setMaximized(true);
-		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		//stage.show();
+		//Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
-		//Home.showHome(stage, 1, 1);
-		EditorTool.showEditTool(stage, dimension.getWidth(), dimension.getHeight());
+		Home.showHome(stage, 1, 1);
+		//EditorTool.showEditTool(stage, stage.getWidth(), stage.getHeight());
 		
 		System.out.println("Out of Main.start");
 	}
