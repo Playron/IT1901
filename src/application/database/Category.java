@@ -8,4 +8,9 @@ public class Category
 
 	}
 
+	public static void addCategoryToPost(String categoryName)
+	{
+
+	}
+
 }
