@@ -4,6 +4,12 @@ public class Category
 {
 
 	//TODO create implementation for #28
+
+	/**
+	 * @param categoryName The String that corresponds to the categoryName we want to create.
+	 * @throws Exception Currently a standard Exception that indicates method name and class
+	 * @author Torleif Hensvold
+	 */
 	public static void createCategory(String categoryName) throws Exception
 	{
 		String query;
@@ -25,11 +31,21 @@ public class Category
 		}
 	}
 
-
 	//TODO create implementation for #14
 	public static void addCategoryToPost(String categoryName)
 	{
 
+	}
+
+	public static void main(String[] args)
+	{
+		try
+		{
+			createCategory("ad");
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 }
