@@ -27,6 +27,8 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Optional;
 
+// TODO Fix the whole clustertruck!
+
 public class EditorTool
 {
 	

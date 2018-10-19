@@ -23,9 +23,9 @@ public class Main extends Application
 		stage.setMaximized(true);
 		//stage.show();
 		//Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-
-		//Home.showHome(stage, 1, 1);
-		EditorTool.showEditTool(stage, stage.getWidth(), stage.getHeight());
+		
+		Home.showHome(stage, 1, 1);
+		//EditorTool.showEditTool(stage, stage.getWidth(), stage.getHeight());
 		
 		System.out.println("Out of Main.start");
 	}
