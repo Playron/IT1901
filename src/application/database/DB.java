@@ -87,6 +87,7 @@ public class DB {
 			e.printStackTrace();
 		}
 	}
+	// TODO allow the method to push the exception higher up, so the methods calling it can handle it. This will allow the application to give the user knowledge.
 	
 	/**
 	 * Used for queries that alter the content of the database, such as deletes (or inserts)
@@ -136,7 +137,7 @@ public class DB {
 	 * The only purpose of this main-method is to initialize the database with an admin in the user-table.
 	 * <br><br>This method should never do anything else than run the initDatabase()-method.
 	 * <br><ul>
-	 * <li>Username:  tadmin</li>
+	 * <li>Username:  admin</li>
 	 * <li>Password:  adminpass</li>
 	 * </ul>
 	 *
