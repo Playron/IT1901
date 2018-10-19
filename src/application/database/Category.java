@@ -22,7 +22,8 @@ public class Category
 		}
 		try
 		{
-			query = "INSERT INTO categories (categoryName) VALUE (" + categoryName + ");";
+			query = "INSERT INTO categories (categoryName) VALUE (\"" + categoryName + "\");";
+			//System.out.println(query);
 			DB.insert(query);
 		} catch (Exception e)
 		{
@@ -41,7 +42,19 @@ public class Category
 	{
 		try
 		{
-			createCategory("ad");
+			DB.connect();
+			//System.out.println(DB.select("SELECT * FROM categories WHERE categoryName='test'").first());
+			if (!DB.select("SELECT * FROM categories WHERE categoryName='test'").first())
+			{
+				createCategory("test");
+				System.out.println("Created category 'test'.");
+			}
+			else
+			{
+				DB.delete("DELETE FROM categories WHERE categoryName = 'test'");
+				System.out.println("Deleted category 'test'.");
+			}
+			DB.disconnect();
 		} catch (Exception e)
 		{
 			e.printStackTrace();
