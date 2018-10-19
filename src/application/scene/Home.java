@@ -229,7 +229,7 @@ public class Home {
 		optionsPane.getChildren().add(loggedInLabel);
 		if (CurrentUser.getUsername() == null)
 			loggedInLabel.setText("You are not logged in");
-		else 
+		else
 			loggedInLabel.setText("Logged in as:\n\t" + CurrentUser.getUsername());
 		loggedInLabel.setTextFill(Color.web("#ffffff"));
 		loggedInLabel.setFont(Font.font(10));
@@ -242,7 +242,6 @@ public class Home {
 		int i = 0;
 		populateContent(contentPane, adressField);
 		
-
 		// Button not visible. Still here as the onAction property still has uses
 		Button refreshButton = new Button("O");
 		topPane.getChildren().add(refreshButton);
