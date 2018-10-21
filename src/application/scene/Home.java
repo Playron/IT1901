@@ -180,6 +180,19 @@ public class Home {
 		}
 	}
 	
+	/**
+	 * @param node is the Node that is being placed
+	 * @param x is the x-value of the node's new placement
+	 * @param y is the y-value of the node's new placement
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void place(Node node, Double x, Double y) {
+		if (x != null)
+			node.setLayoutX(x);
+		if (y != null)
+			node.setLayoutY(y);
+	}
 
 	/**
 	 * Contains all the buttons and panes you can see on the homescreen,
