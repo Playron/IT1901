@@ -28,6 +28,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -192,6 +193,26 @@ public class Home {
 			node.setLayoutX(x);
 		if (y != null)
 			node.setLayoutY(y);
+	}
+	
+	/**
+	 * @param region is the Region that is being placed
+	 * @param x is the x-value of the region's new placement
+	 * @param y is the y-value of the region's new placement
+	 * @param w is the width of the region's new state
+	 * @param h is the height of the region's new state
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void place(Region region, Double x, Double y, Double w, Double h) {
+		if (x != null)
+			region.setLayoutX(x);
+		if (y != null)
+			region.setLayoutY(y);
+		if (w != null)
+			region.setPrefWidth(w);
+		if (h != null)
+			region.setPrefHeight(h);
 	}
 
 	/**
