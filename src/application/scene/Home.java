@@ -370,65 +370,23 @@ public class Home {
 		
 		
 		
-		topPane.setLayoutX(0);
-		topPane.setLayoutY(0);
-		topPane.setPrefSize(w, h / 12);
-
-		background.setLayoutX(0);
-		background.setLayoutY(0);
+		place((Region) topPane, 0.0, 0.0, w, h/12);
+		place((Node) background, 0.0, 0.0);
+		place((Region) refreshButton, 2*(w/42), ((h/12)-adressField.getHeight())/2, w/42, adressField.getHeight());
+		place((Region) adressField, w/12, ((h / 12) - adressField.getHeight()) / 2, w - (w / 6), null);
+		place((Node) buttons, (adressField.getLayoutX() - 78) / 2, adressField.getLayoutY() + ((adressField.getHeight() - 14) / 2));
+		place((Node) lock, adressField.getLayoutX() + 20, adressField.getLayoutY() + ((adressField.getHeight() - 13) / 2));
+		place((Region) optionsPane, 0.0, h/12, w/6, h-(h/12)-22);
+		place((Region) loggedInLabel, 6.0, 6.0, null, null);
+		place((Region) searchField, 5.0, 110.0, (w/6)-10, 30.0);
+		place((Region) createButton, 0.0, 50.0, w/6, 50.0);
+		place((Region) showAllButton, 0.0, 150.0, w/6, 50.0);
+		place((Region) showSubmittedButton, 0.0, 200.0, w/6, 50.0);
+		place((Region) showPublishedButton, 0.0, 250.0, w/6, 50.0);
+		place((Region) adminToolButton, 0.0, 350.0, w/6, 50.0);
+		place((Region) loginButton, 0.0, 450.0, w/6, 50.0);
+		place((Region) rightScroll, w/6, h/12, w - (w / 6), h - (h / 12) - 22);
 		
-		refreshButton.setLayoutX(2*(w/42));
-		refreshButton.setLayoutY(((h/12)-adressField.getHeight())/2);
-		refreshButton.setPrefSize(w/42, adressField.getHeight());
-		
-		adressField.setLayoutX(w / 12);
-		adressField.setLayoutY(((h / 12) - adressField.getHeight()) / 2);
-		adressField.setPrefWidth(w - (w / 6));
-		
-		buttons.setLayoutX((adressField.getLayoutX() - 78) / 2);
-		buttons.setLayoutY(adressField.getLayoutY() + ((adressField.getHeight() - 14) / 2));
-		
-		lock.setLayoutX(adressField.getLayoutX() + 20);
-		lock.setLayoutY(adressField.getLayoutY() + ((adressField.getHeight() - 13) / 2));
-		
-		optionsPane.setLayoutX(0);
-		optionsPane.setLayoutY(h/12);
-		optionsPane.setPrefSize(w/6, h-(h/12)-22);
-		
-		loggedInLabel.setLayoutX(6);
-		loggedInLabel.setLayoutY(6);
-		
-		searchField.setLayoutX(5);
-		searchField.setLayoutY(110);
-		searchField.setPrefSize((w/6)-10, 30);
-		
-		createButton.setLayoutX(0);
-		createButton.setLayoutY(50);
-		createButton.setPrefSize(w/6, 50);
-		
-		showAllButton.setLayoutX(0);
-		showAllButton.setLayoutY(150);
-		showAllButton.setPrefSize(w/6, 50);
-		
-		showSubmittedButton.setLayoutX(0);
-		showSubmittedButton.setLayoutY(200);
-		showSubmittedButton.setPrefSize(w/6, 50);
-		
-		showPublishedButton.setLayoutX(0);
-		showPublishedButton.setLayoutY(250);
-		showPublishedButton.setPrefSize(w / 6, 50);
-
-		adminToolButton.setLayoutX(0);
-		adminToolButton.setLayoutY(350);
-		adminToolButton.setPrefSize(w / 6, 50);
-
-		loginButton.setLayoutX(0);
-		loginButton.setLayoutY(450);
-		loginButton.setPrefSize(w / 6, 50);
-		
-		rightScroll.setLayoutX(w/6);
-		rightScroll.setLayoutY(h / 12);
-		rightScroll.setPrefSize(w - (w / 6), h - (h / 12) - 22);
 	}
 
 	// TODO Add documentation to loginButton!
