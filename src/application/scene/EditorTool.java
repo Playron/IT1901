@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 // TODO Fix the whole clustertruck!
+// FIXME: This is by no means finished, but will be part of the development-branch so that the other changes made to this branch will be added, so that we can progress further
 
 public class EditorTool
 {

@@ -38,7 +38,7 @@ public class Users
 				@Override
 				public int compare(User o1, User o2)
 				{
-					return o1.getUsername().compareTo(o2.getUsername());
+					return o2.getUsername().compareTo(o1.getUsername());
 				}
 			});
 			Collections.sort(users, new Comparator<User>()
@@ -46,7 +46,7 @@ public class Users
 				@Override
 				public int compare(User o1, User o2)
 				{
-					return (o1.getAccessLevel() > o2.getAccessLevel() ? 1 : -1);
+					return o1.getAccessLevel().compareTo(o2.getAccessLevel());
 				}
 			});
 		}
@@ -96,7 +96,7 @@ public class Users
 				@Override
 				public int compare(User o1, User o2)
 				{
-					return o1.getUsername().compareTo(o2.getUsername());
+					return o2.getUsername().compareTo(o1.getUsername());
 				}
 			});
 			Collections.sort(users, new Comparator<User>()
@@ -104,7 +104,7 @@ public class Users
 				@Override
 				public int compare(User o1, User o2)
 				{
-					return (o1.getAccessLevel() > o2.getAccessLevel() ? 1 : -1);
+					return o1.getAccessLevel().compareTo(o2.getAccessLevel());
 				}
 			});
 		}

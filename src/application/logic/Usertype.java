@@ -9,12 +9,14 @@ public class Usertype
 	 * @return a list of all possible usertypes / access levels
 	 * @author Niklas Sølvberg
 	 */
-	public static ArrayList<Character> usertypes()
+	public static ArrayList<String> usertypes()
 	{
-		ArrayList<Character> list = new ArrayList<Character>();
-		list.add('U');
-		list.add('E');
-		list.add('A');
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("User");
+		list.add("Author");
+		list.add("Copy Editor");
+		list.add("Executive Editor");
+		list.add("Admin");
 		return list;
 	}
 	

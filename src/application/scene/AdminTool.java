@@ -37,7 +37,7 @@ public class AdminTool
 	/**
 	 * List that contains all different usertypes
 	 */
-	static ArrayList<Character> usertypes = Usertype.usertypes();
+	static ArrayList<String> usertypes = Usertype.usertypes();
 
 	/**
 	 * Used for iterations
@@ -91,14 +91,14 @@ public class AdminTool
 				public void handle(MouseEvent me)
 				{
 					User user = Users.getUsersNotCurrent().get(usersPane.getChildren().indexOf(label));
-					ChoiceDialog<Character> dialog = new ChoiceDialog<Character>(user.getUsertype(), usertypes);
+					ChoiceDialog<String> dialog = new ChoiceDialog<String>(user.getUsertype(), usertypes);
 					dialog.setTitle(null);
 					dialog.setHeaderText("User: " + user.getUsername());
 					dialog.setContentText("Set access level: ");
-					Optional<Character> result = dialog.showAndWait();
+					Optional<String> result = dialog.showAndWait();
 					result.ifPresent(type ->
 					{
-						if (type != ' ')
+						if (!type.equals(""))
 						{
 							Content.updateUser(user.getUsername(), type);
 							AdminTool.showAdminTool(stage, w, h);

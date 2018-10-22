@@ -4,7 +4,8 @@ package application.database;
  * Valid usertypes are:
  * <ol>
  * <li>'A' - Admin</li>
- * <li>'E' - Editor</li>
+ * <li>'E' - Executive Editor</li>
+ * <li>'C' - Copy Editor</li>
  * <li>'U' - Author / Regular user</li>
  * <li>null - Unregistered user</li>
  * </ol>
@@ -86,13 +87,37 @@ public class CurrentUser {
 	}
 	
 	/**
-	 * @return if the currently logged in user has the rights of an editor
+	 * @return if the currently logged in user has the rights of an executive editor
+	 * 
+	 * @author Niklas Sølvberg
+	 * @author Alexander Bollestad
+	 */
+	public static boolean hasExecutiveEditorRights() {
+		if (isRegistered())
+			return (usertype.equals('E') || usertype.equals('A'));
+		return false;
+	}
+	
+	/**
+	 * @return if the currently logged in user has the rights of a copy editor
+	 * 
+	 * @author Niklas Sølvberg
+	 * @author Alexander Bollestad
+	 */
+	public static boolean hasCopyEditorRights() {
+		if (isRegistered())
+			return (usertype.equals('C') || hasExecutiveEditorRights());
+		return false;
+	}
+	
+	/**
+	 * @return if the currently logged in user has the rights of an author
 	 * 
 	 * @author Niklas Sølvberg
 	 */
-	public static boolean hasEditorRights() {
+	public static boolean hasAuthorRights() {
 		if (isRegistered())
-			return (usertype.equals('E') || usertype.equals('A'));
+			return (usertype.equals('F') || hasCopyEditorRights());
 		return false;
 	}
 	

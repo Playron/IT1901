@@ -99,7 +99,6 @@ public class Home {
 	 */
 	public static void addContentToPane(Pane contentPane, TextField addressField, String subSite)
 	{
-		int i = 0;
 		contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
 		addressField.setText(website + subSite + searchFull);
 		specifyPostsToLabel(contentPane);
@@ -214,6 +213,11 @@ public class Home {
 		if (h != null)
 			region.setPrefHeight(h);
 	}
+	
+	public static void visible(Node node, boolean b) {
+		node.setVisible(b);
+		node.setDisable(!b);
+	}
 
 	/**
 	 * Contains all the buttons and panes you can see on the homescreen,
@@ -291,23 +295,23 @@ public class Home {
 
 		Button createButton = new Button("Create content");
 		optionsPane.getChildren().add(createButton);
-		if (!CurrentUser.isRegistered())
-			createButton.setDisable(true);
+		if (!CurrentUser.hasAuthorRights())
+			visible((Node) createButton, false);
 		createButtonOnAction(createButton, contentPane, adressField);
 
 		
 		Button showAllButton = new Button("View all content");
 		optionsPane.getChildren().add(showAllButton);
-		if (!CurrentUser.hasEditorRights())
-			showAllButton.setDisable(true);
+		if (!CurrentUser.hasCopyEditorRights())
+			visible((Node) showAllButton, false);
 		showAllButtonOnAction(showAllButton, adressField, contentPane);
 
 
 
 		Button showSubmittedButton = new Button("View submitted content" + searchFull);
 		optionsPane.getChildren().add(showSubmittedButton);
-		if (!CurrentUser.hasEditorRights())
-			showSubmittedButton.setDisable(true);
+		if (!CurrentUser.hasCopyEditorRights())
+			visible((Node) showSubmittedButton, false);
 		showSubmittedButtonOnAction(showSubmittedButton, adressField, contentPane, showAllButton);
 
 		
@@ -407,8 +411,7 @@ public class Home {
 				else
 				{
 					Login.logout();
-					loggedInLabel.setText("You are not logged in");
-					loginButton.setText("Log in / Register");
+					Home.showHome(stage, w, h);
 				}
 			}
 		});

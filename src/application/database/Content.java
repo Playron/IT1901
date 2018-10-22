@@ -86,8 +86,16 @@ public class Content {
 	 * @param usertype is the usertype / access level of the user that is being updated
 	 * @author Niklas Sølvberg
 	 */
-	public static void updateUser(String username, char usertype)
+	public static void updateUser(String username, String accessLevel)
 	{
+		Character usertype = null;
+		switch (accessLevel) {
+			case "User": usertype = 'U'; break;
+			case "Author": usertype = 'F'; break;
+			case "Copy Editor": usertype = 'C'; break;
+			case "Executive Editor": usertype = 'E'; break;
+			case "Admin": usertype = 'A'; break;
+		}
 		String query = "UPDATE `user` SET `usertype` = \"" + usertype + "\" WHERE `username` = \"" + username + "\";";
 		DB.alter(query);
 	}
