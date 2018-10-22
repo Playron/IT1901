@@ -1,51 +1,58 @@
 package application.logic;
 
-public class User {
+public class User
+{
 
 	private String username;
-	private char usertype;
-	
+	private String usertype;
+
 	/**
 	 * Constructs a user-object
-	 * 
+	 *
 	 * @param username is the user's username
 	 * @param usertype is the user's usertype / access level
-	 * 
 	 * @author Niklas Sølvberg
 	 */
-	public User(String username, char usertype) {
+	public User(String username, char usertype)
+	{
 		this.username = username;
-		this.usertype = usertype;
+		switch (usertype) {
+			case 'U': this.usertype = "User"; break;
+			case 'F': this.usertype = "Author"; break;
+			case 'C': this.usertype = "Copy Editor"; break;
+			case 'E': this.usertype = "Executive Editor"; break;
+			case 'A': this.usertype = "Admin"; break;
+		}
 	}
-	
+
 	/**
 	 * @return the username
-	 * 
 	 * @author Niklas Sølvberg
 	 */
-	public String getUsername() {
+	public String getUsername()
+	{
 		return username;
 	}
-	
+
 	/**
 	 * Identical to getAccessLevel()
-	 * 
+	 *
 	 * @return the usertype / access level
-	 * 
 	 * @author Niklas Sølvberg
 	 */
-	public char getUsertype() {
+	public String getUsertype()
+	{
 		return usertype;
 	}
 	
 	/**
 	 * Identical to getUsertype()
-	 * 
+	 *
 	 * @return the usertype / access level
-	 * 
 	 * @author Niklas Sølvberg
 	 */
-	public char getAccessLevel() {
+	public String getAccessLevel()
+	{
 		return usertype;
 	}
 	
