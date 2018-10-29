@@ -45,6 +45,20 @@ public class Category
 	}
 	
 	
+	public static boolean categoryExists(String cat)
+	{
+		String query;
+		query = "SELECT * FROM categories WHERE categoryName='" + cat + "'";
+		try
+		{
+			return DB.select(query).first();
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	//TODO create implementation for #14
 	public static void addCategoryToPost(String categoryName)
 	{
@@ -83,12 +97,15 @@ public class Category
 				System.out.println(rs.getString(1) + " " + rs.getString(2));
 				rs.next();
 			}
+			System.out.println("Expected true: " + categoryExists("School"));
+			System.out.println("Expected false: " + categoryExists("ba"));
 			DB.disconnect();
 		} catch (Exception e)
 		{
 			DB.disconnect();
 			e.printStackTrace();
 		}
+		
 	}
 
 }
