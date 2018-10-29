@@ -1,5 +1,7 @@
 package application.database;
 
+import java.sql.ResultSet;
+
 public class Category
 {
 
@@ -31,7 +33,18 @@ public class Category
 			// TODO Add better Exception message. Slightly dependant on DB.java methods.
 		}
 	}
-
+	
+	/**
+	 * @return ResultSet including all the rows in the table 'categories'
+	 */
+	public static ResultSet getCategories()
+	{
+		String query;
+		query = "SELECT * FROM categories";
+		return DB.select(query);
+	}
+	
+	
 	//TODO create implementation for #14
 	public static void addCategoryToPost(String categoryName)
 	{
@@ -57,6 +70,23 @@ public class Category
 			DB.disconnect();
 		} catch (Exception e)
 		{
+			DB.disconnect();
+			e.printStackTrace();
+		}
+		try
+		{
+			DB.connect();
+			ResultSet rs = getCategories();
+			rs.first();
+			while (!rs.isAfterLast())
+			{
+				System.out.println(rs.getString(1) + " " + rs.getString(2));
+				rs.next();
+			}
+			DB.disconnect();
+		} catch (Exception e)
+		{
+			DB.disconnect();
 			e.printStackTrace();
 		}
 	}
