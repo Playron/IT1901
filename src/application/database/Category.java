@@ -22,6 +22,10 @@ public class Category
 		{
 			throw new IllegalArgumentException("Category name must be less than 100 characters long.");
 		}
+		else if (categoryExists(categoryName))
+		{
+			throw new IllegalArgumentException("Category already exists. Stop trying to create it!");
+		}
 		try
 		{
 			query = "INSERT INTO categories (categoryName) VALUE (\"" + categoryName + "\");";
