@@ -1,7 +1,6 @@
 package application;
 
 import application.database.DB;
-import application.scene.EditorTool;
 import application.scene.Home;
 
 import javafx.application.Application;
@@ -25,7 +24,6 @@ public class Main extends Application
 		//Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		Home.showHome(stage, 1, 1);
-		//EditorTool.showEditTool(stage, stage.getWidth(), stage.getHeight());
 		
 		System.out.println("Out of Main.start");
 	}
