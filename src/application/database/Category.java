@@ -48,7 +48,10 @@ public class Category
 		return DB.select(query);
 	}
 	
-	
+	/**
+	 * @param cat the category name we want to check if exists.
+	 * @return boolean value telling us if  the category exists or not. True if exists.
+	 */
 	public static boolean categoryExists(String cat)
 	{
 		String query;
