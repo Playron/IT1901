@@ -319,6 +319,12 @@ public class Home {
 		optionsPane.getChildren().add(showPublishedButton);
 		showPublishedButtonOnAction(showPublishedButton, adressField, contentPane);
 		
+		Button createCategoriesButton = new Button("Create categories");
+		optionsPane.getChildren().add(createCategoriesButton);
+		if (!CurrentUser.hasExecutiveEditorRights())
+			visible((Node) createCategoriesButton, false);
+		createCategoriesButtonOnAction(createCategoriesButton);
+		
 		searchField.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -388,7 +394,8 @@ public class Home {
 		place((Region) showSubmittedButton, 0.0, 200.0, w/6, 50.0);
 		place((Region) showPublishedButton, 0.0, 250.0, w/6, 50.0);
 		place((Region) adminToolButton, 0.0, 350.0, w/6, 50.0);
-		place((Region) loginButton, 0.0, 450.0, w/6, 50.0);
+		place((Region) createCategoriesButton, 0.0, 400.0, w/6, 50.0);
+		place((Region) loginButton, 0.0, 600.0, w/6, 50.0);
 		place((Region) rightScroll, w/6, h/12, w - (w / 6), h - (h / 12) - 22);
 		
 	}
@@ -440,7 +447,42 @@ public class Home {
 		});
 	}
 
+	public static void createCategoriesButtonOnAction(Button createCategoriesButton)
+	{
+		createCategoriesButton.setOnAction(new EventHandler<ActionEvent>()
+				{
 
+					@Override
+					public void handle(ActionEvent ae) {
+						// TODO Auto-generated method stub
+						Dialog<ArrayList<String>> dialog = new Dialog<ArrayList<String>>();
+						dialog.setTitle("Ceate category");
+						
+						ButtonType createButtonType = new ButtonType("Create", ButtonData.OK_DONE);
+						dialog.getDialogPane().getButtonTypes().setAll(createButtonType, ButtonType.CANCEL);
+						
+						// sets size of pane
+						Pane dialogPane = new Pane();
+						dialogPane.setPrefSize(300, 300);
+						
+						//Text field where user can write new categories to commit
+						TextField categoryName = new TextField();
+						categoryName.setPromptText("Category");
+						categoryName.setLayoutX(20);
+						categoryName.setLayoutY(250);
+						categoryName.setPrefSize(260, 25);
+						dialogPane.getChildren().setAll(categoryName);
+						
+						dialog.getDialogPane().setContent(dialogPane);
+						
+						Optional<ArrayList<String>> result = dialog.showAndWait();
+						
+						System.out.println(categoryName.getText());
+					}
+			
+				});
+	}
+	
 	public static void showSubmittedButtonOnAction(Button showSubmittedButton, TextField addressField, Pane contentPane, Button showAllButton)
 	{
 		showSubmittedButton.setOnAction(new EventHandler<ActionEvent>()
