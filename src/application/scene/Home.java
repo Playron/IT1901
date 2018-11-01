@@ -1,5 +1,7 @@
 package application.scene;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -459,6 +461,8 @@ public class Home {
 						Dialog<ArrayList<String>> dialog = new Dialog<ArrayList<String>>();
 						dialog.setTitle("Ceate category");
 						
+						dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
+						
 						// creates the button for creating category
 						ButtonType createButtonType = new ButtonType("Create", ButtonData.OK_DONE);
 						dialog.getDialogPane().getButtonTypes().setAll(createButtonType, ButtonType.CANCEL);
@@ -473,7 +477,34 @@ public class Home {
 						categoryName.setLayoutX(20);
 						categoryName.setLayoutY(250);
 						categoryName.setPrefSize(260, 25);
-						dialogPane.getChildren().setAll(categoryName);
+						
+						
+						//Field that shows the already existing categories 
+						TextArea existingCategories = new TextArea();
+						existingCategories.setLayoutX(20);
+						existingCategories.setLayoutY(20);
+						existingCategories.setPrefSize(260, 160);
+						existingCategories.setWrapText(true);
+						// setting the field to not editable
+						existingCategories.setEditable(false);
+						// adds the categories to the TextArea
+						ResultSet rs = Category.getCategories();
+						try {
+							rs.first();
+							while (!rs.isAfterLast())
+							{
+								existingCategories.appendText(rs.getString(2));
+								existingCategories.appendText("\n");
+								rs.next();
+							}
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
+						
+						// adds the different fields to the dialogpane
+						dialogPane.getChildren().setAll(categoryName,existingCategories);
 						
 						//creates a node for the create button
 						Node createButton = dialog.getDialogPane().lookupButton(createButtonType);
@@ -513,7 +544,7 @@ public class Home {
 								e.printStackTrace();
 							}
 						});
-						System.out.println(categoryName.getText());
+						//System.out.println(categoryName.getText());
 					}
 			
 				});
