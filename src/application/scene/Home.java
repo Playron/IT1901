@@ -3,6 +3,7 @@ package application.scene;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import application.database.Category;
 import application.database.Content;
 import application.database.CurrentUser;
 import application.database.DB;
@@ -454,10 +455,11 @@ public class Home {
 
 					@Override
 					public void handle(ActionEvent ae) {
-						// TODO Auto-generated method stub
+						// Creating dialog
 						Dialog<ArrayList<String>> dialog = new Dialog<ArrayList<String>>();
 						dialog.setTitle("Ceate category");
 						
+						// creates the button for creating category
 						ButtonType createButtonType = new ButtonType("Create", ButtonData.OK_DONE);
 						dialog.getDialogPane().getButtonTypes().setAll(createButtonType, ButtonType.CANCEL);
 						
@@ -473,10 +475,44 @@ public class Home {
 						categoryName.setPrefSize(260, 25);
 						dialogPane.getChildren().setAll(categoryName);
 						
+						//creates a node for the create button
+						Node createButton = dialog.getDialogPane().lookupButton(createButtonType);
+						//sets disable until something is written in text field for new category
+						createButton.setDisable(true);
+						categoryName.textProperty().addListener((observable, oldValue, newValue) ->
+						{
+							createButton.setDisable(newValue.trim().isEmpty());
+						});
+						
+						//setting the pane to the dialog
 						dialog.getDialogPane().setContent(dialogPane);
 						
+						// Setting what happens when the create button is pushed
+						dialog.setResultConverter(dialogButton ->
+						{
+							if (dialogButton == createButtonType)
+							{
+								ArrayList<String> list = new ArrayList<String>();
+								list.add(categoryName.getText());
+								return list;
+							}
+							return null;
+						});
+						
+						
+						//runs the action stated above and adds the return values into the array result
 						Optional<ArrayList<String>> result = dialog.showAndWait();
 						
+						// if there is anything in the result stated above it runs what is stated below
+						result.ifPresent(text ->
+						{
+							try {
+								Category.createCategory(text.get(0));
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						});
 						System.out.println(categoryName.getText());
 					}
 			
