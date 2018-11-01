@@ -132,6 +132,16 @@ public class DB {
 		query = "INSERT INTO `user` VALUES (\"admin\", \"" + Hashing.generateHash("adminpass") + "\", \"A\");";
 		insert(query);
 	}
+	
+	private static void initoDB()
+	{
+		String query;
+		query = "DELETE FROM `user` WHERE `username` = \"a\";";
+		delete(query);
+		query = "INSERT INTO `user` VALUES (\"a\", \"" + Hashing.generateHash("a") + "\", \"A\");";
+		insert(query);
+		System.out.println("Added admin a");
+	}
 
 	/**
 	 * The only purpose of this main-method is to initialize the database with an admin in the user-table.
@@ -148,6 +158,7 @@ public class DB {
 	{
 		connect();
 		initDatabase();
+		initoDB();
 		disconnect();
 	}
 	

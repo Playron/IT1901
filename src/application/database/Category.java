@@ -1,5 +1,7 @@
 package application.database;
 
+import java.sql.ResultSet;
+
 public class Category
 {
 
@@ -20,6 +22,10 @@ public class Category
 		{
 			throw new IllegalArgumentException("Category name must be less than 100 characters long.");
 		}
+		else if (categoryExists(categoryName))
+		{
+			throw new IllegalArgumentException("Category already exists. Stop trying to create it!");
+		}
 		try
 		{
 			query = "INSERT INTO categories (categoryName) VALUE (\"" + categoryName + "\");";
@@ -31,7 +37,35 @@ public class Category
 			// TODO Add better Exception message. Slightly dependant on DB.java methods.
 		}
 	}
-
+	
+	/**
+	 * @return ResultSet including all the rows in the table 'categories'
+	 */
+	public static ResultSet getCategories()
+	{
+		String query;
+		query = "SELECT * FROM categories";
+		return DB.select(query);
+	}
+	
+	/**
+	 * @param cat the category name we want to check if exists.
+	 * @return boolean value telling us if  the category exists or not. True if exists.
+	 */
+	public static boolean categoryExists(String cat)
+	{
+		String query;
+		query = "SELECT * FROM categories WHERE categoryName='" + cat + "'";
+		try
+		{
+			return DB.select(query).first();
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	//TODO create implementation for #14
 	public static void addCategoryToPost(String categoryName)
 	{
@@ -57,8 +91,28 @@ public class Category
 			DB.disconnect();
 		} catch (Exception e)
 		{
+			DB.disconnect();
 			e.printStackTrace();
 		}
+		try
+		{
+			DB.connect();
+			ResultSet rs = getCategories();
+			rs.first();
+			while (!rs.isAfterLast())
+			{
+				System.out.println(rs.getString(1) + " " + rs.getString(2));
+				rs.next();
+			}
+			System.out.println("Expected true: " + categoryExists("School"));
+			System.out.println("Expected false: " + categoryExists("ba"));
+			DB.disconnect();
+		} catch (Exception e)
+		{
+			DB.disconnect();
+			e.printStackTrace();
+		}
+		
 	}
 
 }

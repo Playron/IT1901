@@ -1,8 +1,11 @@
 package application.scene;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import application.database.Category;
 import application.database.Content;
 import application.database.CurrentUser;
 import application.database.DB;
@@ -319,6 +322,12 @@ public class Home {
 		optionsPane.getChildren().add(showPublishedButton);
 		showPublishedButtonOnAction(showPublishedButton, adressField, contentPane);
 		
+		Button createCategoriesButton = new Button("Create categories");
+		optionsPane.getChildren().add(createCategoriesButton);
+		if (!CurrentUser.hasExecutiveEditorRights())
+			visible((Node) createCategoriesButton, false);
+		createCategoriesButtonOnAction(createCategoriesButton);
+		
 		searchField.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -388,7 +397,8 @@ public class Home {
 		place((Region) showSubmittedButton, 0.0, 200.0, w/6, 50.0);
 		place((Region) showPublishedButton, 0.0, 250.0, w/6, 50.0);
 		place((Region) adminToolButton, 0.0, 350.0, w/6, 50.0);
-		place((Region) loginButton, 0.0, 450.0, w/6, 50.0);
+		place((Region) createCategoriesButton, 0.0, 400.0, w/6, 50.0);
+		place((Region) loginButton, 0.0, 600.0, w/6, 50.0);
 		place((Region) rightScroll, w/6, h/12, w - (w / 6), h - (h / 12) - 22);
 		
 	}
@@ -440,7 +450,106 @@ public class Home {
 		});
 	}
 
+	public static void createCategoriesButtonOnAction(Button createCategoriesButton)
+	{
+		createCategoriesButton.setOnAction(new EventHandler<ActionEvent>()
+				{
 
+					@Override
+					public void handle(ActionEvent ae) {
+						// Creating dialog
+						Dialog<ArrayList<String>> dialog = new Dialog<ArrayList<String>>();
+						dialog.setTitle("Ceate category");
+						
+						dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
+						
+						// creates the button for creating category
+						ButtonType createButtonType = new ButtonType("Create", ButtonData.OK_DONE);
+						dialog.getDialogPane().getButtonTypes().setAll(createButtonType, ButtonType.CANCEL);
+						
+						// sets size of pane
+						Pane dialogPane = new Pane();
+						dialogPane.setPrefSize(300, 300);
+						
+						//Text field where user can write new categories to commit
+						TextField categoryName = new TextField();
+						categoryName.setPromptText("Category");
+						categoryName.setLayoutX(20);
+						categoryName.setLayoutY(250);
+						categoryName.setPrefSize(260, 25);
+						
+						
+						//Field that shows the already existing categories 
+						TextArea existingCategories = new TextArea();
+						existingCategories.setLayoutX(20);
+						existingCategories.setLayoutY(20);
+						existingCategories.setPrefSize(260, 160);
+						existingCategories.setWrapText(true);
+						// setting the field to not editable
+						existingCategories.setEditable(false);
+						// adds the categories to the TextArea
+						ResultSet rs = Category.getCategories();
+						try {
+							rs.first();
+							while (!rs.isAfterLast())
+							{
+								existingCategories.appendText(rs.getString(2));
+								existingCategories.appendText("\n");
+								rs.next();
+							}
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
+						
+						// adds the different fields to the dialogpane
+						dialogPane.getChildren().setAll(categoryName,existingCategories);
+						
+						//creates a node for the create button
+						Node createButton = dialog.getDialogPane().lookupButton(createButtonType);
+						//sets disable until something is written in text field for new category
+						createButton.setDisable(true);
+						categoryName.textProperty().addListener((observable, oldValue, newValue) ->
+						{
+							createButton.setDisable(newValue.trim().isEmpty());
+						});
+						
+						//setting the pane to the dialog
+						dialog.getDialogPane().setContent(dialogPane);
+						
+						// Setting what happens when the create button is pushed
+						dialog.setResultConverter(dialogButton ->
+						{
+							if (dialogButton == createButtonType)
+							{
+								ArrayList<String> list = new ArrayList<String>();
+								list.add(categoryName.getText());
+								return list;
+							}
+							return null;
+						});
+						
+						
+						//runs the action stated above and adds the return values into the array result
+						Optional<ArrayList<String>> result = dialog.showAndWait();
+						
+						// if there is anything in the result stated above it runs what is stated below
+						result.ifPresent(text ->
+						{
+							try {
+								Category.createCategory(text.get(0));
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						});
+						//System.out.println(categoryName.getText());
+					}
+			
+				});
+	}
+	
 	public static void showSubmittedButtonOnAction(Button showSubmittedButton, TextField addressField, Pane contentPane, Button showAllButton)
 	{
 		showSubmittedButton.setOnAction(new EventHandler<ActionEvent>()
