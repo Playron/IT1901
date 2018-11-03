@@ -26,7 +26,7 @@ public class CurrentUser {
 	 * @author Niklas Sølvberg
 	 */
 	public static void setCurrentUser(String username, Character usertype) {
-		if (!(usertype == null || usertype.equals('A') || usertype.equals('U') || usertype.equals('E')))
+		if (!(usertype == null || usertype.equals('A') || usertype.equals('U') || usertype.equals('E') || usertype.equals('F') || usertype.equals('C')))
 			throw new IllegalStateException("Invalid usertype");
 		if (username == null) {
 			CurrentUser.username = null;

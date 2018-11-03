@@ -6,8 +6,6 @@ import application.scene.Home;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import java.awt.*;
-
 /**
  * Main.java should run when you start the program.
  *
@@ -24,8 +22,6 @@ public class Main extends Application
 		//Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		Home.showHome(stage, 1, 1);
-		
-		System.out.println("Out of Main.start");
 	}
 	
 	public static void main(String[] args)
@@ -41,15 +37,6 @@ public class Main extends Application
 			
 			System.out.println("Database connection closing...");
 			disconnectDB();
-			/*DB.disconnect();
-			if (DB.connected())
-			{
-				throw new IllegalStateException("Database connection could not close.");
-			}
-			else
-			{
-				System.out.println("Database connection closed.");
-			}*/
 		} catch (Exception e)
 		{
 			if (DB.connected())

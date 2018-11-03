@@ -12,11 +12,13 @@ import application.database.DB;
 import application.database.Login;
 import application.logic.Post;
 import application.logic.Posts;
-
+import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
@@ -55,6 +57,12 @@ public class Home {
 	 * This will represent the height of the maximised stage
 	 */
 	static double h;
+	
+	/**
+	 * Many changes have been bade to the Home.java class, to a point where updates is more difficult in some situations.
+	 * Adding this in addition to a Runnable-object in the showHome-method.
+	 */
+	static String lastChange = null;
 	
 	/**
 	 * This is a byte-value that decides what content is being viewed.
@@ -134,9 +142,11 @@ public class Home {
 				}
 				break;
 			case 2:
-				for (Label label : Posts.getSubmittedLabels(search))
+				ArrayList<Post> postList = Posts.getSubmittedPosts(search);
+				ArrayList<Label> labelList = Posts.getSubmittedLabels(search);
+				for (int j = 0; j < labelList.size(); j++)
 				{
-					addLabels(contentPane, label, 80, 40, 200, i);
+					addLabelsForEditors(contentPane, labelList.get(j), 80, 40, 200, i, postList.get(j));
 					i++;
 				}
 				break;
@@ -161,7 +171,110 @@ public class Home {
 		label.setLayoutX(x);
 		label.setLayoutY(y + (dy * i));
 	}
-
+	
+	/**
+	 * @param contentPane is the container we want to add the label to
+	 * @param label is the label we want to add
+	 * @param x is the x-value
+	 * @param y is the initial y-value
+	 * @param dy is the change in y-value between labels
+	 * @param i is the index of the label/post
+	 * @param post is the post corresponding to the label.
+	 * 
+	 * @author Torleif Hensvold
+	 * @author Niklas Sølvberg
+	 */
+	public static void addLabelsForEditors(Pane contentPane, Label label, int x, int y, int dy, int i, Post post)
+	{
+		contentPane.getChildren().add(label);
+		label.setLayoutX(x);
+		label.setLayoutY(y + (dy * i));
+		if (post.getAssigned() == null || post.getAssigned().equals(CurrentUser.getUsername())) {
+			label.setOnMouseClicked(new EventHandler<MouseEvent>()
+			{
+				@Override
+				public void handle(MouseEvent me)
+				{
+					Dialog<ArrayList<String>> dialog = new Dialog<ArrayList<String>>();
+					dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
+					dialog.initModality(Modality.APPLICATION_MODAL);
+					dialog.setTitle("Make new post");
+					dialog.setHeaderText(null);
+					ButtonType publishButtonType = new ButtonType("Publish", ButtonData.OK_DONE);
+					dialog.getDialogPane().getButtonTypes().setAll(publishButtonType, ButtonType.CANCEL);
+					Pane dialogPane = new Pane();
+					dialogPane.setPrefSize(300, 300);
+					Label headerLabel = new Label("Header:");
+					headerLabel.setLayoutX(20);
+					headerLabel.setLayoutY(20);
+					TextField headerField = new TextField(post.getHeader());
+					headerField.setLayoutX(20);
+					headerField.setLayoutY(50);
+					headerField.setPrefSize(260, 25);
+					Label contentLabel = new Label("Content:");
+					contentLabel.setLayoutX(20);
+					contentLabel.setLayoutY(90);
+					TextArea contentArea = new TextArea(post.getBody());
+					contentArea.setLayoutX(20);
+					contentArea.setLayoutY(120);
+					contentArea.setPrefSize(260, 160);
+					contentArea.setWrapText(true);
+					dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea);
+					Node publishButton = dialog.getDialogPane().lookupButton(publishButtonType);
+					publishButton.setDisable(true);
+					contentArea.textProperty().addListener((observable, oldValue, newValue) ->
+					{
+						publishButton.setDisable(newValue.trim().isEmpty());
+					});
+					dialog.getDialogPane().setContent(dialogPane);
+					dialog.setResultConverter(dialogButton ->
+					{
+						if (dialogButton == publishButtonType)
+						{
+							ArrayList<String> list = new ArrayList<String>();
+							list.add(headerField.getText());
+							list.add(contentArea.getText());
+							list.add("published");
+							return list;
+						}
+						return null;
+					});
+					Optional<ArrayList<String>> result = dialog.showAndWait();
+					result.ifPresent(text ->
+					{
+						Content.updateContent(post.getID(), text.get(0), text.get(1), text.get(2), CurrentUser.getUsername());
+					});
+					lastChange = "submitted";
+				}
+			});
+		}
+		if (post.isAssigned()) {
+			Label assignedLabel = new Label("Assigned to:\n\t" + post.getAssigned());
+			contentPane.getChildren().add(assignedLabel);
+			assignedLabel.setLayoutX(x + 800);
+			assignedLabel.setLayoutY(y + (dy * i) + 30);
+		}
+		else {
+			Button assignButton = new Button("Assign yourself!");
+			contentPane.getChildren().add(assignButton);
+			assignButton.setLayoutX(x + 800);
+			assignButton.setLayoutY(y + (dy * i) + 30);
+			assignButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent ae) {
+					Alert alert = new Alert(AlertType.CONFIRMATION);
+					alert.setTitle("Assign post");
+					alert.setHeaderText(null);
+					alert.setContentText("Are you sure you want to assign\nthis post to yourself?");
+					Optional<ButtonType> result = alert.showAndWait();
+					if (result.get() == ButtonType.OK) {
+						Content.updateAssignedToMyself(post.getID());
+					}
+					lastChange = "submitted";
+				}
+			});
+		}
+	}
 
 	/**
 	 * @param contentPane  The Pane in which we want to add content
@@ -280,7 +393,6 @@ public class Home {
 		rightScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		rightScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		root.getChildren().add(rightScroll);
-		int i = 0;
 		populateContent(contentPane, adressField);
 		
 		// Button not visible. Still here as the onAction property still has uses
@@ -291,7 +403,6 @@ public class Home {
 			@Override
 			public void handle(ActionEvent ae) {
 				contentPane.getChildren().clear();
-				int i = 0;
 				populateContent(contentPane, adressField);
 			}
 		});
@@ -401,6 +512,24 @@ public class Home {
 		place((Region) loginButton, 0.0, 600.0, w/6, 50.0);
 		place((Region) rightScroll, w/6, h/12, w - (w / 6), h - (h / 12) - 22);
 		
+		System.out.println("AnimationTimer initialized.");
+		new AnimationTimer() {
+			long prev = 0L;
+			@Override
+			public void handle(long now) {
+				if (now - prev >= 16_000_000) {
+					if (lastChange != null) {
+						switch (lastChange) {
+							case "submitted": showSubmittedButton.fire(); break;
+							case "published": showPublishedButton.fire(); break;
+							case "all": showAllButton.fire(); break;
+						}
+						lastChange = null;
+					}
+				}
+			}
+		}.start();
+		System.out.println("AnimationTimer stopped.");
 	}
 
 	// TODO Add documentation to loginButton!
@@ -560,77 +689,8 @@ public class Home {
 				showContent = 2;
 				addressField.setText(website + "/submitted_content" + searchFull);
 				contentPane.getChildren().clear();
-				int i = 0;
 				contentPane.setPrefHeight(40 + (200 * Posts.getSubmittedLabels(search).size()));
-				for (Label label : Posts.getSubmittedLabels(search))
-				{
-					postToEdit = i;
-					contentPane.getChildren().add(label);
-					label.setLayoutX(80);
-					label.setLayoutY(40 + (200 * i));
-					label.setOnMouseClicked(new EventHandler<MouseEvent>()
-					{
-						@Override
-						public void handle(MouseEvent me)
-						{
-							Post post = Posts.getSubmittedPosts().get(contentPane.getChildren().indexOf(label));
-							Dialog<ArrayList<String>> dialog = new Dialog<ArrayList<String>>();
-							dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
-							dialog.initModality(Modality.APPLICATION_MODAL);
-							dialog.setTitle("Make new post");
-							dialog.setHeaderText(null);
-							ButtonType publishButtonType = new ButtonType("Publish", ButtonData.OK_DONE);
-							dialog.getDialogPane().getButtonTypes().setAll(publishButtonType, ButtonType.CANCEL);
-							Pane dialogPane = new Pane();
-							dialogPane.setPrefSize(300, 300);
-							Label headerLabel = new Label("Header:");
-							headerLabel.setLayoutX(20);
-							headerLabel.setLayoutY(20);
-							TextField headerField = new TextField(post.getHeader());
-							headerField.setLayoutX(20);
-							headerField.setLayoutY(50);
-							headerField.setPrefSize(260, 25);
-							Label contentLabel = new Label("Content:");
-							contentLabel.setLayoutX(20);
-							contentLabel.setLayoutY(90);
-							TextArea contentArea = new TextArea(post.getBody());
-							contentArea.setLayoutX(20);
-							contentArea.setLayoutY(120);
-							contentArea.setPrefSize(260, 160);
-							contentArea.setWrapText(true);
-							dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea);
-							Node publishButton = dialog.getDialogPane().lookupButton(publishButtonType);
-							publishButton.setDisable(true);
-							contentArea.textProperty().addListener((observable, oldValue, newValue) ->
-							{
-								publishButton.setDisable(newValue.trim().isEmpty());
-							});
-							dialog.getDialogPane().setContent(dialogPane);
-							dialog.setResultConverter(dialogButton ->
-							{
-								if (dialogButton == publishButtonType)
-								{
-									ArrayList<String> list = new ArrayList<String>();
-									list.add(headerField.getText());
-									list.add(contentArea.getText());
-									list.add("published");
-									return list;
-								}
-								return null;
-							});
-							Optional<ArrayList<String>> result = dialog.showAndWait();
-							result.ifPresent(text ->
-							{
-								Content.updateContent(post.getID(), text.get(0), text.get(1), text.get(2), CurrentUser.getUsername());
-							});
-							contentPane.getChildren().clear();
-							populateContent(contentPane, addressField);
-							showAllButton.fire();
-							showSubmittedButton.fire();
-						}
-					});
-					i++;
-				}
+				populateContent(contentPane, addressField);
 			}
 		});
 	}

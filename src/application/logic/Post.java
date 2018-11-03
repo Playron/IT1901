@@ -7,6 +7,7 @@ public class Post {
 	private String poster;
 	private String editor;
 	private int ID;
+	private String assigned;
 	
 	/**
 	 * Constructs post-objects
@@ -24,6 +25,7 @@ public class Post {
 		this.body = body;
 		this.poster = poster;
 		editor = null;
+		assigned = null;
 	}
 	
 	/**
@@ -43,6 +45,48 @@ public class Post {
 		this.body = body;
 		this.poster = poster;
 		this.editor = editor;
+		assigned = null;
+	}
+	
+	/**
+	 * Constructs post-objects
+	 * 
+	 * @param assigned is the assigned editor of a post
+	 * @param ID is the ID of a post
+	 * @param header is the header of a post
+	 * @param body is the content of a post
+	 * @param poster is the user that created a post
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public Post(String assigned, int ID, String header, String body, String poster) {
+		this.ID = ID;
+		this.header = header;
+		this.body = body;
+		this.poster = poster;
+		editor = null;
+		this.assigned = assigned;
+	}
+	
+	/**
+	 * Constructs post-objects
+	 * 
+	 * @param assigned is the assigned editor of a post
+	 * @param ID is the ID of a post
+	 * @param header is the header of a post
+	 * @param body is the content of a post
+	 * @param poster is the user that created a post
+	 * @param editor is the editor of a post
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public Post(String assigned, int ID, String header, String body, String poster, String editor) {
+		this.ID = ID;
+		this.header = header;
+		this.body = body;
+		this.poster = poster;
+		this.editor = editor;
+		this.assigned = assigned;
 	}
 	
 	/**
@@ -97,6 +141,41 @@ public class Post {
 	 */
 	public int getID() {
 		return ID;
+	}
+	
+	/**
+	 * @return the assigned editor of the post
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public String getAssigned() {
+		if (assigned == null)
+			return null;
+		if (assigned.equals(""))
+			return null;
+		return assigned;
+	}
+	
+	/**
+	 * @param assigned is the new assigned editor of the post
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public void setAssigned(String assigned) {
+		this.assigned = assigned;
+	}
+	
+	/**
+	 * @return if the post is assigned to anyone
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public boolean isAssigned() {
+		if (assigned == null)
+			return false;
+		if (assigned.equals(""))
+			return false;
+		return true;
 	}
 	
 }

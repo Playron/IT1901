@@ -50,7 +50,7 @@ public class Posts {
 		try {
 			while (r.next())
 				if (r.getString("state").equals("submitted"))
-					posts.add(new Post(r.getInt("postID"), r.getString("header"), r.getString("text"), r.getString("poster"), r.getString("editor")));
+					posts.add(new Post(r.getString("assignedto"), r.getInt("postID"), r.getString("header"), r.getString("text"), r.getString("poster"), r.getString("editor")));
 		} catch (SQLException e)
 		{
 			e.printStackTrace();
