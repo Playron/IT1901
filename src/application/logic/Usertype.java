@@ -20,4 +20,38 @@ public class Usertype
 		return list;
 	}
 	
+	/**
+	 * @param usertype is an accesslevel represented as a Character
+	 * @return the accesslevel represented as a String
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static String asString(Character usertype) {
+		switch (usertype) {
+			case 'U': return "User";
+			case 'F': return "Author";
+			case 'C': return "Copy Editor";
+			case 'E': return "Executive Editor";
+			case 'A': return "Admin";
+			default: return null;
+		}
+	}
+	
+	/**
+	 * @param usertype is an accesslevel represented as a String
+	 * @return the accesslevel represented as a Character
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static Character asChar(String usertype) {
+		switch (usertype) {
+			case "User": return 'U';
+			case "Author": return 'F';
+			case "Copy Editor": return 'C';
+			case "Executive Editor": return 'E';
+			case "Admin": return 'A';
+			default: return null;
+		}
+	}
+	
 }
