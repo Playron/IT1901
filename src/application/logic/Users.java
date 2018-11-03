@@ -120,11 +120,11 @@ public class Users
 		ArrayList<Label> labels = new ArrayList<Label>();
 		for (User user : getUsersNotCurrent())
 		{
-			String line = "     " + user.getUsername();
+			String line = "   " + user.getUsername();
 			int l = line.length();
 			for (int i = 0; i < 50 - l; i++)
 				line += " ";
-			line += user.getUsertype() + "\n-------------------------------------------------------------";
+			line += user.getUsertype() + "\n___________________________________________________________________";
 			labels.add(new Label(line));
 		}
 		return labels;
@@ -160,6 +160,24 @@ public class Users
 				if (user.getUsername().equals(usernamesRequests.get(i)))
 					users.add(new User(user.getUsername(), Usertype.asChar(user.getAccessLevel()), usertypesRequests.get(i)));
 		return users;
+	}
+	
+	/**
+	 * @return label representations of all users that is stored in the database and have an active accesslevel request
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static ArrayList<Label> getLabelsAccessLevelRequests() {
+		ArrayList<Label> labels = new ArrayList<Label>();
+		for (User user : getUsersWithAccessLevelRequests()) {
+			String line = "   " + user.getUsername();
+			int l = line.length();
+			for (int i = 0; i < 42 - l; i++)
+				line += " ";
+			line += user.getAccessLevel() + "  -->  " + user.getRequestedAccessLevel() + "\n___________________________________________________________________";
+			labels.add(new Label(line));
+		}
+		return labels;
 	}
 	
 }
