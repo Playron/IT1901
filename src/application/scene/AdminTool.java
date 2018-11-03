@@ -45,6 +45,11 @@ public class AdminTool
 	static int i;
 
 	/**
+	 * Used for iterations
+	 */
+	static int j;
+
+	/**
 	 * Contains all the buttons and panes you can see in the admin tool,
 	 * and this is where an admin would assign and manage the roles of users on the site.
 	 *
@@ -78,19 +83,64 @@ public class AdminTool
 		Pane usersPane = new Pane();
 		ScrollPane scrollPane = new ScrollPane(usersPane);
 		root.getChildren().add(scrollPane);
+		
+		
+		
 		i = 0;
+		j = 0;
+		
+		for (Label label : Users.getLabelsAccessLevelRequests()) {
+			usersPane.getChildren().add(label);
+			j++;
+			label.setLayoutX(200);
+			label.setLayoutY(40 + (60 * i));
+			label.setFont(Font.font("Andale Mono", 16));
+			Button acceptButton = new Button("Accept");
+			usersPane.getChildren().add(acceptButton);
+			j++;
+			acceptButton.setLayoutX(20);
+			acceptButton.setLayoutY(40 + (60 * i));
+			acceptButton.setPrefSize(80, 25);
+			Button declineButton = new Button("Decline");
+			usersPane.getChildren().add(declineButton);
+			j++;
+			declineButton.setLayoutX(110);
+			declineButton.setLayoutY(40 + (60 * i));
+			declineButton.setPrefSize(80, 25);
+			acceptButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent ae) {
+					User user = Users.getUsersWithAccessLevelRequests().get(usersPane.getChildren().indexOf(label) / j);
+					Content.updateAccessLevel(user.getUsername(), Usertype.asChar(user.getRequestedAccessLevel()));
+					Content.deleteAccessLevelRequest(user.getUsername());
+					acceptButton.setDisable(true);
+					declineButton.setDisable(true);
+				}
+			});
+			declineButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent ae) {
+					User user = Users.getUsersWithAccessLevelRequests().get(usersPane.getChildren().indexOf(label) / j);
+					Content.deleteAccessLevelRequest(user.getUsername());
+					acceptButton.setDisable(true);
+					declineButton.setDisable(true);
+				}
+			});
+			i++;
+		}
+		
 		for (Label label : Users.getLabelsNotCurrent())
 		{
 			usersPane.getChildren().add(label);
 			label.setLayoutX(200);
-			label.setLayoutY(160 + (60 * i));
+			label.setLayoutY(100 + (60 * i));
 			label.setFont(Font.font("Andale Mono", 16));
 			label.setOnMouseClicked(new EventHandler<MouseEvent>()
 			{
 				@Override
 				public void handle(MouseEvent me)
 				{
-					User user = Users.getUsersNotCurrent().get(usersPane.getChildren().indexOf(label));
+					User user = Users.getUsersNotCurrent().get(usersPane.getChildren().indexOf(label) - j);
 					ChoiceDialog<String> dialog = new ChoiceDialog<String>(user.getUsertype(), usertypes);
 					dialog.setTitle(null);
 					dialog.setHeaderText("User: " + user.getUsername());
@@ -108,6 +158,7 @@ public class AdminTool
 			});
 			i++;
 		}
+				
 		
 		
 		Scene scene = new Scene(root, w, h);

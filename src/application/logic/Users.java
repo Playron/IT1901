@@ -120,11 +120,64 @@ public class Users
 		ArrayList<Label> labels = new ArrayList<Label>();
 		for (User user : getUsersNotCurrent())
 		{
-			String line = "     " + user.getUsername();
+			String line = "   " + user.getUsername();
 			int l = line.length();
 			for (int i = 0; i < 50 - l; i++)
 				line += " ";
-			line += user.getUsertype() + "\n-------------------------------------------------------------";
+			line += user.getUsertype() + "\n___________________________________________________________________";
+			labels.add(new Label(line));
+		}
+		return labels;
+	}
+	
+	/**
+	 * Creates a list of the users that have requested a new accesslevel
+	 * 
+	 * @return a list of users
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static ArrayList<User> getUsersWithAccessLevelRequests() {
+		ArrayList<User> users = new ArrayList<User>();
+		ArrayList<User> usersAll = new ArrayList<User>();
+		ArrayList<String> usernamesRequests = new ArrayList<String>();
+		ArrayList<Character> usertypesRequests = new ArrayList<Character>(); 
+		ResultSet rAll = Content.getUsers();
+		ResultSet rRequests = Content.getAccessLevelRequests();
+		try {
+			while (rAll.next()) {
+				String username = rAll.getString("username");
+				char usertype = rAll.getString("usertype").charAt(0);
+				usersAll.add(new User(username, usertype));
+			}
+			while (rRequests.next()) {
+				usernamesRequests.add(rRequests.getString("username"));
+				usertypesRequests.add(rRequests.getString("accesslevel").charAt(0));
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		for (User user : usersAll)
+			for (int i = 0; i < usernamesRequests.size(); i++)
+				if (user.getUsername().equals(usernamesRequests.get(i)))
+					users.add(new User(user.getUsername(), Usertype.asChar(user.getAccessLevel()), usertypesRequests.get(i)));
+		return users;
+	}
+	
+	/**
+	 * @return label representations of all users that is stored in the database and have an active accesslevel request
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static ArrayList<Label> getLabelsAccessLevelRequests() {
+		ArrayList<Label> labels = new ArrayList<Label>();
+		for (User user : getUsersWithAccessLevelRequests()) {
+			String line = "   " + user.getUsername();
+			int l = line.length();
+			for (int i = 0; i < 42 - l; i++)
+				line += " ";
+			line += user.getAccessLevel() + "  -->  " + user.getRequestedAccessLevel() + "\n___________________________________________________________________";
 			labels.add(new Label(line));
 		}
 		return labels;

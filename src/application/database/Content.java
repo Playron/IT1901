@@ -136,4 +136,91 @@ public class Content {
 		DB.alter(query);
 	}
 	
+	/**
+	 * Adds an entry to the accessrequest-table (or updating if the user has an entry already)
+	 * 
+	 * @param accessLevelRequested is the new accesslevel the user requests
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void requestAccessLevel(char accessLevelRequested) {
+		if (CurrentUser.getUsername() == null)
+			throw new IllegalStateException("Should not be able to request new accesslevel while browsing as an unregistered user.");
+		boolean olderRequestExists = false;
+		String query = "SELECT * FROM `accessrequest`;";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				if (r.getString("username").equals(CurrentUser.getUsername()))
+					olderRequestExists = true;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (olderRequestExists)
+			query = "UPDATE `accessrequest` SET `accesslevel` = \"" + accessLevelRequested + "\" WHERE `username` = \"" + CurrentUser.getUsername() + "\";";
+		else
+			query = "INSERT INTO `accessrequest` VALUES (\"" + CurrentUser.getUsername() + "\", \"" + accessLevelRequested + "\");";
+		DB.alter(query);
+	}
+	
+	/**
+	 * Retrieves information about all accesslevel requests in the database
+	 * 
+	 * @return the resultset containing all entries in the accessrequest-table
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static ResultSet getAccessLevelRequests() {
+		String query = "SELECT * FROM `accessrequest`;";
+		return DB.select(query);
+	}
+	
+	/**
+	 * Retrieves the accesslevel of the given user
+	 * 
+	 * @param username of the user you want to know the accesslevel of
+	 * @return the accesslevel of the user
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static Character getAccessLevel(String username) {
+		String query = "SELECT * FROM `user` WHERE `username` = \"" + username + "\";";
+		ResultSet r = DB.select(query);
+		try {
+			while (r.next())
+				return (Character) r.getString("usertype").charAt(0);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+	
+	/**
+	 * Updates the usertype of the user specified by username
+	 * 
+	 * @param username is the user that has been granted a new accesslevel
+	 * @param usertype is the accesslevel that was granted to the user
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void updateAccessLevel(String username, Character usertype) {
+		String query = "UPDATE `user` SET `usertype` = \"" + usertype + "\" WHERE `username` = \"" + username + "\";";
+		DB.alter(query);
+	}
+	
+	/**
+	 * Deletes the accesslevel request of the user specified by username
+	 * 
+	 * @param username is the user which no longer have an active request
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void deleteAccessLevelRequest(String username) {
+		String query = "DELETE FROM `accessrequest` WHERE `username` = \"" + username + "\";";
+		DB.delete(query);
+	}
+	
 }

@@ -121,4 +121,20 @@ public class CurrentUser {
 		return false;
 	}
 	
+	/**
+	 * @return the accesslevel as a String
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static String getAccessLevelString() {
+		switch (usertype) {
+			case 'U': return "User";
+			case 'F': return "Author";
+			case 'C': return "Copy Editor";
+			case 'E': return "Executive Editor";
+			case 'A': return "Admin";
+			default: return null;
+		}
+	}
+	
 }
