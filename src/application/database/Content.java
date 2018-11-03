@@ -198,4 +198,17 @@ public class Content {
 		return null;
 	}
 	
+	/**
+	 * Updates the usertype of the user specified by username
+	 * 
+	 * @param username is the user that has been granted a new accesslevel
+	 * @param usertype is the accesslevel that was granted to the user
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void updateAccessLevel(String username, Character usertype) {
+		String query = "UPDATE `user` SET `usertype` = \"" + usertype + "\" WHERE `username` = \"" + username + "\";";
+		DB.alter(query);
+	}
+	
 }
