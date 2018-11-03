@@ -211,4 +211,9 @@ public class Content {
 		DB.alter(query);
 	}
 	
+	public static void deleteAccessLevelRequest(String username) {
+		String query = "DELETE FROM `user` WHERE `username` = \"" + username + "\";";
+		DB.delete(query);
+	}
+	
 }
