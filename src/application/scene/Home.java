@@ -12,6 +12,8 @@ import application.database.DB;
 import application.database.Login;
 import application.logic.Post;
 import application.logic.Posts;
+import application.logic.Usertype;
+
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,6 +24,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -263,6 +266,7 @@ public class Home {
 				@Override
 				public void handle(ActionEvent ae) {
 					Alert alert = new Alert(AlertType.CONFIRMATION);
+					alert.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
 					alert.setTitle("Assign post");
 					alert.setHeaderText(null);
 					alert.setContentText("Are you sure you want to assign\nthis post to yourself?");
@@ -330,9 +334,45 @@ public class Home {
 			region.setPrefHeight(h);
 	}
 	
+	/**
+	 * @param node is the node we want to determine the visibility of
+	 * @param b is the value that determines the visibility
+	 * 
+	 * @author Niklas Sølvberg
+	 */
 	public static void visible(Node node, boolean b) {
 		node.setVisible(b);
 		node.setDisable(!b);
+	}
+	
+	/**
+	 * @return an EventHandler that will fire when a user presses a button at the homescreen that says "Request new accesslevel"
+	 */
+	public static EventHandler<ActionEvent> accessLevelRequestEventHandler() {
+		EventHandler<ActionEvent> eventHandler = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				ChoiceDialog<String> dialog = new ChoiceDialog<String>(CurrentUser.getAccessLevelString(), Usertype.usertypes());
+				dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
+				dialog.setTitle("Accesslevel request");
+				dialog.setHeaderText("Request new accesslevel");
+				dialog.setContentText("Accesslevel: ");
+				Optional<String> result = dialog.showAndWait();
+				if (result.isPresent()) {
+					if (!result.get().equals(CurrentUser.getAccessLevelString())) {
+						Content.requestAccessLevel(Usertype.asChar(result.get()));
+						Alert alert = new Alert(AlertType.INFORMATION);
+						alert.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
+						alert.setTitle("Request");
+						alert.setHeaderText("Request sent");
+						alert.setContentText("A request to change your usertype from " + Usertype.accessLevelInSentence(CurrentUser.getAccessLevel())
+						+ " to " + Usertype.accessLevelInSentence(Usertype.asChar(result.get())) + " has been sent!");
+						alert.showAndWait();
+					}
+				}
+			}
+		};
+		return eventHandler;
 	}
 
 	/**
@@ -407,12 +447,13 @@ public class Home {
 			}
 		});
 
+		
+		
 		Button createButton = new Button("Create content");
 		optionsPane.getChildren().add(createButton);
 		if (!CurrentUser.hasAuthorRights())
 			visible((Node) createButton, false);
 		createButtonOnAction(createButton, contentPane, adressField);
-
 		
 		Button showAllButton = new Button("View all content");
 		optionsPane.getChildren().add(showAllButton);
@@ -420,15 +461,12 @@ public class Home {
 			visible((Node) showAllButton, false);
 		showAllButtonOnAction(showAllButton, adressField, contentPane);
 
-
-
 		Button showSubmittedButton = new Button("View submitted content" + searchFull);
 		optionsPane.getChildren().add(showSubmittedButton);
 		if (!CurrentUser.hasCopyEditorRights())
 			visible((Node) showSubmittedButton, false);
 		showSubmittedButtonOnAction(showSubmittedButton, adressField, contentPane, showAllButton);
 
-		
 		Button showPublishedButton = new Button("View published content");
 		optionsPane.getChildren().add(showPublishedButton);
 		showPublishedButtonOnAction(showPublishedButton, adressField, contentPane);
@@ -438,6 +476,14 @@ public class Home {
 		if (!CurrentUser.hasExecutiveEditorRights())
 			visible((Node) createCategoriesButton, false);
 		createCategoriesButtonOnAction(createCategoriesButton);
+		
+		Button requestAccessLevelButton = new Button("Request new accesslevel");
+		optionsPane.getChildren().add(requestAccessLevelButton);
+		if (!CurrentUser.isRegistered())
+			visible((Node) requestAccessLevelButton, false);
+		requestAccessLevelButton.setOnAction(accessLevelRequestEventHandler());
+		
+		
 		
 		searchField.setOnAction(new EventHandler<ActionEvent>()
 		{
@@ -509,6 +555,7 @@ public class Home {
 		place((Region) showPublishedButton, 0.0, 250.0, w/6, 50.0);
 		place((Region) adminToolButton, 0.0, 350.0, w/6, 50.0);
 		place((Region) createCategoriesButton, 0.0, 400.0, w/6, 50.0);
+		place((Region) requestAccessLevelButton, 0.0, 500.0, w/6, 50.0);
 		place((Region) loginButton, 0.0, 600.0, w/6, 50.0);
 		place((Region) rightScroll, w/6, h/12, w - (w / 6), h - (h / 12) - 22);
 		
