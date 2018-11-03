@@ -164,4 +164,38 @@ public class Content {
 		DB.alter(query);
 	}
 	
+	/**
+	 * Retrieves information about all accesslevel requests in the database
+	 * 
+	 * @return the resultset containing all entries in the accessrequest-table
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static ResultSet getAccessLevelRequests() {
+		String query = "SELECT * FROM `accessrequest`;";
+		return DB.select(query);
+	}
+	
+	/**
+	 * Retrieves the accesslevel of the given user
+	 * 
+	 * @param username of the user you want to know the accesslevel of
+	 * @return the accesslevel of the user
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static Character getAccessLevel(String username) {
+		String query = "SELECT * FROM `user` WHERE `username` = \"" + username + "\";";
+		ResultSet r = DB.select(query);
+		try {
+			while (r.next())
+				return (Character) r.getString("usertype").charAt(0);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+	
 }
