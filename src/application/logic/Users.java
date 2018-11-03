@@ -130,4 +130,36 @@ public class Users
 		return labels;
 	}
 	
+	/**
+	 * Creates a list of the users that have requested a new accesslevel
+	 * 
+	 * @return a list of users
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static ArrayList<User> getUsersWithAccessLevelRequests() {
+		ArrayList<User> users = new ArrayList<User>();
+		ArrayList<User> usersAll = new ArrayList<User>();
+		ArrayList<String> usernamesRequests = new ArrayList<String>();
+		ArrayList<Character> usertypesRequests = new ArrayList<Character>(); 
+		ResultSet rAll = Content.getAccessLevelRequests();
+		ResultSet rRequests = Content.getUsers();
+		try {
+			while (rAll.next())
+				usersAll.add(new User(rAll.getString("username"), Usertype.asChar(rAll.getString("usertype"))));
+			while (rRequests.next()) {
+				usernamesRequests.add(rRequests.getString("username"));
+				usertypesRequests.add(Usertype.asChar(rRequests.getString("usertype")));
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		for (User user : usersAll)
+			for (int i = 0; i < usernamesRequests.size(); i++)
+				if (user.getUsername().equals(usernamesRequests.get(i)))
+					users.add(new User(user.getUsername(), Usertype.asChar(user.getAccessLevel()), usertypesRequests.get(i)));
+		return users;
+	}
+	
 }
