@@ -121,4 +121,15 @@ public class CurrentUser {
 		return false;
 	}
 	
+	public static String getAccessLevelString() {
+		switch (usertype) {
+			case 'U': return "User";
+			case 'F': return "Author";
+			case 'C': return "Copy Editor";
+			case 'E': return "Executive Editor";
+			case 'A': return "Admin";
+			default: return null;
+		}
+	}
+	
 }
