@@ -54,4 +54,21 @@ public class Usertype
 		}
 	}
 	
+	/**
+	 * @param usertype is the usertype represented as a Character
+	 * @return the usertype as it would be written down in a sentence. 'A' becomes "an admin" ...
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static String accessLevelInSentence(Character usertype) {
+		switch (usertype) {
+			case 'U': return "a user";
+			case 'F': return "an author";
+			case 'C': return "a copy editor";
+			case 'E': return "an executive editor";
+			case 'A': return "an admin";
+			default: return "UNDEFINED USER TYPE";
+		}
+	}
+	
 }
