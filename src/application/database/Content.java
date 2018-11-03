@@ -124,4 +124,16 @@ public class Content {
 		}
 	}
 	
+	/**
+	 * Updates the `assignedto`-value of the specified post to be the username of the currently logged in user.
+	 * 
+	 * @param postID is the ID of the post that is being assigned to the currently logged in user
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void updateAssignedToMyself(int postID) {
+		String query = "UPDATE `post` SET `assignedto` = \"" + CurrentUser.getUsername() + "\" WHERE `postID` = " + postID + ";";
+		DB.alter(query);
+	}
+	
 }
