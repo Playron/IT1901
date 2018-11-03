@@ -136,4 +136,32 @@ public class Content {
 		DB.alter(query);
 	}
 	
+	/**
+	 * Adds an entry to the accessrequest-table (or updating if the user has an entry already)
+	 * 
+	 * @param accessLevelRequested is the new accesslevel the user requests
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void requestAccessLevel(char accessLevelRequested) {
+		if (CurrentUser.getUsername() == null)
+			throw new IllegalStateException("Should not be able to request new accesslevel while browsing as an unregistered user.");
+		boolean olderRequestExists = false;
+		String query = "SELECT * FROM `accessrequest`;";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				if (r.getString("username").equals(CurrentUser.getUsername()))
+					olderRequestExists = true;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (olderRequestExists)
+			query = "UPDATE `accessrequest` SET `accesslevel` = \"" + accessLevelRequested + "\" WHERE `username` = \"" + CurrentUser.getUsername() + "\";";
+		else
+			query = "INSERT INTO `accessrequest` VALUES (\"" + CurrentUser.getUsername() + "\", \"" + accessLevelRequested + "\");";
+		DB.alter(query);
+	}
+	
 }
