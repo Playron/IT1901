@@ -211,8 +211,15 @@ public class Content {
 		DB.alter(query);
 	}
 	
+	/**
+	 * Deletes the accesslevel request of the user specified by username
+	 * 
+	 * @param username is the user which no longer have an active request
+	 * 
+	 * @author Niklas Sølvberg
+	 */
 	public static void deleteAccessLevelRequest(String username) {
-		String query = "DELETE FROM `user` WHERE `username` = \"" + username + "\";";
+		String query = "DELETE FROM `accessrequest` WHERE `username` = \"" + username + "\";";
 		DB.delete(query);
 	}
 	

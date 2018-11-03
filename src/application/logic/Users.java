@@ -142,14 +142,17 @@ public class Users
 		ArrayList<User> usersAll = new ArrayList<User>();
 		ArrayList<String> usernamesRequests = new ArrayList<String>();
 		ArrayList<Character> usertypesRequests = new ArrayList<Character>(); 
-		ResultSet rAll = Content.getAccessLevelRequests();
-		ResultSet rRequests = Content.getUsers();
+		ResultSet rAll = Content.getUsers();
+		ResultSet rRequests = Content.getAccessLevelRequests();
 		try {
-			while (rAll.next())
-				usersAll.add(new User(rAll.getString("username"), Usertype.asChar(rAll.getString("usertype"))));
+			while (rAll.next()) {
+				String username = rAll.getString("username");
+				char usertype = rAll.getString("usertype").charAt(0);
+				usersAll.add(new User(username, usertype));
+			}
 			while (rRequests.next()) {
 				usernamesRequests.add(rRequests.getString("username"));
-				usertypesRequests.add(Usertype.asChar(rRequests.getString("usertype")));
+				usertypesRequests.add(rRequests.getString("accesslevel").charAt(0));
 			}
 		}
 		catch (SQLException e) {
