@@ -16,13 +16,7 @@ public class User
 	public User(String username, char usertype)
 	{
 		this.username = username;
-		switch (usertype) {
-			case 'U': this.usertype = "User"; break;
-			case 'F': this.usertype = "Author"; break;
-			case 'C': this.usertype = "Copy Editor"; break;
-			case 'E': this.usertype = "Executive Editor"; break;
-			case 'A': this.usertype = "Admin"; break;
-		}
+		this.usertype = Usertype.asString(usertype);
 	}
 
 	/**
