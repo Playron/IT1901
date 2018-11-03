@@ -121,6 +121,11 @@ public class CurrentUser {
 		return false;
 	}
 	
+	/**
+	 * @return the accesslevel as a String
+	 * 
+	 * @author Niklas Sølvberg
+	 */
 	public static String getAccessLevelString() {
 		switch (usertype) {
 			case 'U': return "User";
