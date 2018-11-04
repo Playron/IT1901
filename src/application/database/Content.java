@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
+
 public class Content {
 	
 	/**
@@ -298,7 +300,7 @@ public class Content {
 	/**
 	 * @param categories is a list with all categories the user want to add to the post (while creating the post)
 	 */
-	public static void addPostCategories(ArrayList<String> categories) {
+	public static void addPostCategories(ObservableList<String> categories) {
 		if (categories.size() == 0)
 			return;
 		int postID = 0;

@@ -11,8 +11,10 @@ import application.database.Login;
 import application.logic.Post;
 import application.logic.Posts;
 import application.logic.Usertype;
+
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -813,7 +815,7 @@ public class Home {
 					addCategoryButton.setLayoutX(220);
 					addCategoryButton.setLayoutY(325);
 					addCategoryButton.setPrefSize(60, 25);
-					ArrayList<String> categories = new ArrayList<String>();
+					ObservableList<String> categories = FXCollections.observableArrayList();
 					addCategoryButton.setOnAction(new EventHandler<ActionEvent>() {
 						@Override
 						public void handle(ActionEvent ae) {
@@ -828,34 +830,7 @@ public class Home {
 					feedbackLabel.setVisible(false);
 					feedbackLabel.setFont(Font.font(10));
 					
-					new Runnable() {
-						int prevSize = categories.size();
-						@Override
-						public void run() {
-							for (;;) {
-								int currSize = categories.size();
-								if (currSize != prevSize) {
-									feedbackLabel.setVisible(true);
-									prevSize = currSize;
-									try {
-										Thread.sleep(1000);
-									}
-									catch (InterruptedException e) {
-										e.printStackTrace();
-									}
-									feedbackLabel.setVisible(false);
-								}
-								else {
-									try {
-										Thread.sleep(100);
-									}
-									catch (InterruptedException e) {
-										e.printStackTrace();
-									}
-								}
-							}
-						}
-					};
+					
 					
 					dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea, categoryBox, addCategoryButton, feedbackLabel);
 					Node submitButton = dialog.getDialogPane().lookupButton(submitButtonType);
