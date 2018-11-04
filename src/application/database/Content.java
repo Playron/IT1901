@@ -322,4 +322,86 @@ public class Content {
 		}
 	}
 	
+	/**
+	 * @param subscribed is the user that is being subscribed to
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void addSubscription(String subscribed) {
+		String query = "INSERT INTO `subscription` VALUES (\"" + CurrentUser.getUsername() + "\", \"" + subscribed + "\");";
+		DB.insert(query);
+	}
+	
+	/**
+	 * @param categoryID is the ID of the category that is being subscribed to
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void addCategorySubscription(int categoryID) {
+		String query = "INSERT INTO `categorysubscription` VALUES (\"" + CurrentUser.getUsername() + "\", " + categoryID + ");";
+		DB.insert(query);
+	}
+	
+	/**
+	 * @param user is the user we want to check if the currently logged in user is subscribed to
+	 * @return if the current user is subscribed to user
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static Boolean isSubscribedTo(String user) {
+		String query = "SELECT COUNT(*) FROM `subscription` WHERE `subscriber` = \"" + CurrentUser.getUsername() + "\" AND `subscribed` = \"" + user + "\";";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				return r.getBoolean(1);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+	
+	/**
+	 * @param categoryID is the category we want to check if the currently logged in user is subscribed to
+	 * @return if the current user is subscribed to category
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static Boolean isSubscribedTo(int categoryID) {
+		String query = "SELECT COUNT(*) FROM `categorysubscription` WHERE `subscriber` = \"" + CurrentUser.getUsername() + "\" AND `categoryID` = " + categoryID + ";";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				return r.getBoolean(1);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+	
+	/**
+	 * @param username is the user we want to check if exists
+	 * @return if he user exists
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static Boolean userIsSubscribable(String username) {
+		if (CurrentUser.getUsername().equals(username))
+			return false;
+		String query = "SELECT COUNT(*) FROM `user` WHERE `username` = \"" + username + "\";";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				return r.getBoolean(1);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+	
 }
