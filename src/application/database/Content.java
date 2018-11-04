@@ -382,4 +382,24 @@ public class Content {
 		return null;
 	}
 	
+	/**
+	 * @param username is the user we want to check if exists
+	 * @return if he user exists
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static Boolean userExists(String username) {
+		String query = "SELECT COUNT(*) FROM `user` WHERE `username` = \"" + username + "\";";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				return r.getBoolean(1);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+	
 }
