@@ -31,10 +31,16 @@ public class Content {
 	 * @param body   is the text content of the post
 	 * @param state  is the state of the post. This will in all current cases be 'submitted' before the method is called, and 'published' afterwards
 	 * @param editor the user that edited the post
+	 * @param complete refers to if the post is complete or incomplete. If the post has never been edited, it is null
+	 * 
 	 * @author Niklas Sølvberg
 	 */
-	public static void updateContent(int ID, String header, String body, String state, String editor) {
-		String query = "UPDATE `post` SET `header` = \"" + header +"\", `text` = \"" + body + "\", `state` = \"" + state + "\", `editor` = \"" + editor + "\" WHERE `postID` = " + ID + ";";
+	public static void updateContent(int ID, String header, String body, String state, String editor, boolean complete) {
+		String query;
+		if (complete)
+			query = "UPDATE `post` SET `header` = \"" + header +"\", `text` = \"" + body + "\", `state` = \"" + state + "\", `editor` = \"" + editor + "\", `complete` = 1 WHERE `postID` = " + ID + ";";
+		else
+			query = "UPDATE `post` SET `header` = \"" + header +"\", `text` = \"" + body + "\", `state` = \"" + state + "\", `editor` = \"" + editor + "\", `complete` = 0 WHERE `postID` = " + ID + ";";
 		DB.alter(query);
 	}
 	
@@ -221,6 +227,28 @@ public class Content {
 	public static void deleteAccessLevelRequest(String username) {
 		String query = "DELETE FROM `accessrequest` WHERE `username` = \"" + username + "\";";
 		DB.delete(query);
+	}
+	
+	/**
+	 * Retrieves information about the "complete"-value of a post
+	 * 
+	 * @param postID is the ID of the post we want to know is complete or not
+	 * @return if the post is complete or not
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static boolean isComplete(int postID) {
+		String query = "SELECT * WHERE `postID` = " + postID + ";";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				return r.getBoolean("complete");
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return false;
 	}
 	
 }
