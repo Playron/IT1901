@@ -66,9 +66,13 @@ public class Content {
 	 * @return all posts where the param is equal to either the poster or the editor
 	 * @author Niklas Sølvberg
 	 */
-	public static ResultSet getPosts(String authorOrEditor)
+	public static ResultSet getPosts(String authorEditorCategory)
 	{
-		String query = "SELECT * FROM `post` WHERE (`poster` = \"" + authorOrEditor + "\") OR (`editor` = \"" + authorOrEditor + "\");";
+		String query;
+		if (getCategoryID(authorEditorCategory) == null)
+			query = "SELECT * FROM `post` WHERE `poster` = \"" + authorEditorCategory + "\" OR `editor` = \"" + authorEditorCategory + "\";";
+		else
+			query = "(SELECT * FROM `post` WHERE `poster` = \"" + authorEditorCategory + "\" OR `editor` = \"" + authorEditorCategory + "\") UNION (SELECT `postID`, `poster`, `editor`, `header`, `text`, `state`, `assignedto`, `complete` FROM `post` NATURAL JOIN `postcategories` WHERE `postCategory` = " + getCategoryID(authorEditorCategory) + ");";
 		return DB.select(query);
 	}
 
