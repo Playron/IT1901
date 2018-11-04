@@ -24,6 +24,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -206,8 +207,9 @@ public class Home {
 					ButtonType submitButtonType = new ButtonType("Submit", ButtonData.OK_DONE);
 					ButtonType publishButtonType = new ButtonType("Publish", ButtonData.OK_DONE);
 					dialog.getDialogPane().getButtonTypes().setAll(submitButtonType, publishButtonType, ButtonType.CANCEL);
+					
 					Pane dialogPane = new Pane();
-					dialogPane.setPrefSize(300, 300);
+					dialogPane.setPrefSize(300, 350);
 					Label headerLabel = new Label("Header:");
 					headerLabel.setLayoutX(20);
 					headerLabel.setLayoutY(20);
@@ -223,7 +225,12 @@ public class Home {
 					contentArea.setLayoutY(120);
 					contentArea.setPrefSize(260, 160);
 					contentArea.setWrapText(true);
-					dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea);
+					CheckBox completeBox = new CheckBox("Mark post as complete");
+					completeBox.setLayoutX(20);
+					completeBox.setLayoutY(305);
+					completeBox.setSelected(false);
+					
+					dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea, completeBox);
 					dialog.getDialogPane().setContent(dialogPane);
 					dialog.setResultConverter(dialogButton ->
 					{
@@ -246,23 +253,29 @@ public class Home {
 					Optional<ArrayList<String>> result = dialog.showAndWait();
 					result.ifPresent(text ->
 					{
-						Content.updateContent(post.getID(), text.get(0), text.get(1), text.get(2), CurrentUser.getUsername());
+						Content.updateContent(post.getID(), text.get(0), text.get(1), text.get(2), CurrentUser.getUsername(), completeBox.isSelected());
 					});
 					lastChange = "submitted";
 				}
 			});
 		}
+		if (Content.isComplete(post.getID()) == true) {
+			Label completeLabel = new Label("This post was marked as 'complete' by:\n\t" + post.getEditor());
+			contentPane.getChildren().add(completeLabel);
+			completeLabel.setLayoutX(x + 650);
+			completeLabel.setLayoutY(y + (dy * i) + 100);
+		}
 		if (post.isAssigned()) {
 			Label assignedLabel = new Label("Assigned to:\n\t" + post.getAssigned());
 			contentPane.getChildren().add(assignedLabel);
-			assignedLabel.setLayoutX(x + 800);
-			assignedLabel.setLayoutY(y + (dy * i) + 30);
+			assignedLabel.setLayoutX(x + 650);
+			assignedLabel.setLayoutY(y + (dy * i) + 40);
 		}
 		else {
 			Button assignButton = new Button("Assign yourself!");
 			contentPane.getChildren().add(assignButton);
-			assignButton.setLayoutX(x + 800);
-			assignButton.setLayoutY(y + (dy * i) + 30);
+			assignButton.setLayoutX(x + 650);
+			assignButton.setLayoutY(y + (dy * i) + 40);
 			assignButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent ae) {
