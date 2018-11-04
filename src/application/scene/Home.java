@@ -1,7 +1,5 @@
 package application.scene;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -15,6 +13,9 @@ import application.logic.Posts;
 import application.logic.Usertype;
 
 import javafx.animation.AnimationTimer;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -26,6 +27,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -678,20 +680,8 @@ public class Home {
 						// setting the field to not editable
 						existingCategories.setEditable(false);
 						// adds the categories to the TextArea
-						ResultSet rs = Category.getCategories();
-						try {
-							rs.first();
-							while (!rs.isAfterLast())
-							{
-								existingCategories.appendText(rs.getString(2));
-								existingCategories.appendText("\n");
-								rs.next();
-							}
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						
+						for (String string : Content.getCategories())
+							existingCategories.appendText(string + "\n");
 						
 						// adds the different fields to the dialogpane
 						dialogPane.getChildren().setAll(categoryName,existingCategories);
@@ -786,7 +776,7 @@ public class Home {
 			@Override
 			public void handle(ActionEvent ae)
 			{
-				if (CurrentUser.isRegistered())
+				if (CurrentUser.hasAuthorRights())
 				{
 					Dialog<ArrayList<String>> dialog = new Dialog<ArrayList<String>>();
 					dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
@@ -796,8 +786,9 @@ public class Home {
 					ButtonType publishButtonType = new ButtonType("Publish", ButtonData.OK_DONE);
 					ButtonType submitButtonType = new ButtonType("Submit", ButtonData.OK_DONE);
 					dialog.getDialogPane().getButtonTypes().setAll(publishButtonType, submitButtonType, ButtonType.CANCEL);
+					
 					Pane dialogPane = new Pane();
-					dialogPane.setPrefSize(300, 300);
+					dialogPane.setPrefSize(300, 395);
 					Label headerLabel = new Label("Header:");
 					headerLabel.setLayoutX(20);
 					headerLabel.setLayoutY(20);
@@ -813,9 +804,45 @@ public class Home {
 					contentArea.setLayoutY(120);
 					contentArea.setPrefSize(260, 160);
 					contentArea.setWrapText(true);
-					dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea);
+					Label categoryLabel = new Label("Add categories:");
+					categoryLabel.setLayoutX(20);
+					categoryLabel.setLayoutY(295);
+					Label feedbackLabel = new Label("Category successfully added!");
+					feedbackLabel.setLayoutX(20);
+					feedbackLabel.setLayoutY(355);
+					feedbackLabel.setTextFill(Color.web("#0000ff"));
+					feedbackLabel.setVisible(false);
+					feedbackLabel.setFont(Font.font(10));
+					ComboBox<String> categoryBox = new ComboBox<String>();
+					categoryBox.setLayoutX(20);
+					categoryBox.setLayoutY(325);
+					categoryBox.setPrefSize(200, 25);
+					categoryBox.setItems(FXCollections.observableArrayList(Content.getCategories()));
+					categoryBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent me) {
+							feedbackLabel.setVisible(false);
+						}
+					});
+					Button addCategoryButton = new Button("Add");
+					addCategoryButton.setLayoutX(220);
+					addCategoryButton.setLayoutY(325);
+					addCategoryButton.setPrefSize(60, 25);
+					ObservableList<String> categories = FXCollections.observableArrayList();
+					addCategoryButton.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent ae) {
+							if (Content.getCategories().contains(categoryBox.getValue()) && !categories.contains(categoryBox.getValue()))
+								categories.add(categoryBox.getValue());
+						}
+					});
+					
+					dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea, categoryBox, addCategoryButton, feedbackLabel);
 					Node submitButton = dialog.getDialogPane().lookupButton(submitButtonType);
 					submitButton.setDisable(true);
+					categories.addListener((ListChangeListener<String>) change -> {
+						feedbackLabel.setVisible(true);
+					});
 					contentArea.textProperty().addListener((observable, oldValue, newValue) ->
 					{
 						headerField.textProperty().addListener((observable1, oldValue1, newValue1) ->
@@ -870,6 +897,11 @@ public class Home {
 					result.ifPresent(text ->
 					{
 						Content.addContent(text.get(0), text.get(1), text.get(2), null);
+						
+						// This wont work if more than one post is created at the exact same time.
+						// Which postID we retrieve will depend on the fact that it, in an ideal
+						// situation, will be the last entry in the post-table.
+						Content.addPostCategories(categories);
 					});
 					contentPane.getChildren().clear();
 					populateContent(contentPane, addressField);
