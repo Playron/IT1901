@@ -369,7 +369,7 @@ public class Content {
 	 * @author Niklas Sølvberg
 	 */
 	public static Boolean isSubscribedTo(int categoryID) {
-		String query = "SELECT COUNT(*) FROM `subscription` WHERE `subscriber` = \"" + CurrentUser.getUsername() + "\" AND `categoryID` = " + categoryID + ";";
+		String query = "SELECT COUNT(*) FROM `categorysubscription` WHERE `subscriber` = \"" + CurrentUser.getUsername() + "\" AND `categoryID` = " + categoryID + ";";
 		try {
 			ResultSet r = DB.select(query);
 			while (r.next())
