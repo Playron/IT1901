@@ -203,8 +203,9 @@ public class Home {
 					dialog.initModality(Modality.APPLICATION_MODAL);
 					dialog.setTitle("Make new post");
 					dialog.setHeaderText(null);
+					ButtonType submitButtonType = new ButtonType("Submit", ButtonData.OK_DONE);
 					ButtonType publishButtonType = new ButtonType("Publish", ButtonData.OK_DONE);
-					dialog.getDialogPane().getButtonTypes().setAll(publishButtonType, ButtonType.CANCEL);
+					dialog.getDialogPane().getButtonTypes().setAll(submitButtonType, publishButtonType, ButtonType.CANCEL);
 					Pane dialogPane = new Pane();
 					dialogPane.setPrefSize(300, 300);
 					Label headerLabel = new Label("Header:");
@@ -223,21 +224,21 @@ public class Home {
 					contentArea.setPrefSize(260, 160);
 					contentArea.setWrapText(true);
 					dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea);
-					Node publishButton = dialog.getDialogPane().lookupButton(publishButtonType);
-					publishButton.setDisable(true);
-					contentArea.textProperty().addListener((observable, oldValue, newValue) ->
-					{
-						publishButton.setDisable(newValue.trim().isEmpty());
-					});
 					dialog.getDialogPane().setContent(dialogPane);
 					dialog.setResultConverter(dialogButton ->
 					{
+						ArrayList<String> list = new ArrayList<String>();
 						if (dialogButton == publishButtonType)
 						{
-							ArrayList<String> list = new ArrayList<String>();
 							list.add(headerField.getText());
 							list.add(contentArea.getText());
 							list.add("published");
+							return list;
+						}
+						else if (dialogButton == submitButtonType) {
+							list.add(headerField.getText());
+							list.add(contentArea.getText());
+							list.add("submitted");
 							return list;
 						}
 						return null;
