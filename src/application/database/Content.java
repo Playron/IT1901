@@ -342,4 +342,24 @@ public class Content {
 		DB.insert(query);
 	}
 	
+	/**
+	 * @param user is the user we want to check if the currently logged in user is subscribed to
+	 * @return if the current user is subscribed to user
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static Boolean isSubscribedTo(String user) {
+		String query = "SELECT COUNT(*) FROM `subscription` WHERE `subscriber` = \"" + CurrentUser.getUsername() + "\" AND `subscribed` = \"" + user + "\";";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				return r.getBoolean(1);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+	
 }
