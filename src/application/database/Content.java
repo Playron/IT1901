@@ -237,8 +237,8 @@ public class Content {
 	 * 
 	 * @author Niklas Sølvberg
 	 */
-	public static boolean isComplete(int postID) {
-		String query = "SELECT * WHERE `postID` = " + postID + ";";
+	public static Boolean isComplete(int postID) {
+		String query = "SELECT * FROM `post` WHERE `postID` = " + postID + ";";
 		try {
 			ResultSet r = DB.select(query);
 			while (r.next())
