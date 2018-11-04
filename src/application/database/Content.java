@@ -388,7 +388,9 @@ public class Content {
 	 * 
 	 * @author Niklas Sølvberg
 	 */
-	public static Boolean userExists(String username) {
+	public static Boolean userIsSubscribable(String username) {
+		if (CurrentUser.getUsername().equals(username))
+			return false;
 		String query = "SELECT COUNT(*) FROM `user` WHERE `username` = \"" + username + "\";";
 		try {
 			ResultSet r = DB.select(query);

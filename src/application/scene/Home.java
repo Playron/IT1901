@@ -406,7 +406,7 @@ public class Home {
 				dialog.setContentText("Enter user: ");
 				Optional<String> result = dialog.showAndWait();
 				result.ifPresent(username -> {
-					if (!Content.isSubscribedTo(username) && Content.userExists(username)) {
+					if (!Content.isSubscribedTo(username) && Content.userIsSubscribable(username)) {
 						Content.addSubscription(username);
 						Alert alert = new Alert(AlertType.INFORMATION);
 						alert.setTitle("Subscription");
