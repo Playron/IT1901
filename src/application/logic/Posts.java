@@ -125,7 +125,7 @@ public class Posts {
 		try
 		{
 			while (r.next())
-				if (r.getString("state").equals("published"))
+				if (r.getString("state").equals("submitted"))
 					posts.add(new Post(r.getInt("postID"), r.getString("header"), r.getString("text"), r.getString("poster"), r.getString("editor")));
 		} catch (SQLException e)
 		{
@@ -335,12 +335,13 @@ public class Posts {
 	 */
 	public static ArrayList<Post> getSubscribedPosts() {
 		ArrayList<Post> posts = new ArrayList<Post>();
-		ResultSet r = Content.getSubscribedPosts();
+		ResultSet r = Content.getPosts();
 		try {
 			while (r.next())
-				posts.add(new Post(r.getInt("postID"), r.getString("header"), r.getString("text"), r.getString("poster"), r.getString("editor")));
-		} catch (SQLException e)
-		{
+				if (Content.subscribedUsers().contains(r.getString("poster")) || Content.subscribedUsers().contains(r.getString("editor")) || Content.checkCategories(r.getInt("postID")))
+					posts.add(new Post(r.getInt("postID"), r.getString("header"), r.getString("text"), r.getString("poster"), r.getString("editor")));
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		Collections.reverse(posts);
@@ -354,18 +355,16 @@ public class Posts {
 	 * @return a list of all published, subscribed posts where either the editor or the poster is equal to the param
 	 * @author Niklas Sølvberg
 	 */
-	public static ArrayList<Post> getSubscribedPosts(String authorOrEditor)
-	{
+	public static ArrayList<Post> getSubscribedPosts(String authorOrEditor) {
 		if (authorOrEditor.equals(""))
 			return getSubscribedPosts();
 		ArrayList<Post> posts = new ArrayList<Post>();
-		ResultSet r = Content.getSubscribedPosts(authorOrEditor);
-		try
-		{
+		ResultSet r = Content.getPosts(authorOrEditor);
+		try {
 			while (r.next())
 				posts.add(new Post(r.getInt("postID"), r.getString("header"), r.getString("text"), r.getString("poster"), r.getString("editor")));
-		} catch (SQLException e)
-		{
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		Collections.reverse(posts);

@@ -464,6 +464,13 @@ public class Home {
 		return eventHandler;
 	}
 	
+	/**
+	 * @param text is the address field at the homepage
+	 * @param pane is the pane that the labels are being put into
+	 * @return the EventHandler that are being used for showing the posts that are subscribed to
+	 * 
+	 * @author Niklas Sølvberg
+	 */
 	public static EventHandler<ActionEvent> showSubscribedEventHandler(TextField text, Pane pane) {
 		EventHandler<ActionEvent> eventHandler = new EventHandler<ActionEvent>() {
 			@Override

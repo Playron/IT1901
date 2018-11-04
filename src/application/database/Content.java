@@ -448,4 +448,22 @@ public class Content {
 		return categories;
 	}
 	
+	public static Boolean checkCategories(int postID) {
+		ArrayList<Integer> categories = new ArrayList<Integer>();
+		String query = "SELECT * FROM `postcategories` WHERE `postID` = " + postID + ";";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				categories.add(r.getInt("postCategory"));
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		for (Integer i : subscribedCategories())
+			if (categories.contains(i))
+				return true;
+		return false;
+	}
+	
 }
