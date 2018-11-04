@@ -408,4 +408,62 @@ public class Content {
 		return null;
 	}
 	
+	/**
+	 * @return a list of all users the currently logged in user subscribes to
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static ArrayList<String> subscribedUsers() {
+		ArrayList<String> users = new ArrayList<String>();
+		String query = "SELECT * FROM `subscription` WHERE `subscriber` = \"" + CurrentUser.getUsername() + "\";";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				users.add(r.getString("subscribed"));
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return users;
+	}
+	
+	/**
+	 * @return a list of all categories the currently logged in user subscribes to
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static ArrayList<Integer> subscribedCategories() {
+		ArrayList<Integer> categories = new ArrayList<Integer>();
+		String query = "SELECT * FROM `categorysubscription` WHERE `subscriber` = \"" + CurrentUser.getUsername() + "\";";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				categories.add(r.getInt("categoryID"));
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return categories;
+	}
+	
+	public static Boolean checkCategories(int postID) {
+		ArrayList<Integer> categories = new ArrayList<Integer>();
+		String query = "SELECT * FROM `postcategories` WHERE `postID` = " + postID + ";";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				categories.add(r.getInt("postCategory"));
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		for (Integer i : subscribedCategories())
+			if (categories.contains(i))
+				return true;
+		return false;
+	}
+	
 }

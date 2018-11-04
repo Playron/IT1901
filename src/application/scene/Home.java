@@ -463,6 +463,35 @@ public class Home {
 		};
 		return eventHandler;
 	}
+	
+	/**
+	 * @param text is the address field at the homepage
+	 * @param pane is the pane that the labels are being put into
+	 * @return the EventHandler that are being used for showing the posts that are subscribed to
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static EventHandler<ActionEvent> showSubscribedEventHandler(TextField text, Pane pane) {
+		EventHandler<ActionEvent> eventHandler = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				showContent = 1;
+				text.setText(website + "/subscribed_content" + searchFull);
+				pane.getChildren().clear();
+				int i = 0;
+				ArrayList<Label> labels = Posts.getSubscribedLabels(search);
+				pane.setPrefHeight(40 + (200 * labels.size()));
+				for (Label label : labels)
+				{
+					pane.getChildren().add(label);
+					label.setLayoutX(80);
+					label.setLayoutY(40 + (200 * i));
+					i++;
+				}
+			}
+		};
+		return eventHandler;
+	}
 
 	/**
 	 * Contains all the buttons and panes you can see on the homescreen,
@@ -560,6 +589,12 @@ public class Home {
 		optionsPane.getChildren().add(showPublishedButton);
 		showPublishedButtonOnAction(showPublishedButton, adressField, contentPane);
 		
+		Button showSubscribedButton = new Button("View subscribed content");
+		optionsPane.getChildren().add(showSubscribedButton);
+		if (!CurrentUser.isRegistered())
+			visible((Node) showSubscribedButton, false);
+		showSubscribedButton.setOnAction(showSubscribedEventHandler(adressField, contentPane));
+		
 		Button createCategoriesButton = new Button("Create categories");
 		optionsPane.getChildren().add(createCategoriesButton);
 		if (!CurrentUser.hasExecutiveEditorRights())
@@ -650,15 +685,16 @@ public class Home {
 		place((Region) optionsPane, 0.0, h/12, w/6, h-(h/12)-22);
 		place((Region) loggedInLabel, 6.0, 6.0, null, null);
 		place((Region) searchField, 5.0, 110.0, (w/6)-10, 30.0);
-		place((Region) createButton, 0.0, 50.0, w/6, 50.0);
-		place((Region) showAllButton, 0.0, 150.0, w/6, 50.0);
-		place((Region) showSubmittedButton, 0.0, 200.0, w/6, 50.0);
-		place((Region) showPublishedButton, 0.0, 250.0, w/6, 50.0);
-		place((Region) adminToolButton, 0.0, 325.0, w/6, 50.0);
-		place((Region) createCategoriesButton, 0.0, 375.0, w/6, 50.0);
-		place((Region) requestAccessLevelButton, 0.0, 450.0, w/6, 50.0);
-		place((Region) subscribeToUserButton, 0.0, 500.0, w/6, 25.0);
-		place((Region) subscribeToCategoryButton, 0.0, 525.0, w/6, 25.0);
+		place((Region) createButton, 0.0, 50.0, w/6, 40.0);
+		place((Region) showAllButton, 0.0, 150.0, w/6, 40.0);
+		place((Region) showSubmittedButton, 0.0, 190.0, w/6, 40.0);
+		place((Region) showPublishedButton, 0.0, 230.0, w/6, 40.0);
+		place((Region) showSubscribedButton, 0.0, 270.0, w/6, 40.0);
+		place((Region) adminToolButton, 0.0, 340.0, w/6, 40.0);
+		place((Region) createCategoriesButton, 0.0, 380.0, w/6, 40.0);
+		place((Region) requestAccessLevelButton, 0.0, 450.0, w/6, 40.0);
+		place((Region) subscribeToUserButton, 0.0, 520.0, w/6, 25.0);
+		place((Region) subscribeToCategoryButton, 0.0, 545.0, w/6, 25.0);
 		place((Region) loginButton, 0.0, 600.0, w/6, 50.0);
 		place((Region) rightScroll, w/6, h/12, w - (w / 6), h - (h / 12) - 22);
 		
