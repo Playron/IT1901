@@ -11,7 +11,6 @@ import application.database.Login;
 import application.logic.Post;
 import application.logic.Posts;
 import application.logic.Usertype;
-
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -33,6 +32,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -265,19 +265,19 @@ public class Home {
 			Label completeLabel = new Label("This post was marked as 'complete' by:\n\t" + post.getEditor());
 			contentPane.getChildren().add(completeLabel);
 			completeLabel.setLayoutX(x + 650);
-			completeLabel.setLayoutY(y + (dy * i) + 100);
+			completeLabel.setLayoutY(y + (dy * i) + 140);
 		}
 		if (post.isAssigned()) {
 			Label assignedLabel = new Label("Assigned to:\n\t" + post.getAssigned());
 			contentPane.getChildren().add(assignedLabel);
 			assignedLabel.setLayoutX(x + 650);
-			assignedLabel.setLayoutY(y + (dy * i) + 40);
+			assignedLabel.setLayoutY(y + (dy * i) + 80);
 		}
 		else {
 			Button assignButton = new Button("Assign yourself!");
 			contentPane.getChildren().add(assignButton);
 			assignButton.setLayoutX(x + 650);
-			assignButton.setLayoutY(y + (dy * i) + 40);
+			assignButton.setLayoutY(y + (dy * i) + 80);
 			assignButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent ae) {
@@ -386,6 +386,79 @@ public class Home {
 						alert.showAndWait();
 					}
 				}
+			}
+		};
+		return eventHandler;
+	}
+	
+	/**
+	 * @return the EventHandler used for the button where you subscribe to users
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static EventHandler<ActionEvent> subscribeToUserEventHandler() {
+		EventHandler<ActionEvent> eventHandler = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				TextInputDialog dialog = new TextInputDialog("subscribe to");
+				dialog.setTitle("Subscribe");
+				dialog.setHeaderText(null);
+				dialog.setContentText("Enter user: ");
+				Optional<String> result = dialog.showAndWait();
+				result.ifPresent(username -> {
+					if (!Content.isSubscribedTo(username) && Content.userExists(username)) {
+						Content.addSubscription(username);
+						Alert alert = new Alert(AlertType.INFORMATION);
+						alert.setTitle("Subscription");
+						alert.setHeaderText(null);
+						alert.setContentText("The user '" + username + "' has been added to your subscriptions!");
+						alert.showAndWait();
+					}
+					else {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("Subscription");
+						alert.setHeaderText(null);
+						alert.setContentText("An error occured while trying to subscribe to '" + username + "'.");
+						alert.showAndWait();
+					}
+				});
+			}
+		};
+		return eventHandler;
+	}
+
+	/**
+	 * @return the EventHandler used for the button where you subscribe to categories
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static EventHandler<ActionEvent> subscribeToCategoryEventHandler() {
+		EventHandler<ActionEvent> eventHandler = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				ArrayList<String> categories = Content.getCategories();
+				ChoiceDialog<String> dialog = new ChoiceDialog<String>("", categories);
+				dialog.setTitle("Subscribe");
+				dialog.setHeaderText(null);
+				dialog.setContentText("Choose category: ");
+				Optional<String> result = dialog.showAndWait();
+				result.ifPresent(category -> {
+					if (!category.equals("") && !Content.isSubscribedTo(Content.getCategoryID(category))) {
+						Content.addCategorySubscription(Content.getCategoryID(category));
+						Alert alert = new Alert(AlertType.INFORMATION);
+						alert.setTitle("Subscription");
+						alert.setHeaderText(null);
+						alert.setContentText("The category '" + category + "' has been added to your subscriptions!");
+						alert.showAndWait();
+					}
+					else {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("Subscription");
+						alert.setHeaderText(null);
+						alert.setContentText("An error occured while trying to subscribe to '" + category + "'.");
+						alert.showAndWait();
+					}
+				});
 			}
 		};
 		return eventHandler;
@@ -499,6 +572,18 @@ public class Home {
 			visible((Node) requestAccessLevelButton, false);
 		requestAccessLevelButton.setOnAction(accessLevelRequestEventHandler());
 		
+		Button subscribeToUserButton = new Button("Subscribe to user");
+		optionsPane.getChildren().add(subscribeToUserButton);
+		if (!CurrentUser.isRegistered())
+			visible((Node) subscribeToUserButton, false);
+		subscribeToUserButton.setOnAction(subscribeToUserEventHandler());
+		
+		Button subscribeToCategoryButton = new Button("Subscribe to category");
+		optionsPane.getChildren().add(subscribeToCategoryButton);
+		if (!CurrentUser.isRegistered())
+			visible((Node) subscribeToCategoryButton, false);
+		subscribeToCategoryButton.setOnAction(subscribeToCategoryEventHandler());
+		
 		
 		
 		searchField.setOnAction(new EventHandler<ActionEvent>()
@@ -569,9 +654,11 @@ public class Home {
 		place((Region) showAllButton, 0.0, 150.0, w/6, 50.0);
 		place((Region) showSubmittedButton, 0.0, 200.0, w/6, 50.0);
 		place((Region) showPublishedButton, 0.0, 250.0, w/6, 50.0);
-		place((Region) adminToolButton, 0.0, 350.0, w/6, 50.0);
-		place((Region) createCategoriesButton, 0.0, 400.0, w/6, 50.0);
-		place((Region) requestAccessLevelButton, 0.0, 500.0, w/6, 50.0);
+		place((Region) adminToolButton, 0.0, 325.0, w/6, 50.0);
+		place((Region) createCategoriesButton, 0.0, 375.0, w/6, 50.0);
+		place((Region) requestAccessLevelButton, 0.0, 450.0, w/6, 50.0);
+		place((Region) subscribeToUserButton, 0.0, 500.0, w/6, 25.0);
+		place((Region) subscribeToCategoryButton, 0.0, 525.0, w/6, 25.0);
 		place((Region) loginButton, 0.0, 600.0, w/6, 50.0);
 		place((Region) rightScroll, w/6, h/12, w - (w / 6), h - (h / 12) - 22);
 		
