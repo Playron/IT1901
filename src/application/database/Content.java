@@ -332,4 +332,14 @@ public class Content {
 		DB.insert(query);
 	}
 	
+	/**
+	 * @param categoryID is the ID of the category that is being subscribed to
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void addCategorySubscription(int categoryID) {
+		String query = "INSERT INTO `categorysubscription` VALUES (\"" + CurrentUser.getUsername() + "\", " + categoryID + ");";
+		DB.insert(query);
+	}
+	
 }
