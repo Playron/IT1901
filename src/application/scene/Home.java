@@ -14,6 +14,7 @@ import application.logic.Usertype;
 
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -806,11 +807,23 @@ public class Home {
 					Label categoryLabel = new Label("Add categories:");
 					categoryLabel.setLayoutX(20);
 					categoryLabel.setLayoutY(295);
+					Label feedbackLabel = new Label("Category successfully added!");
+					feedbackLabel.setLayoutX(20);
+					feedbackLabel.setLayoutY(355);
+					feedbackLabel.setTextFill(Color.web("#0000ff"));
+					feedbackLabel.setVisible(false);
+					feedbackLabel.setFont(Font.font(10));
 					ComboBox<String> categoryBox = new ComboBox<String>();
 					categoryBox.setLayoutX(20);
 					categoryBox.setLayoutY(325);
 					categoryBox.setPrefSize(200, 25);
 					categoryBox.setItems(FXCollections.observableArrayList(Content.getCategories()));
+					categoryBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent me) {
+							feedbackLabel.setVisible(false);
+						}
+					});
 					Button addCategoryButton = new Button("Add");
 					addCategoryButton.setLayoutX(220);
 					addCategoryButton.setLayoutY(325);
@@ -819,22 +832,17 @@ public class Home {
 					addCategoryButton.setOnAction(new EventHandler<ActionEvent>() {
 						@Override
 						public void handle(ActionEvent ae) {
-							if (Content.getCategories().contains(categoryBox.getValue()))
+							if (Content.getCategories().contains(categoryBox.getValue()) && !categories.contains(categoryBox.getValue()))
 								categories.add(categoryBox.getValue());
 						}
 					});
-					Label feedbackLabel = new Label("Category successfully added!");
-					feedbackLabel.setLayoutX(20);
-					feedbackLabel.setLayoutY(355);
-					feedbackLabel.setTextFill(Color.web("#0000ff"));
-					feedbackLabel.setVisible(false);
-					feedbackLabel.setFont(Font.font(10));
-					
-					
 					
 					dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea, categoryBox, addCategoryButton, feedbackLabel);
 					Node submitButton = dialog.getDialogPane().lookupButton(submitButtonType);
 					submitButton.setDisable(true);
+					categories.addListener((ListChangeListener<String>) change -> {
+						feedbackLabel.setVisible(true);
+					});
 					contentArea.textProperty().addListener((observable, oldValue, newValue) ->
 					{
 						headerField.textProperty().addListener((observable1, oldValue1, newValue1) ->
