@@ -326,4 +326,79 @@ public class Posts {
 		return labels;
 	}
 	
+	/**
+	 * Creates a list of post-objects, containing all published, subscribed posts from the database
+	 *
+	 * @return a list of all published, subscribed posts from the database
+	 *
+	 * @author Niklas Sølvberg
+	 */
+	public static ArrayList<Post> getSubscribedPosts() {
+		ArrayList<Post> posts = new ArrayList<Post>();
+		ResultSet r = Content.getSubscribedPosts();
+		try {
+			while (r.next())
+				posts.add(new Post(r.getInt("postID"), r.getString("header"), r.getString("text"), r.getString("poster"), r.getString("editor")));
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		Collections.reverse(posts);
+		return posts;
+	}
+	
+	/**
+	 * Creates a list of post-objects, containing a selection of published, subscribed posts from the database
+	 *
+	 * @param authorOrEditor is a string that limits the posts to the results where either the poster or the editor equals the param
+	 * @return a list of all published, subscribed posts where either the editor or the poster is equal to the param
+	 * @author Niklas Sølvberg
+	 */
+	public static ArrayList<Post> getSubscribedPosts(String authorOrEditor)
+	{
+		if (authorOrEditor.equals(""))
+			return getSubscribedPosts();
+		ArrayList<Post> posts = new ArrayList<Post>();
+		ResultSet r = Content.getSubscribedPosts(authorOrEditor);
+		try
+		{
+			while (r.next())
+				posts.add(new Post(r.getInt("postID"), r.getString("header"), r.getString("text"), r.getString("poster"), r.getString("editor")));
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		Collections.reverse(posts);
+		return posts;
+	}
+	
+	/**
+	 * Creates a list of labels, representing a selection of published posts from the database
+	 *
+	 * @return a list of all published posts from the database where either the editor or the poster is equal to authorOrEditor
+	 * @author Niklas Sølvberg
+	 */
+	public static ArrayList<Label> getSubscribedLabels(String authorOrEditor)
+	{
+		ArrayList<Label> labels = new ArrayList<Label>();
+		for (Post post : getSubscribedPosts(authorOrEditor))
+		{
+			String[] wordList = post.getBody().split(" ");
+			String body = "";
+			int i = 0;
+			for (int j = 0; j < wordList.length; j++)
+			{
+				if (i > 100)
+				{
+					body += "\n";
+					i = 0;
+				}
+				i += wordList[j].length() + 1;
+				body += wordList[j] + " ";
+			}
+			labels.add(new Label("____________________________________________________________________________________________________\n____________________________________________________________________________________________________\n\n\n" + post.getHeader() + ", by " + post.getPoster() + "\n--------------------------------------------------\n" + body));
+		}
+		return labels;
+	}
+	
 }
