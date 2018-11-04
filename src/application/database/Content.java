@@ -2,6 +2,7 @@ package application.database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Content {
 	
@@ -249,6 +250,74 @@ public class Content {
 			return false;
 		}
 		return false;
+	}
+	
+	/**
+	 * Retrieves all categories from the database
+	 * 
+	 * @return all categories as a list of String-objects
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static ArrayList<String> getCategories() {
+		ArrayList<String> categories = new ArrayList<String>();
+		String query = "SELECT * FROM `categories`;";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				categories.add(r.getString("categoryName"));
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return categories;
+	}
+	
+	/**
+	 * @param categoryName is the name of the category we want the ID of
+	 * @return the ID of the category
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static Integer getCategoryID(String categoryName) {
+		String query = "SELECT * FROM `categories`;";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				if (r.getString("categoryName").equals(categoryName))
+					return r.getInt("categoryID");
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+	
+	/**
+	 * @param categories is a list with all categories the user want to add to the post (while creating the post)
+	 */
+	public static void addPostCategories(ArrayList<String> categories) {
+		if (categories.size() == 0)
+			return;
+		int postID = 0;
+		String query = "SELECT MAX(`postID`) FROM `post`;";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				postID = r.getInt(1);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+		if (postID == 0)
+			throw new IllegalStateException("The postID can not be 0.");
+		for (String string : categories) {
+			query = "INSERT INTO `postcategories` VALUES (" + postID + ", " + getCategoryID(string) + ");";
+			DB.insert(query);
+		}
 	}
 	
 }
