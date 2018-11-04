@@ -322,4 +322,14 @@ public class Content {
 		}
 	}
 	
+	/**
+	 * @param subscribed is the user that is being subscribed to
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void addSubscription(String subscribed) {
+		String query = "INSERT INTO `subscription` VALUES (\"" + CurrentUser.getUsername() + "\", \"" + subscribed + "\");";
+		DB.insert(query);
+	}
+	
 }
