@@ -13,6 +13,7 @@ import application.logic.Posts;
 import application.logic.Usertype;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -785,7 +786,7 @@ public class Home {
 					dialog.getDialogPane().getButtonTypes().setAll(publishButtonType, submitButtonType, ButtonType.CANCEL);
 					
 					Pane dialogPane = new Pane();
-					dialogPane.setPrefSize(300, 370);
+					dialogPane.setPrefSize(300, 395);
 					Label headerLabel = new Label("Header:");
 					headerLabel.setLayoutX(20);
 					headerLabel.setLayoutY(20);
@@ -821,8 +822,43 @@ public class Home {
 								categories.add(categoryBox.getValue());
 						}
 					});
+					Label feedbackLabel = new Label("Category successfully added!");
+					feedbackLabel.setLayoutX(20);
+					feedbackLabel.setLayoutY(355);
+					feedbackLabel.setTextFill(Color.web("#0000ff"));
+					feedbackLabel.setVisible(false);
+					feedbackLabel.setFont(Font.font(10));
 					
-					dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea, categoryBox, addCategoryButton);
+					new Runnable() {
+						int prevSize = categories.size();
+						@Override
+						public void run() {
+							for (;;) {
+								int currSize = categories.size();
+								if (currSize != prevSize) {
+									feedbackLabel.setVisible(true);
+									prevSize = currSize;
+									try {
+										Thread.sleep(1000);
+									}
+									catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+									feedbackLabel.setVisible(false);
+								}
+								else {
+									try {
+										Thread.sleep(100);
+									}
+									catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+								}
+							}
+						}
+					};
+					
+					dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea, categoryBox, addCategoryButton, feedbackLabel);
 					Node submitButton = dialog.getDialogPane().lookupButton(submitButtonType);
 					submitButton.setDisable(true);
 					contentArea.textProperty().addListener((observable, oldValue, newValue) ->
