@@ -586,7 +586,7 @@ public class Home {
 		optionsPane.getChildren().add(showSubscribedButton);
 		if (!CurrentUser.isRegistered())
 			visible((Node) showSubscribedButton, false);
-		showSubscribedButton.setOnAction(showSubscribedEventHandler());
+		showSubscribedButton.setOnAction(showSubscribedEventHandler(adressField, contentPane));
 		
 		Button createCategoriesButton = new Button("Create categories");
 		optionsPane.getChildren().add(createCategoriesButton);
