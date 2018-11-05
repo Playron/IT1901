@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import application.logic.Post;
 import javafx.collections.ObservableList;
 
 public class Content {
@@ -146,6 +147,18 @@ public class Content {
 	 */
 	public static void updateAssignedToMyself(int postID) {
 		String query = "UPDATE `post` SET `assignedto` = \"" + CurrentUser.getUsername() + "\" WHERE `postID` = " + postID + ";";
+		DB.alter(query);
+	}
+	
+	/**
+	 * Updates the `assignedto`-value of the specified post to be the username of the specified user.
+	 * 
+	 * @param postID is the ID of the post that is being assigned to the specified user
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void updateAssignedTo(String username, int postID) {
+		String query = "UPDATE `post` SET `assignedto` = \"" + username + "\" WHERE `postID` = " + postID + ";";
 		DB.alter(query);
 	}
 	
@@ -303,6 +316,8 @@ public class Content {
 	
 	/**
 	 * @param categories is a list with all categories the user want to add to the post (while creating the post)
+	 * 
+	 * @author Niklas Sølvberg
 	 */
 	public static void addPostCategories(ObservableList<String> categories) {
 		if (categories.size() == 0)
@@ -464,6 +479,56 @@ public class Content {
 			if (categories.contains(i))
 				return true;
 		return false;
+	}
+	
+	/**
+<<<<<<< src/application/database/Content.java
+	 * @param username is the user we want to check if has copy editor rights
+	 * @return if the user has copy editor rights
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static boolean userIsEditor(String username) {
+		String query = "SELECT * FROM `user` WHERE `username` = \"" + username + "\";";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				if (r.getString("usertype").equals("C") || r.getString("usertype").equals("E") || r.getString("usertype").equals("A"))
+					return true;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+=======
+	 * Creates a user with the passed arguments.
+	 *
+	 * @param Comment is the comment to the respective post
+	 * @param PostId is the PostId
+	 * @author Per Haagensen
+	 */
+	
+	
+	public static void addComment(String comment, Post post) {
+		String query;
+		query = "INSERT INTO `comment` (`commenter`, `text`, `post`) VALUES (\"" + CurrentUser.getUsername() + "\", \"" + comment + "\", \"" + post.getID() + "\");";
+		DB.insert(query);
+		
+	}
+	/**
+	 * Creates a user with the passed arguments.
+	 *
+	 * @return SQL query that returns for comments to a specific post
+	 * @param Post is the post.postid
+	 * @author Per Haagensen
+	 */
+	
+	public static void getPostComment(Post post) {
+		String query;
+		query = "SELECT * FROM `comment` WHERE `post` = " + post.getID() + ";";
+		DB.insert(query);
+>>>>>>> src/application/database/Content.java
 	}
 	
 }
