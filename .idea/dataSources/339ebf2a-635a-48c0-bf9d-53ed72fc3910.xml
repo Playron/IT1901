@@ -7,111 +7,172 @@
       <Visible>1</Visible>
     </schema>
     <schema id="3" parent="1" name="information_schema"/>
-    <table id="4" parent="2" name="categories"/>
-    <table id="5" parent="2" name="comment"/>
-    <table id="6" parent="2" name="post"/>
-    <table id="7" parent="2" name="postcategories"/>
-    <table id="8" parent="2" name="savedpost"/>
-    <table id="9" parent="2" name="subscription"/>
-    <table id="10" parent="2" name="user"/>
-    <column id="11" parent="4" name="categoryID">
+    <schema id="4" parent="1" name="test_db"/>
+    <table id="5" parent="2" name="accessrequest"/>
+    <table id="6" parent="2" name="categories"/>
+    <table id="7" parent="2" name="categorysubscription"/>
+    <table id="8" parent="2" name="comment"/>
+    <table id="9" parent="2" name="post"/>
+    <table id="10" parent="2" name="postcategories"/>
+    <table id="11" parent="2" name="savedpost"/>
+    <table id="12" parent="2" name="subscription"/>
+    <table id="13" parent="2" name="user"/>
+    <column id="14" parent="5" name="username">
+      <Position>1</Position>
+      <DataType>varchar(30)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="15" parent="5" name="accesslevel">
+      <Position>2</Position>
+      <DataType>varchar(1)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="16" parent="5" name="PRIMARY">
+      <ColNames>username</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="17" parent="5" name="accessrequest_userFK">
+      <ColNames>username</ColNames>
+      <RefSchemaName>niklaso_tdt4140</RefSchemaName>
+      <RefTableName>user</RefTableName>
+      <RefColNames>username</RefColNames>
+    </foreign-key>
+    <column id="18" parent="6" name="categoryID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="12" parent="4" name="categoryName">
+    <column id="19" parent="6" name="categoryName">
       <Position>2</Position>
       <DataType>varchar(100)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="13" parent="4" name="PRIMARY">
+    <key id="20" parent="6" name="PRIMARY">
       <ColNames>categoryID</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="14" parent="5" name="commentID">
+    <column id="21" parent="7" name="subscriber">
+      <Position>1</Position>
+      <DataType>varchar(30)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="22" parent="7" name="categoryID">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="23" parent="7" name="cat_FK">
+      <ColNames>categoryID</ColNames>
+    </index>
+    <key id="24" parent="7" name="PRIMARY">
+      <ColNames>subscriber
+categoryID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="25" parent="7" name="sub_FK">
+      <ColNames>subscriber</ColNames>
+      <RefSchemaName>niklaso_tdt4140</RefSchemaName>
+      <RefTableName>user</RefTableName>
+      <RefColNames>username</RefColNames>
+    </foreign-key>
+    <foreign-key id="26" parent="7" name="cat_FK">
+      <ColNames>categoryID</ColNames>
+      <RefSchemaName>niklaso_tdt4140</RefSchemaName>
+      <RefTableName>categories</RefTableName>
+      <RefColNames>categoryID</RefColNames>
+    </foreign-key>
+    <column id="27" parent="8" name="commentID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="15" parent="5" name="commenter">
+    <column id="28" parent="8" name="commenter">
       <Position>2</Position>
       <DataType>varchar(30)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="16" parent="5" name="post">
+    <column id="29" parent="8" name="post">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="17" parent="5" name="text">
+    <column id="30" parent="8" name="text">
       <Position>4</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="18" parent="5" name="commenter_FK">
+    <index id="31" parent="8" name="commenter_FK">
       <ColNames>commenter</ColNames>
     </index>
-    <index id="19" parent="5" name="post_FK">
+    <index id="32" parent="8" name="post_FK">
       <ColNames>post</ColNames>
     </index>
-    <key id="20" parent="5" name="PRIMARY">
+    <key id="33" parent="8" name="PRIMARY">
       <ColNames>commentID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="21" parent="5" name="commenter_FK">
+    <foreign-key id="34" parent="8" name="commenter_FK">
       <ColNames>commenter</ColNames>
       <RefSchemaName>niklaso_tdt4140</RefSchemaName>
       <RefTableName>user</RefTableName>
       <RefColNames>username</RefColNames>
     </foreign-key>
-    <foreign-key id="22" parent="5" name="post_FK">
+    <foreign-key id="35" parent="8" name="post_FK">
       <ColNames>post</ColNames>
       <RefSchemaName>niklaso_tdt4140</RefSchemaName>
       <RefTableName>post</RefTableName>
       <RefColNames>postID</RefColNames>
     </foreign-key>
-    <column id="23" parent="6" name="postID">
+    <column id="36" parent="9" name="postID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="24" parent="6" name="poster">
+    <column id="37" parent="9" name="poster">
       <Position>2</Position>
       <DataType>varchar(30)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="25" parent="6" name="editor">
+    <column id="38" parent="9" name="editor">
       <Position>3</Position>
       <DataType>varchar(30)|0</DataType>
     </column>
-    <column id="26" parent="6" name="header">
+    <column id="39" parent="9" name="header">
       <Position>4</Position>
       <DataType>varchar(50)|0</DataType>
     </column>
-    <column id="27" parent="6" name="text">
+    <column id="40" parent="9" name="text">
       <Position>5</Position>
       <DataType>varchar(511)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="28" parent="6" name="state">
+    <column id="41" parent="9" name="state">
       <Position>6</Position>
       <DataType>varchar(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="29" parent="6" name="editor_FK">
+    <column id="42" parent="9" name="assignedto">
+      <Position>7</Position>
+      <DataType>varchar(30)|0</DataType>
+    </column>
+    <column id="43" parent="9" name="complete">
+      <Position>8</Position>
+      <DataType>tinyint(1)|0</DataType>
+    </column>
+    <index id="44" parent="9" name="editor_FK">
       <ColNames>editor</ColNames>
     </index>
-    <index id="30" parent="6" name="poster_FK">
+    <index id="45" parent="9" name="poster_FK">
       <ColNames>poster</ColNames>
     </index>
-    <key id="31" parent="6" name="PRIMARY">
+    <key id="46" parent="9" name="PRIMARY">
       <ColNames>postID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="32" parent="6" name="poster_FK">
+    <foreign-key id="47" parent="9" name="poster_FK">
       <ColNames>poster</ColNames>
       <RefSchemaName>niklaso_tdt4140</RefSchemaName>
       <RefTableName>user</RefTableName>
@@ -119,7 +180,7 @@
       <OnUpdate>update</OnUpdate>
       <OnDelete>delete</OnDelete>
     </foreign-key>
-    <foreign-key id="33" parent="6" name="editor_FK">
+    <foreign-key id="48" parent="9" name="editor_FK">
       <ColNames>editor</ColNames>
       <RefSchemaName>niklaso_tdt4140</RefSchemaName>
       <RefTableName>user</RefTableName>
@@ -127,25 +188,25 @@
       <OnUpdate>update</OnUpdate>
       <OnDelete>set-null</OnDelete>
     </foreign-key>
-    <column id="34" parent="7" name="postID">
+    <column id="49" parent="10" name="postID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="35" parent="7" name="postCategory">
+    <column id="50" parent="10" name="postCategory">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="36" parent="7" name="postcategories_categories_categoryID_fk">
+    <index id="51" parent="10" name="postcategories_categories_categoryID_fk">
       <ColNames>postCategory</ColNames>
     </index>
-    <key id="37" parent="7" name="PRIMARY">
+    <key id="52" parent="10" name="PRIMARY">
       <ColNames>postID
 postCategory</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="38" parent="7" name="postcategories_post_postID_fk">
+    <foreign-key id="53" parent="10" name="postcategories_post_postID_fk">
       <ColNames>postID</ColNames>
       <RefSchemaName>niklaso_tdt4140</RefSchemaName>
       <RefTableName>post</RefTableName>
@@ -153,7 +214,7 @@ postCategory</ColNames>
       <OnUpdate>update</OnUpdate>
       <OnDelete>delete</OnDelete>
     </foreign-key>
-    <foreign-key id="39" parent="7" name="postcategories_categories_categoryID_fk">
+    <foreign-key id="54" parent="10" name="postcategories_categories_categoryID_fk">
       <ColNames>postCategory</ColNames>
       <RefSchemaName>niklaso_tdt4140</RefSchemaName>
       <RefTableName>categories</RefTableName>
@@ -161,79 +222,79 @@ postCategory</ColNames>
       <OnUpdate>update</OnUpdate>
       <OnDelete>delete</OnDelete>
     </foreign-key>
-    <column id="40" parent="8" name="postID">
+    <column id="55" parent="11" name="postID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="41" parent="8" name="username">
+    <column id="56" parent="11" name="username">
       <Position>2</Position>
       <DataType>varchar(30)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="42" parent="8" name="username">
+    <index id="57" parent="11" name="username">
       <ColNames>username</ColNames>
     </index>
-    <key id="43" parent="8" name="PRIMARY">
+    <key id="58" parent="11" name="PRIMARY">
       <ColNames>postID
 username</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="44" parent="8" name="savedpost_ibfk_1">
+    <foreign-key id="59" parent="11" name="savedpost_ibfk_1">
       <ColNames>postID</ColNames>
       <RefSchemaName>niklaso_tdt4140</RefSchemaName>
       <RefTableName>post</RefTableName>
       <RefColNames>postID</RefColNames>
     </foreign-key>
-    <foreign-key id="45" parent="8" name="savedpost_ibfk_2">
+    <foreign-key id="60" parent="11" name="savedpost_ibfk_2">
       <ColNames>username</ColNames>
       <RefSchemaName>niklaso_tdt4140</RefSchemaName>
       <RefTableName>user</RefTableName>
       <RefColNames>username</RefColNames>
     </foreign-key>
-    <column id="46" parent="9" name="subscriber">
+    <column id="61" parent="12" name="subscriber">
       <Position>1</Position>
       <DataType>varchar(30)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="47" parent="9" name="subscribed">
+    <column id="62" parent="12" name="subscribed">
       <Position>2</Position>
       <DataType>varchar(30)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="48" parent="9" name="subd_FK">
+    <index id="63" parent="12" name="subd_FK">
       <ColNames>subscribed</ColNames>
     </index>
-    <index id="49" parent="9" name="subr_FK">
+    <index id="64" parent="12" name="subr_FK">
       <ColNames>subscriber</ColNames>
     </index>
-    <foreign-key id="50" parent="9" name="subr_FK">
+    <foreign-key id="65" parent="12" name="subr_FK">
       <ColNames>subscriber</ColNames>
       <RefSchemaName>niklaso_tdt4140</RefSchemaName>
       <RefTableName>user</RefTableName>
       <RefColNames>username</RefColNames>
     </foreign-key>
-    <foreign-key id="51" parent="9" name="subd_FK">
+    <foreign-key id="66" parent="12" name="subd_FK">
       <ColNames>subscribed</ColNames>
       <RefSchemaName>niklaso_tdt4140</RefSchemaName>
       <RefTableName>user</RefTableName>
       <RefColNames>username</RefColNames>
     </foreign-key>
-    <column id="52" parent="10" name="username">
+    <column id="67" parent="13" name="username">
       <Position>1</Position>
       <DataType>varchar(30)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="53" parent="10" name="password">
+    <column id="68" parent="13" name="password">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="54" parent="10" name="usertype">
+    <column id="69" parent="13" name="usertype">
       <Position>3</Position>
       <DataType>char(1)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="55" parent="10" name="PRIMARY">
+    <key id="70" parent="13" name="PRIMARY">
       <ColNames>username</ColNames>
       <Primary>1</Primary>
     </key>

@@ -160,6 +160,12 @@ public class Home {
 
 
 	}
+	
+	private static void addExecutivePublishedLabels(Pane contentPane, Label label, Post post, int x, int y, int dy, int i)
+	{
+		addLabels(contentPane, label, x, y, dy, i);
+		handleUnpublishingPublishedLabels(label, post);
+	}
 
 	/**
 	 * @param contentPane The Pane in which we want to add Labels
