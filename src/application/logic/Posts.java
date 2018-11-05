@@ -400,4 +400,23 @@ public class Posts {
 		return labels;
 	}
 	
+	
+	private static Label addPostLabel(Post post)
+	{
+		String[] wordList = post.getBody().split(" ");
+		String body = "";
+		int i = 0;
+		for (int j = 0; j < wordList.length; j++)
+		{
+			if (i > 100)
+			{
+				body += "\n";
+				i = 0;
+			}
+			i += wordList[j].length() + 1;
+			body += wordList[j] + " ";
+		}
+		return new Label("____________________________________________________________________________________________________\n____________________________________________________________________________________________________\n\n\n" + post.getHeader() + ", by " + post.getPoster() + "\n--------------------------------------------------\n" + body))
+		;
+	}
 }
