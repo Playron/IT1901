@@ -3,9 +3,12 @@ package application.database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import application.logic.Post;
+import application.logic.Posts;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
 
 public class Content {
 	
@@ -528,6 +531,42 @@ public class Content {
 		String query;
 		query = "SELECT * FROM `comment` WHERE `post` = " + post.getID() + ";";
 		DB.insert(query);
+	}
+	
+	public static ArrayList<Label> getSavedLabels(String user) {
+		ArrayList<Label> labels = new ArrayList<Label>();
+		for (Post post : getSavedPosts(user)) {
+			String[] wordList = post.getBody().split(" ");
+			String body = "";
+			int i = 0;
+			for (int j = 0; j < wordList.length; j++) {
+				if (i > 100) {
+					body += "\n";
+					i = 0;
+				}
+				i += wordList[j].length() + 1;
+				body += wordList[j] + " ";
+			}
+			labels.add(new Label("____________________________________________________________________________________________________\n____________________________________________________________________________________________________\n\n\n" + post.getHeader() + ", by " + post.getPoster() + "\n--------------------------------------------------\n" + body));
+		}
+		return labels;
+	}
+	
+	public static ArrayList<Post> getSavedPosts(String user)
+	{
+		ArrayList<Post> posts = new ArrayList<Post>();
+		ResultSet r = Posts.getSavedPosts(user);
+		try
+		{
+			while (r.next())
+				if (r.getString("state").equals("published"))
+					posts.add(new Post(r.getInt("postID"), r.getString("header"), r.getString("text"), r.getString("poster"), r.getString("editor")));
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		Collections.reverse(posts);
+		return posts;
 	}
 	
 }
