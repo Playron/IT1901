@@ -514,11 +514,13 @@ public class Content {
 		query = "INSERT INTO `comment` (`commenter`, `text`, `post`) VALUES (\"" + CurrentUser.getUsername() + "\", \"" + comment + "\", \"" + post.getID() + "\");";
 		DB.insert(query);
 	}
+	
 	/**
 	 * Creates a user with the passed arguments.
 	 *
 	 * @return SQL query that returns for comments to a specific post
 	 * @param post is the post.postid
+	 *
 	 * @author Per Haagensen
 	 */
 	public static void getPostComment(Post post) {
