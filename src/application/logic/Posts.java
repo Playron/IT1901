@@ -401,7 +401,7 @@ public class Posts {
 	}
 	
 	
-	private static Label getPostLabel(Post post)
+	public static Label getPostLabel(Post post)
 	{
 		String[] wordList = post.getBody().split(" ");
 		String body = "";
