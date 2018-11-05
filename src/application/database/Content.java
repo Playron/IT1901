@@ -63,7 +63,7 @@ public class Content {
 	/**
 	 * Retrieves all posts from the database that is posted or edited by a specified user.
 	 *
-	 * @param authorOrEditor is a string that limits the posts to the results where either the poster or the editor equals the param
+	 * @param authorEditorCategory is a string that limits the posts to the results where either the poster or the editor equals the param
 	 * @return all posts where the param is equal to either the poster or the editor
 	 * @author Niklas Sølvberg
 	 */
@@ -97,7 +97,7 @@ public class Content {
 	 * <br><br>This method should never be called unless the current user is an admin.
 	 *
 	 * @param username is the username of the user that is being updated
-	 * @param usertype is the usertype / access level of the user that is being updated
+	 * @param accessLevel is the usertype / access level of the user that is being updated
 	 * @author Niklas Sølvberg
 	 */
 	public static void updateUser(String username, String accessLevel)
@@ -501,33 +501,56 @@ public class Content {
 		}
 		return false;
 	}
-	/*
+	
+	/**
 	 * Creates a user with the passed arguments.
 	 *
-	 * @param Comment is the comment to the respective post
-	 * @param PostId is the PostId
+	 * @param comment is the comment to the respective post
+	 * @param post is the PostId
 	 * @author Per Haagensen
 	 */
-	
-	
 	public static void addComment(String comment, Post post) {
 		String query;
 		query = "INSERT INTO `comment` (`commenter`, `text`, `post`) VALUES (\"" + CurrentUser.getUsername() + "\", \"" + comment + "\", \"" + post.getID() + "\");";
 		DB.insert(query);
-		
 	}
+	
 	/**
 	 * Creates a user with the passed arguments.
 	 *
 	 * @return SQL query that returns for comments to a specific post
-	 * @param Post is the post.postid
+	 * @param post is the post.postid
+	 *
 	 * @author Per Haagensen
 	 */
+	public static ResultSet getPostComment(Post post) {
+		String query = "SELECT * FROM `comment` WHERE `post` = " + post.getID() + ";";
+		return DB.select(query);
+	}
 	
-	public static void getPostComment(Post post) {
-		String query;
-		query = "SELECT * FROM `comment` WHERE `post` = " + post.getID() + ";";
-		DB.insert(query);
+	public static String getCommentsAsString(Post post) {
+		ArrayList<String> comments = new ArrayList<String>();
+		ArrayList<String> users = new ArrayList<String>();
+		try
+		{
+			ResultSet r = getPostComment(post);
+			while(r.next()) {
+				comments.add(r.getString("text"));
+				users.add(r.getString("commenter"));
+				System.out.println(r.getString("text"));
+				System.out.println(r.getString("commenter"));
+			}
+			
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i<comments.size(); i++) {
+			sb.append(users.get(i) + ": \n\n" + comments.get(i) + "\n\n\n\n");
+		}
+		return sb.toString();
 	}
 	
 	/** 
@@ -539,7 +562,7 @@ public class Content {
 	 */ 
 	public static void savePost(int postID, String user) 
 	{ 
-		String query = "INSERT INTO savedpost ('postID', 'username') VALUES ('" + postID + "', '" + user + "');"; 
+		String query = "INSERT INTO savedpost (postID, username) VALUES (" + postID + ", '" + user + "');"; 
 		DB.insert(query);
 	} 
 
