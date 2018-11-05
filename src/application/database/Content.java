@@ -151,6 +151,18 @@ public class Content {
 	}
 	
 	/**
+	 * Updates the `assignedto`-value of the specified post to be the username of the specified user.
+	 * 
+	 * @param postID is the ID of the post that is being assigned to the specified user
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void updateAssignedTo(String username, int postID) {
+		String query = "UPDATE `post` SET `assignedto` = \"" + username + "\" WHERE `postID` = " + postID + ";";
+		DB.alter(query);
+	}
+	
+	/**
 	 * Adds an entry to the accessrequest-table (or updating if the user has an entry already)
 	 * 
 	 * @param accessLevelRequested is the new accesslevel the user requests
@@ -304,6 +316,8 @@ public class Content {
 	
 	/**
 	 * @param categories is a list with all categories the user want to add to the post (while creating the post)
+	 * 
+	 * @author Niklas Sølvberg
 	 */
 	public static void addPostCategories(ObservableList<String> categories) {
 		if (categories.size() == 0)
@@ -468,6 +482,26 @@ public class Content {
 	}
 	
 	/**
+<<<<<<< src/application/database/Content.java
+	 * @param username is the user we want to check if has copy editor rights
+	 * @return if the user has copy editor rights
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static boolean userIsEditor(String username) {
+		String query = "SELECT * FROM `user` WHERE `username` = \"" + username + "\";";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				if (r.getString("usertype").equals("C") || r.getString("usertype").equals("E") || r.getString("usertype").equals("A"))
+					return true;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+=======
 	 * Creates a user with the passed arguments.
 	 *
 	 * @param Comment is the comment to the respective post
@@ -494,6 +528,7 @@ public class Content {
 		String query;
 		query = "SELECT * FROM `comment` WHERE `post` = " + post.getID() + ";";
 		DB.insert(query);
+>>>>>>> src/application/database/Content.java
 	}
 	
 }
