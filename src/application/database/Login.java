@@ -59,8 +59,8 @@ public class Login
 	 */
 	public static void login(String username)
 	{
-		String query = "SELECT * FROM `user` WHERE `username` = \"" + username + "\";";
-		ResultSet r = DB.select(query);
+		
+		ResultSet r = Content.userLogin(username);
 		try
 		{
 			while (r.next())
