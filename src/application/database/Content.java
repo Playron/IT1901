@@ -523,10 +523,38 @@ public class Content {
 	 *
 	 * @author Per Haagensen
 	 */
-	public static void getPostComment(Post post) {
-		String query;
-		query = "SELECT * FROM `comment` WHERE `post` = " + post.getID() + ";";
-		DB.insert(query);
+	public static ResultSet getPostComment(Post post) {
+		String query = "SELECT * FROM `comment` WHERE `post` = " + post.getID() + ";";
+		return DB.select(query);
+	}
+	
+	public static String getCommentsAsString(Post post) {
+		ArrayList<String> comments = new ArrayList<String>();
+		ArrayList<String> users = new ArrayList<String>();
+		try
+		{
+			ResultSet r = getPostComment(post);
+			while(r.next()) {
+				comments.add(r.getString("text"));
+				users.add(r.getString("commenter"));
+				System.out.println(r.getString("text"));
+				System.out.println(r.getString("commenter"));
+			}
+			
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i<comments.size(); i++) {
+			sb.append(users.get(i) + ": \n\n" + comments.get(i) + "\n\n\n\n");
+		}
+		return sb.toString();
+	}
+	
+	public static void main(String[] args) {
+		
 	}
 	
 }
