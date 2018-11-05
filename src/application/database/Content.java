@@ -501,7 +501,7 @@ public class Content {
 			return false;
 		}
 		return false;
-=======
+		
 	 * Creates a user with the passed arguments.
 	 *
 	 * @param Comment is the comment to the respective post
@@ -514,7 +514,6 @@ public class Content {
 		String query;
 		query = "INSERT INTO `comment` (`commenter`, `text`, `post`) VALUES (\"" + CurrentUser.getUsername() + "\", \"" + comment + "\", \"" + post.getID() + "\");";
 		DB.insert(query);
-		
 	}
 	/**
 	 * Creates a user with the passed arguments.
@@ -528,7 +527,6 @@ public class Content {
 		String query;
 		query = "SELECT * FROM `comment` WHERE `post` = " + post.getID() + ";";
 		DB.insert(query);
->>>>>>> src/application/database/Content.java
 	}
 	
 }
