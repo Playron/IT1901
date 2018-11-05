@@ -150,6 +150,18 @@ public class Content {
 	}
 	
 	/**
+	 * Updates the `assignedto`-value of the specified post to be the username of the specified user.
+	 * 
+	 * @param postID is the ID of the post that is being assigned to the specified user
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static void updateAssignedTo(String username, int postID) {
+		String query = "UPDATE `post` SET `assignedto` = \"" + username + "\" WHERE `postID` = " + postID + ";";
+		DB.alter(query);
+	}
+	
+	/**
 	 * Adds an entry to the accessrequest-table (or updating if the user has an entry already)
 	 * 
 	 * @param accessLevelRequested is the new accesslevel the user requests
@@ -303,6 +315,8 @@ public class Content {
 	
 	/**
 	 * @param categories is a list with all categories the user want to add to the post (while creating the post)
+	 * 
+	 * @author Niklas Sølvberg
 	 */
 	public static void addPostCategories(ObservableList<String> categories) {
 		if (categories.size() == 0)
