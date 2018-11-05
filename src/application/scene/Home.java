@@ -141,9 +141,16 @@ public class Home {
 				}
 				break;
 			case 1:
-				for (Label label : Posts.getPublishedLabels(search))
+				for (Post post : Posts.getPublishedPosts(search))
 				{
+					Label label = Posts.getPostLabel(post);
 					addLabels(contentPane, label, 80, 40, 200, i);
+					System.out.println("publishing " + i);
+					if (CurrentUser.hasExecutiveEditorRights())
+					{
+						handleUnpublishingPublishedLabels(label, post);
+						System.out.println("Executivity " + i);
+					}
 					i++;
 				}
 				break;
@@ -153,6 +160,7 @@ public class Home {
 				for (int j = 0; j < labelList.size(); j++)
 				{
 					addLabelsForEditors(contentPane, labelList.get(j), 80, 40, 200, i, postList.get(j));
+					System.out.println(i);
 					i++;
 				}
 				break;
@@ -161,11 +169,6 @@ public class Home {
 
 	}
 	
-	private static void addExecutivePublishedLabels(Pane contentPane, Label label, Post post, int x, int y, int dy, int i)
-	{
-		addLabels(contentPane, label, x, y, dy, i);
-		handleUnpublishingPublishedLabels(label, post);
-	}
 
 	/**
 	 * @param contentPane The Pane in which we want to add Labels
@@ -756,17 +759,9 @@ public class Home {
 			public void handle(ActionEvent ae)
 			{
 				showContent = 1;
-				addressField.setText(website + "/published_content" + searchFull);
+				//addressField.setText(website + "/published_content" + searchFull);
 				contentPane.getChildren().clear();
-				int i = 0;
-				contentPane.setPrefHeight(40 + (200 * Posts.getPublishedLabels(search).size()));
-				for (Label label : Posts.getPublishedLabels(search))
-				{
-					contentPane.getChildren().add(label);
-					label.setLayoutX(80);
-					label.setLayoutY(40 + (200 * i));
-					i++;
-				}
+				populateContent(contentPane, addressField);
 			}
 		});
 	}
