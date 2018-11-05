@@ -583,4 +583,9 @@ public class Content {
 		return DB.select(query); 
 	} 
 	
+	public static ResultSet userLogin(String username) {
+		String query = "SELECT * FROM `user` WHERE `username` = \"" + username + "\";";
+		ResultSet r = DB.select(query);
+		return r;
+	}
 }
