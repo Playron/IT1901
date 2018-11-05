@@ -3,12 +3,9 @@ package application.database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import application.logic.Post;
-import application.logic.Posts;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Label;
 
 public class Content {
 	

@@ -860,6 +860,29 @@ public class Home {
 			}
 		});
 	}
+	
+	public static void showSavedButtonOnAction(Button showSavedButton, TextField addressField, Pane contentPane)
+	{
+		showSavedButton.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent ae)
+			{
+				showContent = 1;
+				addressField.setText(website + "/saved_content" + searchFull);
+				contentPane.getChildren().clear();
+				int i = 0;
+				contentPane.setPrefHeight(40 + (200 * Posts.getSavedLabels(search).size()));
+				for (Label label : Posts.getSavedLabels(search))
+				{
+					contentPane.getChildren().add(label);
+					label.setLayoutX(80);
+					label.setLayoutY(40 + (200 * i));
+					i++;
+				}
+			}
+		});
+	}
 
 	public static void createCategoriesButtonOnAction(Button createCategoriesButton)
 	{

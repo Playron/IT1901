@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import application.database.Content;
-import application.database.DB;
 import javafx.scene.control.Label;
 
 public class Posts {
