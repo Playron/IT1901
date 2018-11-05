@@ -274,25 +274,85 @@ public class Home {
 			assignedLabel.setLayoutY(y + (dy * i) + 80);
 		}
 		else {
-			Button assignButton = new Button("Assign yourself!");
-			contentPane.getChildren().add(assignButton);
-			assignButton.setLayoutX(x + 650);
-			assignButton.setLayoutY(y + (dy * i) + 80);
-			assignButton.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent ae) {
-					Alert alert = new Alert(AlertType.CONFIRMATION);
-					alert.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
-					alert.setTitle("Assign post");
-					alert.setHeaderText(null);
-					alert.setContentText("Are you sure you want to assign\nthis post to yourself?");
-					Optional<ButtonType> result = alert.showAndWait();
-					if (result.get() == ButtonType.OK) {
-						Content.updateAssignedToMyself(post.getID());
+			if (CurrentUser.hasExecutiveEditorRights()) {
+				Button assignButton = new Button("Assign user");
+				contentPane.getChildren().add(assignButton);
+				assignButton.setLayoutX(x + 650);
+				assignButton.setLayoutY(y + (dy * i) + 80);
+				assignButton.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent ae) {
+						Dialog<ButtonType> dialog = new Dialog<ButtonType>();
+						dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
+						dialog.setTitle("Assign user");
+						dialog.setHeaderText(null);
+						Pane pane = new Pane();
+						pane.setPrefSize(340, 90);
+						Label usernameLabel = new Label("Username:");
+						pane.getChildren().add(usernameLabel);
+						usernameLabel.setLayoutX(40);
+						usernameLabel.setLayoutY(20);
+						TextField usernameField = new TextField();
+						pane.getChildren().add(usernameField);
+						usernameField.setLayoutX(40);
+						usernameField.setLayoutY(45);
+						usernameField.setPrefSize(260, 25);
+						dialog.getDialogPane().setContent(pane);
+						ButtonType assignUserType = new ButtonType("Assign", ButtonData.OK_DONE);
+						ButtonType assignYourselfType = new ButtonType("Assign yourself", ButtonData.OK_DONE);
+						dialog.getDialogPane().getButtonTypes().setAll(assignUserType, assignYourselfType, ButtonType.CANCEL);
+						Optional<ButtonType> result = dialog.showAndWait();
+						result.ifPresent(buttonType -> {
+							if (buttonType == assignUserType) {
+								if (Content.userIsEditor(usernameField.getText())) {
+									Content.updateAssignedTo(usernameField.getText(), post.getID());
+									Alert alert = new Alert(AlertType.INFORMATION);
+									alert.setTitle("Assigned");
+									alert.setHeaderText(null);
+									alert.setContentText("The post has been assigned to the user '" + usernameField.getText() + "'!");
+									alert.showAndWait();
+								}
+								else {
+									Alert alert = new Alert(AlertType.ERROR);
+									alert.setTitle("Error");
+									alert.setHeaderText(null);
+									alert.setContentText("The post could not be assigned to the user '" + usernameField.getText() + "'.");
+									alert.showAndWait();
+								}
+							}
+							else if (buttonType == assignYourselfType) {
+								Content.updateAssignedToMyself(post.getID());
+								Alert alert = new Alert(AlertType.INFORMATION);
+								alert.setTitle("Assigned");
+								alert.setHeaderText(null);
+								alert.setContentText("The post has been assigned to you!");
+								alert.showAndWait();
+							}
+						});
 					}
-					lastChange = "submitted";
-				}
-			});
+				});
+			}
+			else {
+				Button assignButton = new Button("Assign yourself!");
+				contentPane.getChildren().add(assignButton);
+				assignButton.setLayoutX(x + 650);
+				assignButton.setLayoutY(y + (dy * i) + 80);
+				assignButton.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent ae) {
+						Alert alert = new Alert(AlertType.CONFIRMATION);
+						alert.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
+						alert.setTitle("Assign post");
+						alert.setHeaderText(null);
+						alert.setContentText("Are you sure you want to assign\nthis post to yourself?");
+						Optional<ButtonType> result = alert.showAndWait();
+						if (result.get() == ButtonType.OK) {
+							Content.updateAssignedToMyself(post.getID());
+						}
+						lastChange = "submitted";
+					}
+				});
+			}
 		}
 	}
 

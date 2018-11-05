@@ -480,4 +480,25 @@ public class Content {
 		return false;
 	}
 	
+	/**
+	 * @param username is the user we want to check if has copy editor rights
+	 * @return if the user has copy editor rights
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static boolean userIsEditor(String username) {
+		String query = "SELECT * FROM `user` WHERE `username` = \"" + username + "\";";
+		try {
+			ResultSet r = DB.select(query);
+			while (r.next())
+				if (r.getString("usertype").equals("C") || r.getString("usertype").equals("E") || r.getString("usertype").equals("A"))
+					return true;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+	}
+	
 }
