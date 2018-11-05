@@ -556,9 +556,10 @@ public class Home {
 	/**
 	 * @param text is the address field at the homepage
 	 * @param pane is the pane that the labels are being put into
-	 * @return the EventHandler that are being used for showing the posts that are subscribed to
+	 * @return the EventHandler that are being used for showing the posts that are saved
 	 * 
 	 * @author Niklas Sølvberg
+	 * @author Alexander Bollestad
 	 */
 	public static EventHandler<ActionEvent> showSavedEventHandler(TextField text, Pane pane) {
 		EventHandler<ActionEvent> eventHandler = new EventHandler<ActionEvent>() {
@@ -568,7 +569,7 @@ public class Home {
 				text.setText(website + "/saved_content" + searchFull);
 				pane.getChildren().clear();
 				int i = 0;
-				ArrayList<Label> labels = Posts.getSavedLabels(search);
+				ArrayList<Label> labels = Posts.getSavedLabels(CurrentUser.getUsername());
 				pane.setPrefHeight(40 + (200 * labels.size()));
 				for (Label label : labels)
 				{
@@ -872,8 +873,8 @@ public class Home {
 				addressField.setText(website + "/saved_content" + searchFull);
 				contentPane.getChildren().clear();
 				int i = 0;
-				contentPane.setPrefHeight(40 + (200 * Posts.getSavedLabels(search).size()));
-				for (Label label : Posts.getSavedLabels(search))
+				contentPane.setPrefHeight(40 + (200 * Posts.getSavedLabels(CurrentUser.getUsername()).size()));
+				for (Label label : Posts.getSavedLabels(CurrentUser.getUsername()))
 				{
 					contentPane.getChildren().add(label);
 					label.setLayoutX(80);
