@@ -170,19 +170,9 @@ public class Posts {
 	 */
 	public static ArrayList<Label> getLabels() {
 		ArrayList<Label> labels = new ArrayList<Label>();
-		for (Post post : getPosts()) {
-			String[] wordList = post.getBody().split(" ");
-			String body = "";
-			int i = 0;
-			for (int j = 0; j < wordList.length; j++) {
-				if (i > 100) {
-					body += "\n";
-					i = 0;
-				}
-				i += wordList[j].length() + 1;
-				body += wordList[j] + " ";
-			}
-			labels.add(new Label("____________________________________________________________________________________________________\n____________________________________________________________________________________________________\n\n\n" + post.getHeader() + ", by " + post.getPoster() + "\n--------------------------------------------------\n" + body));
+		for (Post post : getPosts())
+		{
+			labels.add(getPostLabel(post));
 		}
 		return labels;
 	}
@@ -196,19 +186,9 @@ public class Posts {
 	 */
 	public static ArrayList<Label> getSubmittedLabels() {
 		ArrayList<Label> labels = new ArrayList<Label>();
-		for (Post post : getSubmittedPosts()) {
-			String[] wordList = post.getBody().split(" ");
-			String body = "";
-			int i = 0;
-			for (int j = 0; j < wordList.length; j++) {
-				if (i > 100) {
-					body += "\n";
-					i = 0;
-				}
-				i += wordList[j].length() + 1;
-				body += wordList[j] + " ";
-			}
-			labels.add(new Label("____________________________________________________________________________________________________\n____________________________________________________________________________________________________\n\n\n" + post.getHeader() + ", by " + post.getPoster() + "\n--------------------------------------------------\n" + body));
+		for (Post post : getSubmittedPosts())
+		{
+			labels.add(getPostLabel(post));
 		}
 		return labels;
 	}
@@ -222,19 +202,9 @@ public class Posts {
 	 */
 	public static ArrayList<Label> getPublishedLabels() {
 		ArrayList<Label> labels = new ArrayList<Label>();
-		for (Post post : getPublishedPosts()) {
-			String[] wordList = post.getBody().split(" ");
-			String body = "";
-			int i = 0;
-			for (int j = 0; j < wordList.length; j++) {
-				if (i > 100) {
-					body += "\n";
-					i = 0;
-				}
-				i += wordList[j].length() + 1;
-				body += wordList[j] + " ";
-			}
-			labels.add(new Label("____________________________________________________________________________________________________\n____________________________________________________________________________________________________\n\n\n" + post.getHeader() + ", by " + post.getPoster() + "\n--------------------------------------------------\n" + body));
+		for (Post post : getPublishedPosts())
+		{
+			labels.add(getPostLabel(post));
 		}
 		return labels;
 	}
@@ -250,20 +220,7 @@ public class Posts {
 		ArrayList<Label> labels = new ArrayList<Label>();
 		for (Post post : getPosts(authorOrEditor))
 		{
-			String[] wordList = post.getBody().split(" ");
-			String body = "";
-			int i = 0;
-			for (int j = 0; j < wordList.length; j++)
-			{
-				if (i > 100)
-				{
-					body += "\n";
-					i = 0;
-				}
-				i += wordList[j].length() + 1;
-				body += wordList[j] + " ";
-			}
-			labels.add(new Label("____________________________________________________________________________________________________\n____________________________________________________________________________________________________\n\n\n" + post.getHeader() + ", by " + post.getPoster() + "\n--------------------------------------------------\n" + body));
+			labels.add(getPostLabel(post));
 		}
 		return labels;
 	}
@@ -279,20 +236,7 @@ public class Posts {
 		ArrayList<Label> labels = new ArrayList<Label>();
 		for (Post post : getSubmittedPosts(authorOrEditor))
 		{
-			String[] wordList = post.getBody().split(" ");
-			String body = "";
-			int i = 0;
-			for (int j = 0; j < wordList.length; j++)
-			{
-				if (i > 100)
-				{
-					body += "\n";
-					i = 0;
-				}
-				i += wordList[j].length() + 1;
-				body += wordList[j] + " ";
-			}
-			labels.add(new Label("____________________________________________________________________________________________________\n____________________________________________________________________________________________________\n\n\n" + post.getHeader() + ", by " + post.getPoster() + "\n--------------------------------------------------\n" + body));
+			labels.add(getPostLabel(post));
 		}
 		return labels;
 	}
@@ -308,20 +252,7 @@ public class Posts {
 		ArrayList<Label> labels = new ArrayList<Label>();
 		for (Post post : getPublishedPosts(authorOrEditor))
 		{
-			String[] wordList = post.getBody().split(" ");
-			String body = "";
-			int i = 0;
-			for (int j = 0; j < wordList.length; j++)
-			{
-				if (i > 100)
-				{
-					body += "\n";
-					i = 0;
-				}
-				i += wordList[j].length() + 1;
-				body += wordList[j] + " ";
-			}
-			labels.add(new Label("____________________________________________________________________________________________________\n____________________________________________________________________________________________________\n\n\n" + post.getHeader() + ", by " + post.getPoster() + "\n--------------------------------------------------\n" + body));
+			labels.add(getPostLabel(post));
 		}
 		return labels;
 	}
@@ -382,20 +313,7 @@ public class Posts {
 		ArrayList<Label> labels = new ArrayList<Label>();
 		for (Post post : getSubscribedPosts(authorOrEditor))
 		{
-			String[] wordList = post.getBody().split(" ");
-			String body = "";
-			int i = 0;
-			for (int j = 0; j < wordList.length; j++)
-			{
-				if (i > 100)
-				{
-					body += "\n";
-					i = 0;
-				}
-				i += wordList[j].length() + 1;
-				body += wordList[j] + " ";
-			}
-			labels.add(new Label("____________________________________________________________________________________________________\n____________________________________________________________________________________________________\n\n\n" + post.getHeader() + ", by " + post.getPoster() + "\n--------------------------------------------------\n" + body));
+			labels.add(getPostLabel(post));
 		}
 		return labels;
 	}
