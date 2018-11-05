@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import application.logic.Post;
 import javafx.collections.ObservableList;
 
 public class Content {
@@ -464,6 +465,35 @@ public class Content {
 			if (categories.contains(i))
 				return true;
 		return false;
+	}
+	
+	/**
+	 * Creates a user with the passed arguments.
+	 *
+	 * @param Comment is the comment to the respective post
+	 * @param PostId is the PostId
+	 * @author Per Haagensen
+	 */
+	
+	
+	public static void addComment(String comment, Post post) {
+		String query;
+		query = "INSERT INTO `comment` (`commenter`, `text`, `post`) VALUES (\"" + CurrentUser.getUsername() + "\", \"" + comment + "\", \"" + post.getID() + "\");";
+		DB.insert(query);
+		
+	}
+	/**
+	 * Creates a user with the passed arguments.
+	 *
+	 * @return SQL query that returns for comments to a specific post
+	 * @param Post is the post.postid
+	 * @author Per Haagensen
+	 */
+	
+	public static void getPostComment(Post post) {
+		String query;
+		query = "SELECT FROM `comment` WHERE `post` = " + post.getID() + ";";
+		DB.insert(query);
 	}
 	
 }
