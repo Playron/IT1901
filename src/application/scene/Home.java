@@ -149,6 +149,9 @@ public class Home {
 					{
 						handleUnpublishingPublishedLabels(label, post);
 					}
+					
+					if(CurrentUser.hasAuthorRights())
+						handleEditPublishedLabels(label, post);
 					i++;
 				}
 				break;
@@ -1144,4 +1147,111 @@ public class Home {
 			}
 		});
 	}
+	
+	public static void handleEditPublishedLabels(Label label, Post post) {
+		if (post.getPoster().equals(CurrentUser.getUsername())) {
+			label.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent me) {
+					Dialog<ArrayList<String>> dialog = new Dialog<ArrayList<String>>();
+					dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
+					dialog.initModality(Modality.APPLICATION_MODAL);
+					dialog.setTitle("Edit your post");
+					dialog.setHeaderText(null);
+					dialog.getDialogPane().getButtonTypes().setAll(ButtonType.APPLY, ButtonType.CANCEL);
+					
+					Pane dialogPane = new Pane();
+					dialogPane.setPrefSize(300, 395);
+					Label headerLabel = new Label("Header:");
+					headerLabel.setLayoutX(20);
+					headerLabel.setLayoutY(20);
+					TextField headerField = new TextField(post.getHeader());
+					headerField.setLayoutX(20);
+					headerField.setLayoutY(50);
+					headerField.setPrefSize(260, 25);
+					Label contentLabel = new Label("Content:");
+					contentLabel.setLayoutX(20);
+					contentLabel.setLayoutY(90);
+					TextArea contentArea = new TextArea(post.getBody());
+					contentArea.setLayoutX(20);
+					contentArea.setLayoutY(120);
+					contentArea.setPrefSize(260, 160);
+					contentArea.setWrapText(true);
+					Label categoryLabel = new Label("Add categories:");
+					categoryLabel.setLayoutX(20);
+					categoryLabel.setLayoutY(295);
+					Label feedbackLabel = new Label("Category successfully added!");
+					feedbackLabel.setLayoutX(20);
+					feedbackLabel.setLayoutY(355);
+					feedbackLabel.setTextFill(Color.web("#0000ff"));
+					feedbackLabel.setVisible(false);
+					feedbackLabel.setFont(Font.font(10));
+					ComboBox<String> categoryBox = new ComboBox<String>();
+					categoryBox.setLayoutX(20);
+					categoryBox.setLayoutY(325);
+					categoryBox.setPrefSize(200, 25);
+					categoryBox.setItems(FXCollections.observableArrayList(Content.getCategories()));
+					categoryBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent me) {
+							feedbackLabel.setVisible(false);
+						}
+					});
+					Button addCategoryButton = new Button("Add");
+					addCategoryButton.setLayoutX(220);
+					addCategoryButton.setLayoutY(325);
+					addCategoryButton.setPrefSize(60, 25);
+					ObservableList<String> categories = FXCollections.observableArrayList();
+					addCategoryButton.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent ae) {
+							if (Content.getCategories().contains(categoryBox.getValue()) && !categories.contains(categoryBox.getValue()))
+								categories.add(categoryBox.getValue());
+						}
+					});
+					
+					dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea, categoryBox, addCategoryButton, feedbackLabel);
+					categories.addListener((ListChangeListener<String>) change -> {
+						feedbackLabel.setVisible(true);
+					});
+					Node applyButton = dialog.getDialogPane().lookupButton(ButtonType.APPLY);
+					applyButton.setDisable(true);
+					contentArea.textProperty().addListener((observable, oldValue, newValue) ->
+					{
+						headerField.textProperty().addListener((observable1, oldValue1, newValue1) ->
+						{
+							applyButton.setDisable(newValue.trim().isEmpty() || newValue1.trim().isEmpty());
+						});
+					});
+					headerField.textProperty().addListener((observable, oldValue, newValue) ->
+					{
+						contentArea.textProperty().addListener((observable1, oldValue1, newValue1) ->
+						{
+							applyButton.setDisable(newValue.trim().isEmpty() || newValue1.trim().isEmpty());
+						});
+					});
+					dialog.getDialogPane().setContent(dialogPane);
+					dialog.setResultConverter(dialogButton ->
+					{
+						if (dialogButton == ButtonType.APPLY)
+						{
+							ArrayList<String> list = new ArrayList<String>();
+							list.add(headerField.getText());
+							list.add(contentArea.getText());
+							return list;
+						}
+						return null;
+					});
+					Optional<ArrayList<String>> result = dialog.showAndWait();
+					result.ifPresent(text ->
+					{
+						Content.addContent(text.get(0), text.get(1), "published", null);
+						
+						Content.addPostCategories(categories, post.getID());
+					});
+				}
+			});
+		}
+	}
+	
 }
