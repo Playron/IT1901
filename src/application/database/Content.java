@@ -492,7 +492,7 @@ public class Content {
 	
 	public static void getPostComment(Post post) {
 		String query;
-		query = "SELECT FROM `comment` WHERE `post` = " + post.getID() + ";";
+		query = "SELECT * FROM `comment` WHERE `post` = " + post.getID() + ";";
 		DB.insert(query);
 	}
 	
