@@ -400,31 +400,41 @@ public class Posts {
 		return labels;
 	}
 	
-	/** 
-	 *  
-	 * @param postID The postID of the post we want to save 
-	 * @param user The user that saved the post 
-	 * @author Alexander Bollestad 
-	 * @author Torleif Hensvold 
-	 */ 
-	public static void savePost(int postID, String user) 
-	{ 
-		String query = "INSERT INTO savedpost ('postID', 'username') VALUES ('" + postID + "', '" + user + "');"; 
-		DB.insert(query);
-	} 
-
-	/** 
-	 *  
-	 * @param user the user whose saved posts we want to get 
-	 * @return The ResultSet of all the posts the user has saved 
-	 * @author Alexander Bollestad 
-	 * @author Torleif Hensvold 
-	 */ 
-	public static ResultSet getSavedPosts(String user) 
-	{ 
-		String query = "SELECT * FROM post WHERE postID IN (SELECT savedpost.postID FROM savedpost WHERE username ='" + user + "');"; 
-		return DB.select(query); 
-	} 
+	public static ArrayList<Label> getSavedLabels(String user) {
+		ArrayList<Label> labels = new ArrayList<Label>();
+		for (Post post : getSavedPosts(user)) {
+			String[] wordList = post.getBody().split(" ");
+			String body = "";
+			int i = 0;
+			for (int j = 0; j < wordList.length; j++) {
+				if (i > 100) {
+					body += "\n";
+					i = 0;
+				}
+				i += wordList[j].length() + 1;
+				body += wordList[j] + " ";
+			}
+			labels.add(new Label("____________________________________________________________________________________________________\n____________________________________________________________________________________________________\n\n\n" + post.getHeader() + ", by " + post.getPoster() + "\n--------------------------------------------------\n" + body));
+		}
+		return labels;
+	}
+	
+	public static ArrayList<Post> getSavedPosts(String user)
+	{
+		ArrayList<Post> posts = new ArrayList<Post>();
+		ResultSet r = Content.getSavedPosts(user);
+		try
+		{
+			while (r.next())
+				if (r.getString("state").equals("published"))
+					posts.add(new Post(r.getInt("postID"), r.getString("header"), r.getString("text"), r.getString("poster"), r.getString("editor")));
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		Collections.reverse(posts);
+		return posts;
+	}
 	 
 	
 }

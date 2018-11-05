@@ -552,6 +552,35 @@ public class Home {
 		};
 		return eventHandler;
 	}
+	
+	/**
+	 * @param text is the address field at the homepage
+	 * @param pane is the pane that the labels are being put into
+	 * @return the EventHandler that are being used for showing the posts that are subscribed to
+	 * 
+	 * @author Niklas Sølvberg
+	 */
+	public static EventHandler<ActionEvent> showSavedEventHandler(TextField text, Pane pane) {
+		EventHandler<ActionEvent> eventHandler = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				showContent = 1;
+				text.setText(website + "/saved_content" + searchFull);
+				pane.getChildren().clear();
+				int i = 0;
+				ArrayList<Label> labels = Posts.getSavedLabels(search);
+				pane.setPrefHeight(40 + (200 * labels.size()));
+				for (Label label : labels)
+				{
+					pane.getChildren().add(label);
+					label.setLayoutX(80);
+					label.setLayoutY(40 + (200 * i));
+					i++;
+				}
+			}
+		};
+		return eventHandler;
+	}
 
 	/**
 	 * Contains all the buttons and panes you can see on the homescreen,
@@ -655,6 +684,12 @@ public class Home {
 			visible((Node) showSubscribedButton, false);
 		showSubscribedButton.setOnAction(showSubscribedEventHandler(adressField, contentPane));
 		
+		Button showSavedButton = new Button("View saved content");
+		optionsPane.getChildren().add(showSavedButton);
+		if (!CurrentUser.isRegistered())
+			visible((Node) showSavedButton, false);
+		showSavedButton.setOnAction(showSavedEventHandler(adressField, contentPane));
+		
 		Button createCategoriesButton = new Button("Create categories");
 		optionsPane.getChildren().add(createCategoriesButton);
 		if (!CurrentUser.hasExecutiveEditorRights())
@@ -750,8 +785,9 @@ public class Home {
 		place((Region) showSubmittedButton, 0.0, 190.0, w/6, 40.0);
 		place((Region) showPublishedButton, 0.0, 230.0, w/6, 40.0);
 		place((Region) showSubscribedButton, 0.0, 270.0, w/6, 40.0);
-		place((Region) adminToolButton, 0.0, 340.0, w/6, 40.0);
-		place((Region) createCategoriesButton, 0.0, 380.0, w/6, 40.0);
+		place((Region) showSavedButton, 0.0, 310.0, w/6, 40.0);
+		place((Region) adminToolButton, 0.0, 350.0, w/6, 40.0);
+		place((Region) createCategoriesButton, 0.0, 390.0, w/6, 40.0);
 		place((Region) requestAccessLevelButton, 0.0, 450.0, w/6, 40.0);
 		place((Region) subscribeToUserButton, 0.0, 520.0, w/6, 25.0);
 		place((Region) subscribeToCategoryButton, 0.0, 545.0, w/6, 25.0);
