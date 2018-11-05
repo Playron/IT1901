@@ -1032,5 +1032,62 @@ public class Home {
 			}
 		});
 	}
-
+	
+	private static void handleUnpublishingPublishedLabels(Label label, Post post)
+	{
+		label.setOnMouseClicked(new EventHandler<MouseEvent>()
+		{
+			@Override
+			public void handle(MouseEvent me)
+			{
+				Dialog<ArrayList<String>> dialog = new Dialog<ArrayList<String>>();
+				dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
+				dialog.initModality(Modality.APPLICATION_MODAL);
+				dialog.setTitle("Unpublish?");
+				dialog.setHeaderText(null);
+				ButtonType unpublishButtonType = new ButtonType("Unpublish", ButtonData.OK_DONE);
+				dialog.getDialogPane().getButtonTypes().setAll(unpublishButtonType, ButtonType.CANCEL);
+				
+				Pane dialogPane = new Pane();
+				dialogPane.setPrefSize(300, 350);
+				Label headerLabel = new Label("Header:");
+				headerLabel.setLayoutX(20);
+				headerLabel.setLayoutY(20);
+				TextField headerField = new TextField(post.getHeader());
+				headerField.setLayoutX(20);
+				headerField.setLayoutY(50);
+				headerField.setPrefSize(260, 25);
+				Label contentLabel = new Label("Content:");
+				contentLabel.setLayoutX(20);
+				contentLabel.setLayoutY(90);
+				TextArea contentArea = new TextArea(post.getBody());
+				contentArea.setLayoutX(20);
+				contentArea.setLayoutY(120);
+				contentArea.setPrefSize(260, 160);
+				contentArea.setWrapText(true);
+				
+				
+				dialogPane.getChildren().setAll(headerLabel, headerField, contentLabel, contentArea);
+				dialog.getDialogPane().setContent(dialogPane);
+				dialog.setResultConverter(dialogButton ->
+				{
+					ArrayList<String> list = new ArrayList<String>();
+					if (dialogButton == unpublishButtonType)
+					{
+						list.add(headerField.getText());
+						list.add(contentArea.getText());
+						list.add("submitted");
+						return list;
+					}
+					return null;
+				});
+				Optional<ArrayList<String>> result = dialog.showAndWait();
+				result.ifPresent(text ->
+				{
+					Content.updateContent(post.getID(), text.get(0), text.get(1), text.get(2), CurrentUser.getUsername(), false);
+				});
+				lastChange = "submitted";
+			}
+		});
+	}
 }
