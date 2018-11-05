@@ -878,17 +878,9 @@ public class Home {
 			public void handle(ActionEvent ae)
 			{
 				showContent = 0;
-				addressField.setText(website + "/all_content" + searchFull);
+				//addressField.setText(website + "/all_content" + searchFull);
 				contentPane.getChildren().clear();
-				int i = 0;
-				contentPane.setPrefHeight(40 + (200 * Posts.getLabels(search).size()));
-				for (Label label : Posts.getLabels(search))
-				{
-					contentPane.getChildren().add(label);
-					label.setLayoutX(80);
-					label.setLayoutY(40 + (200 * i));
-					i++;
-				}
+				populateContent(contentPane, addressField);
 			}
 		});
 	}
