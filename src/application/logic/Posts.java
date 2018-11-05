@@ -401,7 +401,7 @@ public class Posts {
 	}
 	
 	
-	private static Label addPostLabel(Post post)
+	private static Label getPostLabel(Post post)
 	{
 		String[] wordList = post.getBody().split(" ");
 		String body = "";
@@ -416,7 +416,7 @@ public class Posts {
 			i += wordList[j].length() + 1;
 			body += wordList[j] + " ";
 		}
-		return new Label("____________________________________________________________________________________________________\n____________________________________________________________________________________________________\n\n\n" + post.getHeader() + ", by " + post.getPoster() + "\n--------------------------------------------------\n" + body))
-		;
+		return new Label("____________________________________________________________________________________________________\n____________________________________________________________________________________________________\n\n\n" + post.getHeader() + ", by " + post.getPoster() + "\n--------------------------------------------------\n" + body);
 	}
+	
 }
