@@ -501,6 +501,7 @@ public class Content {
 		}
 		return false;
 	}
+	
 	/**	
 	 * Creates a user with the passed arguments.
 	 *
@@ -508,13 +509,12 @@ public class Content {
 	 * @param PostId is the PostId
 	 * @author Per Haagensen
 	 */
-	
-	
 	public static void addComment(String comment, Post post) {
 		String query;
 		query = "INSERT INTO `comment` (`commenter`, `text`, `post`) VALUES (\"" + CurrentUser.getUsername() + "\", \"" + comment + "\", \"" + post.getID() + "\");";
 		DB.insert(query);
 	}
+	
 	/**
 	 * Creates a user with the passed arguments.
 	 *
@@ -522,7 +522,6 @@ public class Content {
 	 * @param Post is the post.postid
 	 * @author Per Haagensen
 	 */
-	
 	public static void getPostComment(Post post) {
 		String query;
 		query = "SELECT * FROM `comment` WHERE `post` = " + post.getID() + ";";
