@@ -500,7 +500,8 @@ public class Content {
 			return false;
 		}
 		return false;
-		
+	}
+	/**	
 	 * Creates a user with the passed arguments.
 	 *
 	 * @param Comment is the comment to the respective post
