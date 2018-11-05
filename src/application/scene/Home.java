@@ -145,11 +145,9 @@ public class Home {
 				{
 					Label label = Posts.getPostLabel(post);
 					addLabels(contentPane, label, 80, 40, 200, i);
-					System.out.println("publishing " + i);
 					if (CurrentUser.hasExecutiveEditorRights())
 					{
 						handleUnpublishingPublishedLabels(label, post);
-						System.out.println("Executivity " + i);
 					}
 					i++;
 				}
@@ -160,7 +158,6 @@ public class Home {
 				for (int j = 0; j < labelList.size(); j++)
 				{
 					addLabelsForEditors(contentPane, labelList.get(j), 80, 40, 200, i, postList.get(j));
-					System.out.println(i);
 					i++;
 				}
 				break;
