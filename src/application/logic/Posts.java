@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import application.database.Content;
-
 import javafx.scene.control.Label;
 
 public class Posts {
@@ -318,6 +317,45 @@ public class Posts {
 		return labels;
 	}
 	
+
+	/**
+	 * 
+	 * @param user The user whose saved labels we want to get
+	 * @return ArrayList of labels representing the posts
+	 * @author Alexander Bollestad
+	 * @author Torleif Hensvold
+	 */
+	public static ArrayList<Label> getSavedLabels(String user) {
+		ArrayList<Label> labels = new ArrayList<Label>();
+		for (Post post : getSavedPosts(user)) {
+			labels.add(getPostLabel(post));
+		}
+		return labels;
+	}
+	
+	/**
+	 * 
+	 * @param user The user whose posts we want to get
+	 * @return The 'ArraList of posts a user has saved. 
+	 */
+	public static ArrayList<Post> getSavedPosts(String user)
+	{
+		ArrayList<Post> posts = new ArrayList<Post>();
+		ResultSet r = Content.getSavedPosts(user);
+		try
+		{
+			while (r.next())
+				if (r.getString("state").equals("published"))
+					posts.add(new Post(r.getInt("postID"), r.getString("header"), r.getString("text"), r.getString("poster"), r.getString("editor")));
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		Collections.reverse(posts);
+		return posts;
+	}
+	 
+
 	
 	public static Label getPostLabel(Post post)
 	{
@@ -336,5 +374,7 @@ public class Posts {
 		}
 		return new Label("____________________________________________________________________________________________________\n____________________________________________________________________________________________________\n\n\n" + post.getHeader() + ", by " + post.getPoster() + "\n--------------------------------------------------\n" + body);
 	}
+
+
 	
 }

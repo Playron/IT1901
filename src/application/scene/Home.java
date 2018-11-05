@@ -145,6 +145,7 @@ public class Home {
 				{
 					Label label = Posts.getPostLabel(post);
 					addLabels(contentPane, label, 80, 40, 200, i);
+					addSavePostButton(contentPane, post, 80, 40, 200, i);
 					if (CurrentUser.hasExecutiveEditorRights())
 					{
 						handleUnpublishingPublishedLabels(label, post);
@@ -423,7 +424,37 @@ public class Home {
 
 		
 	}
-
+	
+	/**
+	 * 
+	 * @param contentPane The contenPane where content resides
+	 * @param post The post we want to save
+	 * @param x Parameter for position
+	 * @param y Parameter for position
+	 * @param dy Parameter for offset
+	 * @param i Parameter for index
+	 * @author Alexander Bollestad
+	 * @author Torleif Hensvold
+	 */
+	
+	public static void addSavePostButton(Pane contentPane, Post post, int x, int y, int dy, int i)
+	{
+		if(CurrentUser.isRegistered())
+		{
+			Button savePostButton = new Button("Save");
+			contentPane.getChildren().add(savePostButton);
+			savePostButton.setLayoutX(x + 500);
+			savePostButton.setLayoutY(y + (dy*i) + 40);
+			savePostButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent ae) 
+				{
+					Content.savePost(post.getID(), CurrentUser.getUsername());
+				}
+			});
+		}
+	}
+	
 	/**
 	 * @param contentPane  The Pane in which we want to add content
 	 * @param addressField The address field of the scene.
@@ -620,6 +651,36 @@ public class Home {
 		};
 		return eventHandler;
 	}
+	
+	/**
+	 * @param text is the address field at the homepage
+	 * @param pane is the pane that the labels are being put into
+	 * @return the EventHandler that are being used for showing the posts that are saved
+	 * 
+	 * @author Niklas Sølvberg
+	 * @author Alexander Bollestad
+	 */
+	public static EventHandler<ActionEvent> showSavedEventHandler(TextField text, Pane pane) {
+		EventHandler<ActionEvent> eventHandler = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent ae) {
+				showContent = 1;
+				text.setText(website + "/saved_content" + searchFull);
+				pane.getChildren().clear();
+				int i = 0;
+				ArrayList<Label> labels = Posts.getSavedLabels(CurrentUser.getUsername());
+				pane.setPrefHeight(40 + (200 * labels.size()));
+				for (Label label : labels)
+				{
+					pane.getChildren().add(label);
+					label.setLayoutX(80);
+					label.setLayoutY(40 + (200 * i));
+					i++;
+				}
+			}
+		};
+		return eventHandler;
+	}
 
 	/**
 	 * Contains all the buttons and panes you can see on the homescreen,
@@ -723,6 +784,12 @@ public class Home {
 			visible((Node) showSubscribedButton, false);
 		showSubscribedButton.setOnAction(showSubscribedEventHandler(adressField, contentPane));
 		
+		Button showSavedButton = new Button("View saved content");
+		optionsPane.getChildren().add(showSavedButton);
+		if (!CurrentUser.isRegistered())
+			visible((Node) showSavedButton, false);
+		showSavedButton.setOnAction(showSavedEventHandler(adressField, contentPane));
+		
 		Button createCategoriesButton = new Button("Create categories");
 		optionsPane.getChildren().add(createCategoriesButton);
 		if (!CurrentUser.hasExecutiveEditorRights())
@@ -818,8 +885,9 @@ public class Home {
 		place((Region) showSubmittedButton, 0.0, 190.0, w/6, 40.0);
 		place((Region) showPublishedButton, 0.0, 230.0, w/6, 40.0);
 		place((Region) showSubscribedButton, 0.0, 270.0, w/6, 40.0);
-		place((Region) adminToolButton, 0.0, 340.0, w/6, 40.0);
-		place((Region) createCategoriesButton, 0.0, 380.0, w/6, 40.0);
+		place((Region) showSavedButton, 0.0, 310.0, w/6, 40.0);
+		place((Region) adminToolButton, 0.0, 350.0, w/6, 40.0);
+		place((Region) createCategoriesButton, 0.0, 390.0, w/6, 40.0);
 		place((Region) requestAccessLevelButton, 0.0, 450.0, w/6, 40.0);
 		place((Region) subscribeToUserButton, 0.0, 520.0, w/6, 25.0);
 		place((Region) subscribeToCategoryButton, 0.0, 545.0, w/6, 25.0);
@@ -881,6 +949,29 @@ public class Home {
 				//addressField.setText(website + "/published_content" + searchFull);
 				contentPane.getChildren().clear();
 				populateContent(contentPane, addressField);
+			}
+		});
+	}
+	
+	public static void showSavedButtonOnAction(Button showSavedButton, TextField addressField, Pane contentPane)
+	{
+		showSavedButton.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent ae)
+			{
+				showContent = 1;
+				addressField.setText(website + "/saved_content" + searchFull);
+				contentPane.getChildren().clear();
+				int i = 0;
+				contentPane.setPrefHeight(40 + (200 * Posts.getSavedLabels(CurrentUser.getUsername()).size()));
+				for (Label label : Posts.getSavedLabels(CurrentUser.getUsername()))
+				{
+					contentPane.getChildren().add(label);
+					label.setLayoutX(80);
+					label.setLayoutY(40 + (200 * i));
+					i++;
+				}
 			}
 		});
 	}

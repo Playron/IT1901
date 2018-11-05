@@ -554,6 +554,30 @@ public class Content {
 		return sb;
 	}
 	
+	/** 
+	 *  
+	 * @param postID The postID of the post we want to save 
+	 * @param user The user that saved the post 
+	 * @author Alexander Bollestad 
+	 * @author Torleif Hensvold 
+	 */ 
+	public static void savePost(int postID, String user) 
+	{ 
+		String query = "INSERT INTO savedpost (postID, username) VALUES (" + postID + ", '" + user + "');"; 
+		DB.insert(query);
+	} 
 
+	/** 
+	 *  
+	 * @param user the user whose saved posts we want to get 
+	 * @return The ResultSet of all the posts the user has saved 
+	 * @author Alexander Bollestad 
+	 * @author Torleif Hensvold 
+	 */ 
+	public static ResultSet getSavedPosts(String user) 
+	{ 
+		String query = "SELECT * FROM post WHERE postID IN (SELECT savedpost.postID FROM savedpost WHERE username ='" + user + "');"; 
+		return DB.select(query); 
+	} 
 	
 }
