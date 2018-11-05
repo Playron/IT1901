@@ -482,7 +482,6 @@ public class Content {
 	}
 	
 	/**
-<<<<<<< src/application/database/Content.java
 	 * @param username is the user we want to check if has copy editor rights
 	 * @return if the user has copy editor rights
 	 * 
@@ -501,7 +500,8 @@ public class Content {
 			return false;
 		}
 		return false;
-=======
+	}
+	/*
 	 * Creates a user with the passed arguments.
 	 *
 	 * @param Comment is the comment to the respective post
@@ -528,7 +528,6 @@ public class Content {
 		String query;
 		query = "SELECT * FROM `comment` WHERE `post` = " + post.getID() + ";";
 		DB.insert(query);
->>>>>>> src/application/database/Content.java
 	}
 	
 }
