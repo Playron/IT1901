@@ -361,6 +361,68 @@ public class Home {
 				});
 			}
 		}
+		
+		Button commentButton = new Button("C");
+		Button showCommentButton = new Button("S");
+		commentButton.setLayoutX(50);
+		commentButton.setLayoutY(y + (dy * i) + 10);
+		contentPane.getChildren().add(commentButton);
+		showCommentButton.setLayoutX(20);
+		showCommentButton.setLayoutY(y + (dy * i) + 10);
+		contentPane.getChildren().add(showCommentButton);
+		
+		commentButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				TextInputDialog	dialog = new TextInputDialog();
+				dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
+				dialog.setTitle("Comment");
+				dialog.setHeaderText("Legg inn kommentar til innlegget her");
+				Optional<String> result = dialog.showAndWait();
+				result.ifPresent(entered -> {
+					if (entered.length() < 1) {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
+						alert.setTitle("Error");
+						alert.setHeaderText(null);
+						alert.setContentText("Could not add comment.");
+						alert.show();
+					}
+					else {
+						Content.addComment(entered, post);
+					}
+				});
+			}
+			
+		});
+		
+		showCommentButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
+				alert.setTitle("Comments");
+				alert.setHeaderText(null);
+				String content = Content.getCommentsAsString(post.getID());
+				alert.setContentText(null);
+				Pane p = new Pane();
+				p.setPrefSize(300, 300);
+				TextArea ta = new TextArea(content);
+				ta.setEditable(false);
+				ta.setPrefSize(260, 260);
+				ta.setLayoutX(20);
+				ta.setLayoutY(20);
+				ta.setWrapText(true);
+				p.getChildren().add(ta);
+				alert.getDialogPane().setContent(p);
+				alert.show();
+			}
+			
+		});
+
+		
 	}
 	
 	/**

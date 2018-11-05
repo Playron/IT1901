@@ -511,7 +511,7 @@ public class Content {
 	 */
 	public static void addComment(String comment, Post post) {
 		String query;
-		query = "INSERT INTO `comment` (`commenter`, `text`, `post`) VALUES (\"" + CurrentUser.getUsername() + "\", \"" + comment + "\", \"" + post.getID() + "\");";
+		query = "INSERT INTO `comment` (`commenter`, `text`, `post`) VALUES (\"" + CurrentUser.getUsername() + "\", \"" + comment + "\", " + post.getID() + ");";
 		DB.insert(query);
 	}
 	
@@ -523,22 +523,23 @@ public class Content {
 	 *
 	 * @author Per Haagensen
 	 */
-	public static ResultSet getPostComment(Post post) {
-		String query = "SELECT * FROM `comment` WHERE `post` = " + post.getID() + ";";
+	public static ResultSet getPostComment() {
+		String query = "SELECT * FROM `comment`;";
 		return DB.select(query);
 	}
 	
-	public static String getCommentsAsString(Post post) {
+	public static String getCommentsAsString(int q) {
 		ArrayList<String> comments = new ArrayList<String>();
 		ArrayList<String> users = new ArrayList<String>();
 		try
 		{
-			ResultSet r = getPostComment(post);
+			ResultSet r = getPostComment();
 			while(r.next()) {
-				comments.add(r.getString("text"));
-				users.add(r.getString("commenter"));
-				System.out.println(r.getString("text"));
-				System.out.println(r.getString("commenter"));
+				if (r.getInt("post") == q) {
+					comments.add(r.getString("text"));
+					users.add(r.getString("commenter"));
+				}
+				
 			}
 			
 		}
@@ -546,11 +547,11 @@ public class Content {
 			e.printStackTrace();
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
+		String sb = "";
 		for(int i = 0; i<comments.size(); i++) {
-			sb.append(users.get(i) + ": \n\n" + comments.get(i) + "\n\n\n\n");
+			sb += users.get(i) + ": \n\n" + comments.get(i) + "\n\n\n\n";
 		}
-		return sb.toString();
+		return sb;
 	}
 	
 	/** 
