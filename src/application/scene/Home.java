@@ -1148,6 +1148,13 @@ public class Home {
 		});
 	}
 	
+	/**
+	 * @param label is the label of the post we want the author to be able to change
+	 * @param post is the post that we want the author to be able to change
+	 * 
+	 * @author Atle Vågen Svendsgaard
+	 * @author Niklas Sølvberg
+	 */
 	public static void handleEditPublishedLabels(Label label, Post post) {
 		if (post.getPoster().equals(CurrentUser.getUsername())) {
 			label.setOnMouseClicked(new EventHandler<MouseEvent>() {
