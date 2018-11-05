@@ -318,23 +318,26 @@ public class Content {
 	 * @param categories is a list with all categories the user want to add to the post (while creating the post)
 	 * 
 	 * @author Niklas Sølvberg
+	 * @author Atle Vågen Svendsgaard
 	 */
-	public static void addPostCategories(ObservableList<String> categories) {
+	public static void addPostCategories(ObservableList<String> categories, Integer postID) {
 		if (categories.size() == 0)
 			return;
-		int postID = 0;
-		String query = "SELECT MAX(`postID`) FROM `post`;";
-		try {
-			ResultSet r = DB.select(query);
-			while (r.next())
-				postID = r.getInt(1);
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-			return;
+		if (postID == null) {
+			String query = "SELECT MAX(`postID`) FROM `post`;";
+			try {
+				ResultSet r = DB.select(query);
+				while (r.next())
+					postID = r.getInt(1);
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+				return;
+			}
 		}
 		if (postID == 0)
 			throw new IllegalStateException("The postID can not be 0.");
+		String query;
 		for (String string : categories) {
 			query = "INSERT INTO `postcategories` VALUES (" + postID + ", " + getCategoryID(string) + ");";
 			DB.insert(query);

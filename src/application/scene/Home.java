@@ -1077,7 +1077,7 @@ public class Home {
 						// This wont work if more than one post is created at the exact same time.
 						// Which postID we retrieve will depend on the fact that it, in an ideal
 						// situation, will be the last entry in the post-table.
-						Content.addPostCategories(categories);
+						Content.addPostCategories(categories, null);
 					});
 					contentPane.getChildren().clear();
 					populateContent(contentPane, addressField);
