@@ -381,7 +381,7 @@ public class Home {
 				TextInputDialog	dialog = new TextInputDialog();
 				dialog.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
 				dialog.setTitle("Comment");
-				dialog.setHeaderText("Legg inn kommentar til innlegget her");
+				dialog.setHeaderText("Enter comment: ");
 				Optional<String> result = dialog.showAndWait();
 				result.ifPresent(entered -> {
 					if (entered.length() < 1) {
