@@ -482,7 +482,6 @@ public class Content {
 	}
 	
 	/**
-<<<<<<< src/application/database/Content.java
 	 * @param username is the user we want to check if has copy editor rights
 	 * @return if the user has copy editor rights
 	 * 
