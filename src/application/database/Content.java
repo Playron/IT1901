@@ -505,8 +505,9 @@ public class Content {
 	/**	
 	 * Creates a user with the passed arguments.
 	 *
-	 * @param Comment is the comment to the respective post
-	 * @param PostId is the PostId
+	 * @param comment is the comment to the respective post
+	 * @param post is the PostId
+	 * 
 	 * @author Per Haagensen
 	 */
 	public static void addComment(String comment, Post post) {
@@ -519,7 +520,8 @@ public class Content {
 	 * Creates a user with the passed arguments.
 	 *
 	 * @return SQL query that returns for comments to a specific post
-	 * @param Post is the post.postid
+	 * @param post is the post.postid
+	 * 
 	 * @author Per Haagensen
 	 */
 	public static void getPostComment(Post post) {
