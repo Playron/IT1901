@@ -355,7 +355,37 @@ public class Home {
 			}
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param contentPane The contenPane where content resides
+	 * @param post The post we want to save
+	 * @param x Parameter for position
+	 * @param y Parameter for position
+	 * @param dy Parameter for offset
+	 * @param i Parameter for index
+	 * @author Alexander Bollestad
+	 * @author Torleif Hensvold
+	 */
+	
+	public static void addSavePostButton(Pane contentPane, Post post, int x, int y, int dy, int i)
+	{
+		if(CurrentUser.isRegistered())
+		{
+			Button savePostButton = new Button("Save");
+			contentPane.getChildren().add(savePostButton);
+			savePostButton.setLayoutX(x + 300);
+			savePostButton.setLayoutY(y + (dy*i) + 80);
+			savePostButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent ae) 
+				{
+					Content.savePost(post.getID(), CurrentUser.getUsername());
+				}
+			});
+		}
+	}
+	
 	/**
 	 * @param contentPane  The Pane in which we want to add content
 	 * @param addressField The address field of the scene.
