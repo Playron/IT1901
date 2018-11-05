@@ -1083,6 +1083,10 @@ public class Home {
 		});
 	}
 	
+	/**
+	 * @param label The Label we want to add an eventhandler to.
+	 * @param post  The Post which corresponds to the Label
+	 */
 	private static void handleUnpublishingPublishedLabels(Label label, Post post)
 	{
 		label.setOnMouseClicked(new EventHandler<MouseEvent>()
