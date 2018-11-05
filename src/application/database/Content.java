@@ -63,7 +63,7 @@ public class Content {
 	/**
 	 * Retrieves all posts from the database that is posted or edited by a specified user.
 	 *
-	 * @param authorOrEditor is a string that limits the posts to the results where either the poster or the editor equals the param
+	 * @param authorEditorCategory is a string that limits the posts to the results where either the poster or the editor equals the param
 	 * @return all posts where the param is equal to either the poster or the editor
 	 * @author Niklas Sølvberg
 	 */
@@ -97,7 +97,7 @@ public class Content {
 	 * <br><br>This method should never be called unless the current user is an admin.
 	 *
 	 * @param username is the username of the user that is being updated
-	 * @param usertype is the usertype / access level of the user that is being updated
+	 * @param accessLevel is the usertype / access level of the user that is being updated
 	 * @author Niklas Sølvberg
 	 */
 	public static void updateUser(String username, String accessLevel)
@@ -500,15 +500,15 @@ public class Content {
 			return false;
 		}
 		return false;
-		
+	}
+	
+	/**
 	 * Creates a user with the passed arguments.
 	 *
-	 * @param Comment is the comment to the respective post
-	 * @param PostId is the PostId
+	 * @param comment is the comment to the respective post
+	 * @param post is the PostId
 	 * @author Per Haagensen
 	 */
-	
-	
 	public static void addComment(String comment, Post post) {
 		String query;
 		query = "INSERT INTO `comment` (`commenter`, `text`, `post`) VALUES (\"" + CurrentUser.getUsername() + "\", \"" + comment + "\", \"" + post.getID() + "\");";
@@ -518,10 +518,9 @@ public class Content {
 	 * Creates a user with the passed arguments.
 	 *
 	 * @return SQL query that returns for comments to a specific post
-	 * @param Post is the post.postid
+	 * @param post is the post.postid
 	 * @author Per Haagensen
 	 */
-	
 	public static void getPostComment(Post post) {
 		String query;
 		query = "SELECT * FROM `comment` WHERE `post` = " + post.getID() + ";";
