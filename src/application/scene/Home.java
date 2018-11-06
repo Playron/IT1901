@@ -365,13 +365,14 @@ public class Home {
 			}
 		}
 		
+		//adds comment, and show comment button to pane.
 		Button commentButton = new Button("C");
 		Button showCommentButton = new Button("S");
 		commentButton.setLayoutX(50);
 		commentButton.setLayoutY(y + (dy * i) + 10);
-		contentPane.getChildren().add(commentButton);
 		showCommentButton.setLayoutX(20);
 		showCommentButton.setLayoutY(y + (dy * i) + 10);
+		contentPane.getChildren().add(commentButton);
 		contentPane.getChildren().add(showCommentButton);
 		
 		commentButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -383,6 +384,9 @@ public class Home {
 				dialog.setTitle("Comment");
 				dialog.setHeaderText("Enter comment: ");
 				Optional<String> result = dialog.showAndWait();
+				
+				//Checks if a comment is entered, and that it is longer than 1 characters.
+				//Throws alert if comment is less that 1 character long. 
 				result.ifPresent(entered -> {
 					if (entered.length() < 1) {
 						Alert alert = new Alert(AlertType.ERROR);
