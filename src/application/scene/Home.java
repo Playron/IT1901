@@ -408,7 +408,8 @@ public class Home {
 
 			@Override
 			public void handle(ActionEvent event) {
-				
+				//This method adds all the comment to the respectiv pane. Adding comments in respect of postID primary key
+				//from database.
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
 				alert.setTitle("Comments");
