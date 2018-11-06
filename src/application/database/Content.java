@@ -587,7 +587,7 @@ public class Content {
 	/** 
 	 *  
 	 * @param username is the username 
-	 * @return ResultSet containtaining a specific user 
+	 * @return ResultSet containing a specific user 
 	 * @author Per Haagensen
 	 *  
 	 */ 
