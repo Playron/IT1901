@@ -408,12 +408,13 @@ public class Home {
 
 			@Override
 			public void handle(ActionEvent event) {
+				
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.getDialogPane().getStylesheets().add("application/library/stylesheets/basic.css");
 				alert.setTitle("Comments");
 				alert.setHeaderText(null);
-				String content = Content.getCommentsAsString(post.getID());
 				alert.setContentText(null);
+				String content = Content.getCommentsAsString(post.getID());
 				Pane p = new Pane();
 				p.setPrefSize(300, 300);
 				TextArea ta = new TextArea(content);
