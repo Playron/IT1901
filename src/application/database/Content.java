@@ -506,7 +506,7 @@ public class Content {
 	}
 	
 	/**
-	 * Creates a user with the passed arguments.
+	 * Adds a comment to the database respective to the correct post
 	 *
 	 * @param comment is the comment to the respective post
 	 * @param post is the PostId
@@ -519,10 +519,10 @@ public class Content {
 	}
 	
 	/**
-	 * Creates a user with the passed arguments.
+	 * Reads all the comments respective to post from database, and saves is as String
 	 *
-	 * @return SQL query that returns for comments to a specific post
-	 * @param post is the post.postid
+	 * @return Return a String with all the comments respective to post. 
+	 * 
 	 *
 	 * @author Per Haagensen
 	 */
