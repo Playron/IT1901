@@ -583,6 +583,15 @@ public class Content {
 		return DB.select(query); 
 	} 
 	
+	
+	/** 
+	 *  
+	 * @param username is the username 
+	 * @return ResultSet containtaining a specific user 
+	 * @author Per Haagensen
+	 *  
+	 */ 
+	
 	public static ResultSet userLogin(String username) {
 		String query = "SELECT * FROM `user` WHERE `username` = \"" + username + "\";";
 		ResultSet r = DB.select(query);
